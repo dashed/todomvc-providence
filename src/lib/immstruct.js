@@ -363,10 +363,8 @@ function __notifyListeners(listeners, currentNew, currentOld, propagate = true) 
         return;
     }
 
-    const byPass = false ? false : listenersSize <= (newSize + oldSize);
-
     // TODO: better heuristic? l*log(n*o) <= o*log(l*n) + n*log(l*o)
-    if(byPass) {
+    if(listenersSize <= (newSize + oldSize)) {
         listeners.forEach(function(subListeners, key) {
 
             if(skipListenerKey(key)) {
