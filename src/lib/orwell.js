@@ -36,7 +36,6 @@ const base = Immutable.fromJS({});
 
 const DO_NOTHING = _ => void 0;
 const DEFAULT_STATE = _ => {};
-const SHOULDCOMPONENTUPDATE = _ => true;
 
 function orwell(Component, watchCursors = DO_NOTHING, __getStateFromCursors = DEFAULT_STATE) {
 
@@ -48,12 +47,8 @@ function orwell(Component, watchCursors = DO_NOTHING, __getStateFromCursors = DE
         __getStateFromCursors = Component.getStateFromCursors;
     }
 
-    let __shouldComponentUpdate = SHOULDCOMPONENTUPDATE;
+    let __shouldComponentUpdate = __shouldComponentUpdateShallow;
     let __onChange = DO_NOTHING;
-
-    if(arguments.length === 1) {
-        __shouldComponentUpdate = __shouldComponentUpdateShallow;
-    }
 
     const CursorConnection = React.createClass({
 
