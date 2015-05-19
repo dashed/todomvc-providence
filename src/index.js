@@ -8,8 +8,6 @@ require('todomvc-app-css/index.css');
 
 const
 Router = require('react-router'),
-PureRenderMixin = require('react/addons').addons.PureRenderMixin,
-
 
 Structure = require('./lib/immstruct').Structure,
 routes = require('./components/routes'),

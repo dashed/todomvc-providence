@@ -3,8 +3,6 @@
  *
  */
 
-const PureRenderMixin = require('react/addons').addons.PureRenderMixin;
-
 const
 Router = require('react-router'),
 {
@@ -15,8 +13,6 @@ const orwell = require('lib/orwell');
 const Structure = require('lib/immstruct').Structure;
 
 const Footer = React.createClass({
-
-    mixins: [PureRenderMixin],
 
     propTypes: {
         tasksleft: React.PropTypes.number.isRequired,

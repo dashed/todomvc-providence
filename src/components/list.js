@@ -3,8 +3,6 @@
  *
  */
 
-const PureRenderMixin = require('react/addons').addons.PureRenderMixin;
-
 const orwell = require('lib/orwell');
 const Structure = require('lib/immstruct').Structure;
 const Item = require('./item');

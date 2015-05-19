@@ -4,7 +4,6 @@
  */
 
 const
-PureRenderMixin = require('react/addons').addons.PureRenderMixin,
 Router = require('react-router'),
 {
     RouteHandler
@@ -19,8 +18,6 @@ Footer = require('./footer');
 
 
 const App = React.createClass({
-
-    mixins: [PureRenderMixin],
 
     propTypes: {
         rootCursor: React.PropTypes.instanceOf(Structure).isRequired,

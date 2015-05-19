@@ -3,8 +3,6 @@
  *
  */
 
-const PureRenderMixin = require('react/addons').addons.PureRenderMixin;
-
 const orwell = require('lib/orwell');
 const Structure = require('lib/immstruct').Structure;
 
@@ -36,5 +34,5 @@ module.exports = function(filterRecord, watchCursors = DEFAULTWATCH) {
             );
         }
     });
-    return orwell(Filtered, watchCursors).shallow();
+    return orwell(Filtered, watchCursors);
 }

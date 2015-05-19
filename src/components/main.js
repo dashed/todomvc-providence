@@ -3,15 +3,12 @@
  *
  */
 
-const PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 const { RouteHandler } = require('react-router');
 
 const orwell = require('lib/orwell');
 const Structure = require('lib/immstruct').Structure;
 
 const Main = React.createClass({
-
-    // mixins: [PureRenderMixin],
 
     propTypes: {
         rootCursor: React.PropTypes.instanceOf(Structure).isRequired,
@@ -63,4 +60,4 @@ function getPropsFromCursors({ tasksleftCursor, todosCursor }) {
     };
 }
 
-module.exports = orwell(Main, watchCursors, getPropsFromCursors).shallow();
+module.exports = orwell(Main, watchCursors, getPropsFromCursors);

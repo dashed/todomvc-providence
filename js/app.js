@@ -13,7 +13,6 @@ webpackJsonp([1],[
 	__webpack_require__(49);
 	
 	var Router = __webpack_require__(18),
-	    PureRenderMixin = __webpack_require__(7).addons.PureRenderMixin,
 	    Structure = __webpack_require__(8).Structure,
 	    routes = __webpack_require__(9),
 	    structure = __webpack_require__(10);
@@ -1176,7 +1175,6 @@ webpackJsonp([1],[
 	
 	var _extends = __webpack_require__(293)['default'];
 	
-	var PureRenderMixin = __webpack_require__(7).addons.PureRenderMixin;
 	var Router = __webpack_require__(18);
 	var RouteHandler = Router.RouteHandler;
 	
@@ -1189,8 +1187,6 @@ webpackJsonp([1],[
 	
 	var App = React.createClass({
 	    displayName: 'App',
-	
-	    mixins: [PureRenderMixin],
 	
 	    propTypes: {
 	        rootCursor: React.PropTypes.instanceOf(Structure).isRequired,
@@ -1250,8 +1246,6 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var PureRenderMixin = __webpack_require__(7).addons.PureRenderMixin;
-	
 	var _require = __webpack_require__(18);
 	
 	var RouteHandler = _require.RouteHandler;
@@ -1261,8 +1255,6 @@ webpackJsonp([1],[
 	
 	var Main = React.createClass({
 	    displayName: 'Main',
-	
-	    // mixins: [PureRenderMixin],
 	
 	    propTypes: {
 	        rootCursor: React.PropTypes.instanceOf(Structure).isRequired,
@@ -1323,7 +1315,7 @@ webpackJsonp([1],[
 	    };
 	}
 	
-	module.exports = orwell(Main, watchCursors, getPropsFromCursors).shallow();
+	module.exports = orwell(Main, watchCursors, getPropsFromCursors);
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
@@ -4993,9 +4985,6 @@ webpackJsonp([1],[
 	    return void 0;
 	};
 	var DEFAULT_STATE = function DEFAULT_STATE(_) {};
-	var SHOULDCOMPONENTUPDATE = function SHOULDCOMPONENTUPDATE(_) {
-	    return true;
-	};
 	
 	function orwell(Component) {
 	    var watchCursors = arguments[1] === undefined ? DO_NOTHING : arguments[1];
@@ -5010,12 +4999,8 @@ webpackJsonp([1],[
 	        __getStateFromCursors = Component.getStateFromCursors;
 	    }
 	
-	    var __shouldComponentUpdate = SHOULDCOMPONENTUPDATE;
+	    var __shouldComponentUpdate = __shouldComponentUpdateShallow;
 	    var __onChange = DO_NOTHING;
-	
-	    if (arguments.length === 1) {
-	        __shouldComponentUpdate = __shouldComponentUpdateShallow;
-	    }
 	
 	    var CursorConnection = React.createClass({
 	        displayName: 'CursorConnection',
@@ -5303,8 +5288,6 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var PureRenderMixin = __webpack_require__(7).addons.PureRenderMixin;
-	
 	var Router = __webpack_require__(18);var Link = Router.Link;
 	
 	var orwell = __webpack_require__(160);
@@ -5312,8 +5295,6 @@ webpackJsonp([1],[
 	
 	var Footer = React.createClass({
 	    displayName: 'Footer',
-	
-	    mixins: [PureRenderMixin],
 	
 	    propTypes: {
 	        tasksleft: React.PropTypes.number.isRequired,
@@ -5435,8 +5416,6 @@ webpackJsonp([1],[
 	
 	var classNames = __webpack_require__(316);
 	
-	var PureRenderMixin = __webpack_require__(7).addons.PureRenderMixin;
-	
 	var orwell = __webpack_require__(160);
 	var Structure = __webpack_require__(8).Structure;
 	
@@ -5445,8 +5424,6 @@ webpackJsonp([1],[
 	
 	var Item = React.createClass({
 	    displayName: 'Item',
-	
-	    mixins: [PureRenderMixin],
 	
 	    getInitialState: function getInitialState() {
 	        return {
@@ -5610,7 +5587,7 @@ webpackJsonp([1],[
 	    };
 	}
 	
-	module.exports = orwell(Item, watchCursors, getPropsFromCursors).shallow();
+	module.exports = orwell(Item, watchCursors, getPropsFromCursors);
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(4)))
 
 /***/ },
@@ -7927,8 +7904,6 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var PureRenderMixin = __webpack_require__(7).addons.PureRenderMixin;
-	
 	var orwell = __webpack_require__(160);
 	var Structure = __webpack_require__(8).Structure;
 	var Item = __webpack_require__(166);
@@ -7994,8 +7969,6 @@ webpackJsonp([1],[
 	
 	var _extends = __webpack_require__(293)['default'];
 	
-	var PureRenderMixin = __webpack_require__(7).addons.PureRenderMixin;
-	
 	var orwell = __webpack_require__(160);
 	var Structure = __webpack_require__(8).Structure;
 	
@@ -8028,7 +8001,7 @@ webpackJsonp([1],[
 	            }));
 	        }
 	    });
-	    return orwell(Filtered, watchCursors).shallow();
+	    return orwell(Filtered, watchCursors);
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 

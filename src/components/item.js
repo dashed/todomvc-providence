@@ -5,8 +5,6 @@
 
 const classNames = require('classnames');
 
-const PureRenderMixin = require('react/addons').addons.PureRenderMixin;
-
 const orwell = require('lib/orwell');
 const Structure = require('lib/immstruct').Structure;
 
@@ -14,8 +12,6 @@ const ESCAPE_KEY = 27;
 const ENTER_KEY = 13;
 
 const Item = React.createClass({
-
-    mixins: [PureRenderMixin],
 
     getInitialState() {
         return {
@@ -167,4 +163,4 @@ function getPropsFromCursors({ recordCursor }) {
     };
 }
 
-module.exports = orwell(Item, watchCursors, getPropsFromCursors).shallow();
+module.exports = orwell(Item, watchCursors, getPropsFromCursors);
