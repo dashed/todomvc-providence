@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "scripts": {
+    "test": "mocha --compilers js:babel/register"
+  },
+  "dependencies": {
+    "classnames": "^2.1.1",
+    "immutable": "^3.7.2",
+    "lodash": "^3.8.0",
+    "react": "^0.13.3",
+    "react-router": "^0.13.3",
+    "todomvc-app-css": "^2.0.1",
+    "todomvc-common": "^1.0.2"
+  },
+  "devDependencies": {
+    "babel": "*",
+    "babel-core": "*",
+    "babel-loader": "*",
+    "babel-runtime": "*",
+    "chai": "^2.3.0",
+    "css-loader": "*",
+    "mocha": "^2.2.5",
+    "style-loader": "*",
+    "webpack": "*"
+  }
+}
