@@ -10,7 +10,7 @@ Router = require('react-router'),
 } = Router,
 
 orwell = require('lib/orwell'),
-Structure = require('lib/immstruct').Structure,
+Prolefeed = require('prolefeed'),
 
 Main = require('./main'),
 Header = require('./header'),
@@ -20,7 +20,7 @@ Footer = require('./footer');
 const App = React.createClass({
 
     propTypes: {
-        rootCursor: React.PropTypes.instanceOf(Structure).isRequired,
+        rootCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
         routestate: React.PropTypes.object.isRequired
     },
 

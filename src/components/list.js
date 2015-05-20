@@ -4,15 +4,15 @@
  */
 
 const orwell = require('lib/orwell');
-const Structure = require('lib/immstruct').Structure;
+const Prolefeed = require('prolefeed');
 const Item = require('./item');
 
 const List = React.createClass({
 
     propTypes: {
-        tasksleftCursor: React.PropTypes.instanceOf(Structure).isRequired,
-        todosCursor: React.PropTypes.instanceOf(Structure).isRequired,
-        editingCursor: React.PropTypes.instanceOf(Structure).isRequired,
+        tasksleftCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
+        todosCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
+        editingCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
         filterTodo: React.PropTypes.func.isRequired
     },
 

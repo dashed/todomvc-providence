@@ -3,9 +3,9 @@
  *
  */
 
-const immstruct = require('lib/immstruct');
+const minitrue = require('minitrue');
 
-module.exports = immstruct({
+module.exports = minitrue({
     todos: [],
     editing: null,
     tasksleft: 0

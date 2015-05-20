@@ -12,6 +12,6 @@ To do
 
 - [x] squash all commits
 
-- [ ] orwell tests
+- [x] port out cursor library into `minitrue` and `providence`
 
-- [ ] port out cursor library
+- [ ] add orwell tests

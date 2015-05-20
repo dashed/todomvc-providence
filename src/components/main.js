@@ -6,14 +6,14 @@
 const { RouteHandler } = require('react-router');
 
 const orwell = require('lib/orwell');
-const Structure = require('lib/immstruct').Structure;
+const Prolefeed = require('prolefeed');
 
 const Main = React.createClass({
 
     propTypes: {
-        rootCursor: React.PropTypes.instanceOf(Structure).isRequired,
-        tasksleftCursor: React.PropTypes.instanceOf(Structure).isRequired,
-        todosCursor: React.PropTypes.instanceOf(Structure).isRequired,
+        rootCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
+        tasksleftCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
+        todosCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
         checked: React.PropTypes.bool.isRequired
     },
 

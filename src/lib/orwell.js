@@ -28,7 +28,7 @@ const React = require('react');
 const Immutable = require('immutable');
 const { isFunction, isArray } = _;
 
-const Structure = require('lib/immstruct').Structure;
+const Prolefeed = require('prolefeed');
 
 module.exports = orwell;
 
@@ -82,8 +82,10 @@ function orwell(Component, watchCursors = DO_NOTHING, __getStateFromCursors = DE
         },
 
         handleCursorChanged() {
+            const newState = this.getStateFromCursors(this.props, this.state.data);
+            // TODO: ensure newState is plain object
             this.setState({
-                data: _.assign({}, this.state.data, this.getStateFromCursors(this.props, this.state.data))
+                data: _.assign({}, this.state.data, newState)
             });
             __onChange.call(this, this.props);
         },
@@ -91,9 +93,11 @@ function orwell(Component, watchCursors = DO_NOTHING, __getStateFromCursors = DE
         /* React API */
 
         getInitialState() {
+            const newState = this.getStateFromCursors(this.props, {});
+            // TODO: ensure newState is plain object
             return {
                 meta: base,
-                data: this.getStateFromCursors(this.props, {})
+                data: _.assign({}, newState)
             };
         },
 
@@ -109,7 +113,7 @@ function orwell(Component, watchCursors = DO_NOTHING, __getStateFromCursors = DE
 
             let cursorsToWatch = watchCursors(this.props, manual);
 
-            if(cursorsToWatch instanceof Structure) {
+            if(cursorsToWatch instanceof Prolefeed) {
                 cursorsToWatch = [cursorsToWatch];
             }
 
@@ -135,8 +139,10 @@ function orwell(Component, watchCursors = DO_NOTHING, __getStateFromCursors = DE
 
         componentWillReceiveProps(nextProps) {
             if (!shallowEqual(nextProps, this.props)) {
+                const newState = this.getStateFromCursors(this.props, this.state.data);
+                // TODO: ensure newState is plain object
                 this.setState({
-                    data: _.assign({}, this.state.data, this.getStateFromCursors(this.props, this.state.data))
+                    data: _.assign({}, this.state.data, newState)
                 });
             }
         },
@@ -152,7 +158,7 @@ function orwell(Component, watchCursors = DO_NOTHING, __getStateFromCursors = DE
 /* helpers */
 
 function cursorCompare(valueA, valueB) {
-    if(!(valueA instanceof Structure) || !(valueB instanceof Structure)) {
+    if(!(valueA instanceof Prolefeed) || !(valueB instanceof Prolefeed)) {
         return false;
     }
     return(valueA.deref() === valueB.deref());

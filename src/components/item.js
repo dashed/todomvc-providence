@@ -6,7 +6,7 @@
 const classNames = require('classnames');
 
 const orwell = require('lib/orwell');
-const Structure = require('lib/immstruct').Structure;
+const Prolefeed = require('prolefeed');
 
 const ESCAPE_KEY = 27;
 const ENTER_KEY = 13;
@@ -21,8 +21,8 @@ const Item = React.createClass({
     },
 
     propTypes: {
-        recordCursor: React.PropTypes.instanceOf(Structure).isRequired,
-        tasksleftCursor: React.PropTypes.instanceOf(Structure).isRequired,
+        recordCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
+        tasksleftCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
         record: React.PropTypes.instanceOf(Immutable.Record).isRequired
     },
 

@@ -10,15 +10,15 @@ Router = require('react-router'),
 } = Router;
 
 const orwell = require('lib/orwell');
-const Structure = require('lib/immstruct').Structure;
+const Prolefeed = require('prolefeed');
 
 const Footer = React.createClass({
 
     propTypes: {
         tasksleft: React.PropTypes.number.isRequired,
         todos: React.PropTypes.instanceOf(Immutable.List).isRequired,
-        todosCursor: React.PropTypes.instanceOf(Structure).isRequired,
-        tasksleftCursor: React.PropTypes.instanceOf(Structure).isRequired
+        todosCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
+        tasksleftCursor: React.PropTypes.instanceOf(Prolefeed).isRequired
     },
 
     clearCompleted() {

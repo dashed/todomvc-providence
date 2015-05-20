@@ -5,7 +5,7 @@
 
 const PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 
-const Structure = require('lib/immstruct').Structure;
+const Prolefeed = require('prolefeed');
 const TodoModel = require('models/todo');
 const ENTER_KEY = 13;
 
@@ -14,7 +14,7 @@ module.exports = React.createClass({
     mixins: [PureRenderMixin],
 
     contextTypes: {
-        rootCursor: React.PropTypes.instanceOf(Structure).isRequired
+        rootCursor: React.PropTypes.instanceOf(Prolefeed).isRequired
     },
 
     handleAddTodo(event) {

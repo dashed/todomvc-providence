@@ -9,9 +9,9 @@ require('todomvc-app-css/index.css');
 const
 Router = require('react-router'),
 
-Structure = require('./lib/immstruct').Structure,
+Prolefeed = require('prolefeed'),
 routes = require('./components/routes'),
-structure = require('./store');
+store = require('./store');
 
 function bootstrapRender(mountNode, rootCursor) {
     let Handler;
@@ -22,7 +22,7 @@ function bootstrapRender(mountNode, rootCursor) {
     const WithContext = React.createClass({
 
         childContextTypes: {
-            rootCursor: React.PropTypes.instanceOf(Structure).isRequired
+            rootCursor: React.PropTypes.instanceOf(Prolefeed).isRequired
         },
 
         getChildContext: function() {
@@ -46,4 +46,4 @@ function bootstrapRender(mountNode, rootCursor) {
     return render;
 }
 
-Router.run(routes, bootstrapRender(document.getElementById('todoapp'), structure));
+Router.run(routes, bootstrapRender(document.getElementById('todoapp'), store));

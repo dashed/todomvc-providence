@@ -4,7 +4,7 @@
  */
 
 const orwell = require('lib/orwell');
-const Structure = require('lib/immstruct').Structure;
+const Prolefeed = require('prolefeed');
 
 const List = require('./list');
 
@@ -17,9 +17,9 @@ module.exports = function(filterRecord, watchCursors = DEFAULTWATCH) {
     const Filtered = React.createClass({
 
         propTypes: {
-            rootCursor: React.PropTypes.instanceOf(Structure).isRequired,
-            todosCursor: React.PropTypes.instanceOf(Structure).isRequired,
-            tasksleftCursor: React.PropTypes.instanceOf(Structure).isRequired
+            rootCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
+            todosCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
+            tasksleftCursor: React.PropTypes.instanceOf(Prolefeed).isRequired
         },
 
         render: function () {
