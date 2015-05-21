@@ -56,7 +56,6 @@ function orwell(Component, watchCursors = DO_NOTHING, __assignNewProps = DEFAULT
     }
 
     let __shouldComponentUpdate = __shouldComponentUpdateShallow;
-    let bypassSCU = false;
 
     const OrwellContainer = React.createClass({
 
@@ -68,7 +67,6 @@ function orwell(Component, watchCursors = DO_NOTHING, __assignNewProps = DEFAULT
         // this function is subscribed to all given cursors, and is called whenever
         // any of those cursors change in some way.
         handleCursorChanged() {
-            bypassSCU = true;
             this.setState({
                 currentProps: assign({}, this.props, this.assignNewProps())
             });
@@ -106,13 +104,11 @@ function orwell(Component, watchCursors = DO_NOTHING, __assignNewProps = DEFAULT
         },
 
         shouldComponentUpdate(nextProps, nextState) {
-            return(bypassSCU ? true : __shouldComponentUpdate.call(this, nextProps, nextState));
+            return(__shouldComponentUpdate.call(this, nextProps, nextState));
         },
 
         componentWillReceiveProps(nextProps) {
             if (!shallowEqual(this.props, nextProps, cursorCompare)) {
-                // don't bypass scu since this.assignNewProps() may override all
-                // of this.props
                 this.setState({
                     currentProps: assign({}, this.props, this.assignNewProps())
                 });
@@ -179,7 +175,6 @@ function orwell(Component, watchCursors = DO_NOTHING, __assignNewProps = DEFAULT
         },
 
         render() {
-            bypassSCU = false;
             return(<Component {...this.state.currentProps} />);
         }
     });
