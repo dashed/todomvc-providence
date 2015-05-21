@@ -111,7 +111,8 @@ function orwell(Component, watchCursors = DO_NOTHING, __assignNewProps = DEFAULT
 
         componentWillReceiveProps(nextProps) {
             if (!shallowEqual(this.props, nextProps, cursorCompare)) {
-                // bypassSCU = true;
+                // don't bypass scu since this.assignNewProps() may override all
+                // of this.props
                 this.setState({
                     currentProps: assign({}, this.props, this.assignNewProps())
                 });
