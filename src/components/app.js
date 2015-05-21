@@ -10,7 +10,7 @@ Router = require('react-router'),
 } = Router,
 
 orwell = require('lib/orwell'),
-Prolefeed = require('prolefeed'),
+Probe = require('minitrue').Probe,
 
 Main = require('./main'),
 Header = require('./header'),
@@ -20,12 +20,11 @@ Footer = require('./footer');
 const App = React.createClass({
 
     propTypes: {
-        rootCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
+        rootCursor: React.PropTypes.instanceOf(Probe).isRequired,
         routestate: React.PropTypes.object.isRequired
     },
 
     render: function () {
-
         const tasksleftCursor = this.props.rootCursor.cursor('tasksleft');
         const todosCursor = this.props.rootCursor.cursor('todos');
 
@@ -47,4 +46,4 @@ const App = React.createClass({
     }
 });
 
-module.exports = orwell(App);
+module.exports = App;

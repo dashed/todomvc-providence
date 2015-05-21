@@ -4,15 +4,15 @@
  */
 
 const orwell = require('lib/orwell');
-const Prolefeed = require('prolefeed');
+const Probe = require('minitrue').Probe;
 const Item = require('./item');
 
 const List = React.createClass({
 
     propTypes: {
-        tasksleftCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
-        todosCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
-        editingCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
+        tasksleftCursor: React.PropTypes.instanceOf(Probe).isRequired,
+        todosCursor: React.PropTypes.instanceOf(Probe).isRequired,
+        editingCursor: React.PropTypes.instanceOf(Probe).isRequired,
         filterTodo: React.PropTypes.func.isRequired
     },
 

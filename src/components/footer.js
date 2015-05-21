@@ -10,15 +10,17 @@ Router = require('react-router'),
 } = Router;
 
 const orwell = require('lib/orwell');
-const Prolefeed = require('prolefeed');
+const Probe = require('minitrue').Probe;
+
+const {List} = require('immutable');
 
 const Footer = React.createClass({
 
     propTypes: {
         tasksleft: React.PropTypes.number.isRequired,
         todos: React.PropTypes.instanceOf(Immutable.List).isRequired,
-        todosCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
-        tasksleftCursor: React.PropTypes.instanceOf(Prolefeed).isRequired
+        todosCursor: React.PropTypes.instanceOf(Probe).isRequired,
+        tasksleftCursor: React.PropTypes.instanceOf(Probe).isRequired
     },
 
     clearCompleted() {
@@ -30,6 +32,7 @@ const Footer = React.createClass({
     },
 
     render() {
+        // console.log(this.props.todos instanceof Immutable.List);
         const count = this.props.tasksleft;
 
         if(this.props.todos.size <= 0) {
@@ -67,11 +70,11 @@ function watchCursors({ tasksleftCursor, todosCursor }) {
     return [tasksleftCursor, todosCursor];
 }
 
-function getPropsFromCursors({ tasksleftCursor, todosCursor }) {
+function assignNewProps({ tasksleftCursor, todosCursor }) {
     return {
         tasksleft: tasksleftCursor.deref(),
         todos: todosCursor.deref()
     };
 }
 
-module.exports = orwell(Footer, watchCursors, getPropsFromCursors);
+module.exports = orwell(Footer, watchCursors, assignNewProps);

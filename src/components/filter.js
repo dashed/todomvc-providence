@@ -4,7 +4,7 @@
  */
 
 const orwell = require('lib/orwell');
-const Prolefeed = require('prolefeed');
+const Probe = require('minitrue').Probe;
 
 const List = require('./list');
 
@@ -17,9 +17,9 @@ module.exports = function(filterRecord, watchCursors = DEFAULTWATCH) {
     const Filtered = React.createClass({
 
         propTypes: {
-            rootCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
-            todosCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
-            tasksleftCursor: React.PropTypes.instanceOf(Prolefeed).isRequired
+            rootCursor: React.PropTypes.instanceOf(Probe).isRequired,
+            todosCursor: React.PropTypes.instanceOf(Probe).isRequired,
+            tasksleftCursor: React.PropTypes.instanceOf(Probe).isRequired
         },
 
         render: function () {

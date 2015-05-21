@@ -9,7 +9,7 @@ require('todomvc-app-css/index.css');
 const
 Router = require('react-router'),
 
-Prolefeed = require('prolefeed'),
+Probe = require('minitrue').Probe,
 routes = require('./components/routes'),
 store = require('./store');
 
@@ -22,7 +22,7 @@ function bootstrapRender(mountNode, rootCursor) {
     const WithContext = React.createClass({
 
         childContextTypes: {
-            rootCursor: React.PropTypes.instanceOf(Prolefeed).isRequired
+            rootCursor: React.PropTypes.instanceOf(Probe).isRequired
         },
 
         getChildContext: function() {

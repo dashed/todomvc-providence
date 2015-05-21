@@ -8,7 +8,6 @@ const FilterList = require('./filter');
 module.exports = FilterList(_ => false, watchCursors);
 
 function watchCursors({ todosCursor }, manual) {
-
     manual(function(update) {
 
         const todos = todosCursor;
@@ -17,7 +16,6 @@ function watchCursors({ todosCursor }, manual) {
         return todos.observe(function() {
 
             // only re-render if the todos list has changed in size
-
             let newSize = todos.deref().size;
             if(newSize != prevSize) {
                 prevSize = newSize;

@@ -6,14 +6,14 @@
 const { RouteHandler } = require('react-router');
 
 const orwell = require('lib/orwell');
-const Prolefeed = require('prolefeed');
+const Probe = require('minitrue').Probe;
 
 const Main = React.createClass({
 
     propTypes: {
-        rootCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
-        tasksleftCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
-        todosCursor: React.PropTypes.instanceOf(Prolefeed).isRequired,
+        rootCursor: React.PropTypes.instanceOf(Probe).isRequired,
+        tasksleftCursor: React.PropTypes.instanceOf(Probe).isRequired,
+        todosCursor: React.PropTypes.instanceOf(Probe).isRequired,
         checked: React.PropTypes.bool.isRequired
     },
 
@@ -32,7 +32,6 @@ const Main = React.createClass({
     },
 
     render: function () {
-
         let toggle = null;
         if(this.props.todosCursor.deref().size > 0) {
             toggle = [
@@ -54,10 +53,10 @@ function watchCursors({ tasksleftCursor, todosCursor }) {
     return [tasksleftCursor, todosCursor];
 }
 
-function getPropsFromCursors({ tasksleftCursor, todosCursor }) {
+function assignNewProps({ tasksleftCursor, todosCursor }) {
     return {
         checked: tasksleftCursor.deref() <= 0 && todosCursor.deref().size > 0
     };
 }
 
-module.exports = orwell(Main, watchCursors, getPropsFromCursors);
+module.exports = orwell(Main, watchCursors, assignNewProps);

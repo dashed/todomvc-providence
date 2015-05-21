@@ -10,7 +10,10 @@ module.exports = {
     entry: {
         app: "./src/index.js",
         vendor: [
-            'lodash',
+            'lodash.assign',
+            'lodash.isarray',
+            'lodash.isfunction',
+            'lodash.isplainobject',
             'immutable',
             'react',
             'babel-runtime/regenerator',

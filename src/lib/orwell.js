@@ -36,7 +36,10 @@ const isFunction = require('lodash.isfunction');
 const isArray = require('lodash.isarray');
 const isPlainObject = require('lodash.isplainobject');
 const assign = require('lodash.assign');
+const isEqual = require('lodash.isequal');
+const Probe = require('probe');
 
+const CACHED = {};
 const DO_NOTHING = _ => void 0;
 const DEFAULT_ASSIGN = _ => {};
 
@@ -53,6 +56,7 @@ function orwell(Component, watchCursors = DO_NOTHING, __assignNewProps = DEFAULT
     }
 
     let __shouldComponentUpdate = __shouldComponentUpdateShallow;
+    let bypassSCU = false;
 
     const OrwellContainer = React.createClass({
 
@@ -64,8 +68,8 @@ function orwell(Component, watchCursors = DO_NOTHING, __assignNewProps = DEFAULT
         // this function is subscribed to all given cursors, and is called whenever
         // any of those cursors change in some way.
         handleCursorChanged() {
+            bypassSCU = true;
             this.setState({
-                forceupdate: true,
                 currentProps: assign({}, this.props, this.assignNewProps())
             });
         },
@@ -97,26 +101,21 @@ function orwell(Component, watchCursors = DO_NOTHING, __assignNewProps = DEFAULT
                 // these functions, when called, handle the clean up step in removing
                 // listeners from Probe cursors.
                 unsubs: [],
-                forceupdate: false,
                 currentProps: assign({}, this.props, this.assignNewProps())
             };
         },
 
         shouldComponentUpdate(nextProps, nextState) {
-            return nextState.forceupdate ? true : __shouldComponentUpdate.call(this, nextProps, nextState);
+            return(bypassSCU ? true : __shouldComponentUpdate.call(this, nextProps, nextState));
         },
 
         componentWillReceiveProps(nextProps) {
-            if (!shallowEqual(nextProps, this.props, cursorCompare)) {
+            if (!shallowEqual(this.props, nextProps, cursorCompare)) {
+                // bypassSCU = true;
                 this.setState({
-                    forceupdate: false,
                     currentProps: assign({}, this.props, this.assignNewProps())
                 });
-                return;
             }
-            this.setState({
-                forceupdate: false
-            });
         },
 
         componentWillMount() {
@@ -152,7 +151,7 @@ function orwell(Component, watchCursors = DO_NOTHING, __assignNewProps = DEFAULT
             let cursorsToWatch = watchCursors.call(null, this.props, manual);
 
             // watchCursors may return a single cursor
-            if(cursorsToWatch instanceof Prolefeed) {
+            if(cursorsToWatch instanceof Probe) {
                 cursorsToWatch = [cursorsToWatch];
             }
 
@@ -179,6 +178,7 @@ function orwell(Component, watchCursors = DO_NOTHING, __assignNewProps = DEFAULT
         },
 
         render() {
+            bypassSCU = false;
             return(<Component {...this.state.currentProps} />);
         }
     });
@@ -189,10 +189,15 @@ function orwell(Component, watchCursors = DO_NOTHING, __assignNewProps = DEFAULT
 /* helpers */
 
 function cursorCompare(valueA, valueB) {
-    if(!(valueA instanceof Prolefeed) || !(valueB instanceof Prolefeed)) {
+    if(!(valueA instanceof Probe) || !(valueB instanceof Probe)) {
         return void 0;
     }
-    return(valueA.deref() === valueB.deref());
+
+    if(!isEqual(valueA.keyPath(), valueB.keyPath())) {
+        return false;
+    }
+
+    return(valueA.firstValue() === valueB.deref());
 }
 
 function __shouldComponentUpdateShallow(nextProps, nextState) {
@@ -228,12 +233,12 @@ function shallowEqual(objA, objB, compare) {
     if (!bHasOwnProperty(keysA[i])) {
       return false;
     }
-    const valueA = objA[keysA[i]];
-    const valueB = objA[keysB[i]];
+    const key = keysA[i];
+    const valueA = objA[key];
+    const valueB = objB[key];
 
     const ret = compare ? compare(valueA, valueB) : void 0;
-
-    if(ret === void 0 && valueA !== valueB || ret === false) {
+    if(ret === false || ret === void 0 && valueA !== valueB) {
         return false;
     }
   }
