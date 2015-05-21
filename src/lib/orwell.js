@@ -1,109 +1,144 @@
 /**
- * lib/orwell.js
+ * orwell is a higher-order component that can listen to cursors for changes,
+ * and update the component whenever any cursor emit a change.
  *
- * Higher-order component to observe given cursors, and will re-render when those cursors
- * change in some way.
+ * orwell(Component, watchCursors, assignNewProps)
  *
- * This is an alternative approach to top-down rendering.
+ * A component may receive Probe cursors as props, and it's sometimes useful to intercept
+ * those cursors and subscribe to them such that whenever they change, the component would
+ * re-render.
  *
- * The given Component may have two optional static methods which will override
- * the functions given to orwell:
- * - watchCursors(props, manual): May return an array of cursors that can be generally observed,
- *                                and will update Component when those cursors change in any way.
- *                                May instead return a cursor, which is a shorthand for an array of
- *                                a single cursor.
- *                                A second parameter, manual, is given to do any manual observation
- *                                allowing any necessary validation/filter step.
- * - getStateFromCursors(props):  Should return 'reduced' state which will be merged to props
- *                                that will be fed into Component. Ideally this should be
- *                                constructed using cursors.
+ * orwell takes the following parameters:
+ * - Component: the component that depend on cursors which usually are recevied as props
+ *              or somewhere else
  *
- * Inspiration:
- * https://medium.com/@dan_abramov/mixins-are-dead-long-live-higher-order-components-94a0d2f9e750
- * https://github.com/goatslacker/alt/blob/master/src/utils/connectToStores.js
+ * - watchCursors: a function that receives two parameters: props and manual
+ *                 watchCursors may return an array of Probe cursors indicating
+ *                 that the Component depends on them.
+ *                 watchCursors may return a single Probe cursor, which is sugar
+ *                 to an array containing that cursor.
+ *                 Any other return value is ignored.
+ *                 manual is a function that takes a function, say subscriber, with input update.
+ *                 In the body of subscriber, the user can manually subscribe to a Probe cursor,
+ *                 and call update to induce a re-render of the Component. This allows the user
+ *                 to call update conditionally (e.g. validation step).
+ *
+ * - assignNewProps: a function to generate props that will be merged to props that orwell
+ *                   receives.
+ *                   this function will be called whenever:
+ *                   1. subscribed Probe cursor has changed, or
+ *                   2. orwell wrapped Component will receive new props
+ *
  */
 
-const _ = require('lodash');
 const React = require('react');
-const Immutable = require('immutable');
-const { isFunction, isArray } = _;
+const isFunction = require('lodash.isfunction');
+const isArray = require('lodash.isarray');
+const isPlainObject = require('lodash.isplainobject');
+const assign = require('lodash.assign');
 
-const Prolefeed = require('prolefeed');
+const DO_NOTHING = _ => void 0;
+const DEFAULT_ASSIGN = _ => {};
 
 module.exports = orwell;
 
-const base = Immutable.fromJS({});
-
-const DO_NOTHING = _ => void 0;
-const DEFAULT_STATE = _ => {};
-
-function orwell(Component, watchCursors = DO_NOTHING, __getStateFromCursors = DEFAULT_STATE) {
+function orwell(Component, watchCursors = DO_NOTHING, __assignNewProps = DEFAULT_ASSIGN) {
 
     // Check for optional static methods.
     if (isFunction(Component.watchCursors)) {
         watchCursors = Component.watchCursors;
     }
-    if (isFunction(Component.getPropsFromStores)) {
-        __getStateFromCursors = Component.getStateFromCursors;
+    if (isFunction(Component.assignNewProps)) {
+        __assignNewProps = Component.assignNewProps;
     }
 
     let __shouldComponentUpdate = __shouldComponentUpdateShallow;
-    let __onChange = DO_NOTHING;
 
-    const CursorConnection = React.createClass({
+    const OrwellContainer = React.createClass({
 
-        'statics': {
-            shouldComponentUpdate: function(checktype) {
-                __shouldComponentUpdate = checktype == 'shallow' ? __shouldComponentUpdateShallow :
-                                          checktype == 'deep' ? __shouldComponentUpdateDeep :
-                                          checktype;
-                return CursorConnection;
-            },
-            shallow: function() {
-                __shouldComponentUpdate = __shouldComponentUpdateShallow;
-                return CursorConnection;
-            },
-            deep: function() {
-                __shouldComponentUpdate = __shouldComponentUpdateDeep;
-                return CursorConnection;
-            },
-            onChange: function(fn) {
-                __onChange = fn;
-                return CursorConnection;
-            }
+        assignNewProps() {
+            const ret = __assignNewProps.call(null, this.props);
+            return isPlainObject(ret) ? ret : {};
         },
 
-        shouldComponentUpdate: function(nextProps, nextState) {
-            return __shouldComponentUpdate.call(this, nextProps, nextState);
-        },
-
-        getStateFromCursors(props, prevProps) {
-            return __getStateFromCursors.call(null, props, prevProps);
-        },
-
+        // this function is subscribed to all given cursors, and is called whenever
+        // any of those cursors change in some way.
         handleCursorChanged() {
-            const newState = this.getStateFromCursors(this.props, this.state.data);
-            // TODO: ensure newState is plain object
             this.setState({
-                data: _.assign({}, this.state.data, newState)
+                forceupdate: true,
+                currentProps: assign({}, this.props, this.assignNewProps())
             });
-            __onChange.call(this, this.props);
         },
 
         /* React API */
 
+        displayName: `${Component.displayName}.OrwellContainer`,
+
+        statics: {
+            shouldComponentUpdate: function(scu) {
+                __shouldComponentUpdate = scu == 'shallow' ? __shouldComponentUpdateShallow :
+                                          scu == 'deep' ? __shouldComponentUpdateDeep :
+                                          scu;
+                return OrwellContainer;
+            },
+            shallow: function() {
+                __shouldComponentUpdate = __shouldComponentUpdateShallow;
+                return OrwellContainer;
+            },
+            deep: function() {
+                __shouldComponentUpdate = __shouldComponentUpdateDeep;
+                return OrwellContainer;
+            }
+        },
+
         getInitialState() {
-            const newState = this.getStateFromCursors(this.props, {});
-            // TODO: ensure newState is plain object
             return {
-                meta: base,
-                data: _.assign({}, newState)
+                // array of functions to be called when OrwellContainer unmounts.
+                // these functions, when called, handle the clean up step in removing
+                // listeners from Probe cursors.
+                unsubs: [],
+                forceupdate: false,
+                currentProps: assign({}, this.props, this.assignNewProps())
             };
+        },
+
+        shouldComponentUpdate(nextProps, nextState) {
+            return nextState.forceupdate ? true : __shouldComponentUpdate.call(this, nextProps, nextState);
+        },
+
+        componentWillReceiveProps(nextProps) {
+            if (!shallowEqual(nextProps, this.props, cursorCompare)) {
+                this.setState({
+                    forceupdate: false,
+                    currentProps: assign({}, this.props, this.assignNewProps())
+                });
+                return;
+            }
+            this.setState({
+                forceupdate: false
+            });
         },
 
         componentWillMount() {
             let unsubs = [];
 
+            /**
+             * usage:
+             *
+             * manual(function(update) {
+             *
+             *   const unsubscribe = cursor.on(event, function() {
+             *     // ...
+             *     update();
+             *   });
+             *   return unsubscribe;
+             * });
+             *
+             * user call manual function with a function that take in an update function.
+             * The provided function will allow a custom validation step whenever some
+             * cursor has changed. If this validation passes, user would call the update
+             * function to induce a re-render.
+             */
             const manual = (fn) => {
                 const cleanup = fn.call(null, this.handleCursorChanged);
                 if(cleanup && isFunction(cleanup)) {
@@ -111,8 +146,12 @@ function orwell(Component, watchCursors = DO_NOTHING, __getStateFromCursors = DE
                 }
             }
 
-            let cursorsToWatch = watchCursors(this.props, manual);
+            // watchCursors may return either a single cursor or an array of cursors.
+            // These cursors are designated to be observed, and when an event change
+            // has occured at these cursors, this component shall update.
+            let cursorsToWatch = watchCursors.call(null, this.props, manual);
 
+            // watchCursors may return a single cursor
             if(cursorsToWatch instanceof Prolefeed) {
                 cursorsToWatch = [cursorsToWatch];
             }
@@ -126,49 +165,38 @@ function orwell(Component, watchCursors = DO_NOTHING, __getStateFromCursors = DE
                 }
             }
 
+            // NOTE: `render()` will see the updated state and will be executed
+            // only once despite the state change.
             this.setState({
-                meta: this.state.meta.set('unsubs', unsubs)
+                unsubs: unsubs
             });
         },
 
         componentWillUnmount() {
-            for(const unsub of this.state.meta.get('unsubs')) {
-                unsub();
-            }
-        },
-
-        componentWillReceiveProps(nextProps) {
-            if (!shallowEqual(nextProps, this.props)) {
-                const newState = this.getStateFromCursors(this.props, this.state.data);
-                // TODO: ensure newState is plain object
-                this.setState({
-                    data: _.assign({}, this.state.data, newState)
-                });
+            for(const unsub of this.state.unsubs) {
+                unsub.call(null);
             }
         },
 
         render() {
-            return(<Component {...this.props} {...this.state.data} />);
+            return(<Component {...this.state.currentProps} />);
         }
     });
 
-    return CursorConnection;
+    return OrwellContainer;
 }
 
 /* helpers */
 
 function cursorCompare(valueA, valueB) {
     if(!(valueA instanceof Prolefeed) || !(valueB instanceof Prolefeed)) {
-        return false;
+        return void 0;
     }
     return(valueA.deref() === valueB.deref());
 }
 
 function __shouldComponentUpdateShallow(nextProps, nextState) {
-    if(!shallowEqual(this.state, nextState, cursorCompare)) {
-        return true;
-    }
-    return(!shallowEqual(this.props, nextProps, cursorCompare));
+    return(!shallowEqual(this.state.currentProps, nextState.currentProps, cursorCompare));
 }
 
 function __shouldComponentUpdateDeep(nextProps, nextState) {
@@ -202,10 +230,10 @@ function shallowEqual(objA, objB, compare) {
     }
     const valueA = objA[keysA[i]];
     const valueB = objA[keysB[i]];
-    if(compare && !compare(valueA, valueB)) {
-        return false;
-    }
-    if(!compare && valueA !== valueB) {
+
+    const ret = compare ? compare(valueA, valueB) : void 0;
+
+    if(ret === void 0 && valueA !== valueB || ret === false) {
         return false;
     }
   }
