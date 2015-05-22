@@ -190,7 +190,7 @@ function cursorCompare(valueA, valueB) {
         return void 0;
     }
 
-    if(!isEqual(valueA.keyPath(), valueB.keyPath())) {
+    if(!isEqual(valueA.keyPath(), valueB.keyPath(), cursorCompare)) {
         return false;
     }
 
@@ -202,7 +202,7 @@ function __shouldComponentUpdateShallow(nextProps, nextState) {
 }
 
 function __shouldComponentUpdateDeep(nextProps, nextState) {
-    // TODO: implement
+    return(!isEqual(this.state.currentProps, nextState.currentProps, cursorCompare));
 }
 
 // TODO: refactor this to somewhere else; maybe ./utils
