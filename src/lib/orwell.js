@@ -29,6 +29,7 @@
  *                   1. subscribed Probe cursor has changed, or
  *                   2. orwell wrapped Component will receive new props
  *
+ * Inspired by `connectToStores` function: https://medium.com/@dan_abramov/mixins-are-dead-long-live-higher-order-components-94a0d2f9e750
  */
 
 const React = require('react');
