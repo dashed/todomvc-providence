@@ -91,6 +91,10 @@ const Item = React.createClass({
 
         const newTask = this.state.editText.trim();
         if(newTask.length <= 0) {
+            this.props.editingCursor.update((cleanup) => {
+                cleanup();
+                return null;
+            });
             return this.handleDestroy();
         }
 
@@ -114,11 +118,13 @@ const Item = React.createClass({
         }
 
         if (event.which === ESCAPE_KEY) {
+            // cancel edit
             this.props.editingCursor.update((cleanup) => {
                 cleanup();
                 return null;
             });
         } else if (event.which === ENTER_KEY) {
+            // save edit
             const node = this.refs.editField.getDOMNode();
             node.blur();
         }
