@@ -9,7 +9,7 @@ Router = require('react-router'),
     RouteHandler
 } = Router,
 
-orwell = require('lib/orwell'),
+orwell = require('orwell'),
 Probe = require('minitrue').Probe,
 
 Main = require('./main'),

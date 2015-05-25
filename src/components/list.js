@@ -3,7 +3,7 @@
  *
  */
 
-const orwell = require('lib/orwell');
+const orwell = require('orwell');
 const Probe = require('minitrue').Probe;
 const Item = require('./item');
 
@@ -46,8 +46,7 @@ const List = React.createClass({
                 />
             );
         });
-        console.log('----');
-        console.log('list render');
+
         return(
             <ul className="todo-list">
                 {todoItems}

@@ -5,7 +5,7 @@
 
 const { RouteHandler } = require('react-router');
 
-const orwell = require('lib/orwell');
+const orwell = require('orwell');
 const Probe = require('minitrue').Probe;
 
 const Main = React.createClass({

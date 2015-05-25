@@ -5,7 +5,7 @@
 
 const classNames = require('classnames');
 
-const orwell = require('lib/orwell');
+const orwell = require('orwell');
 const Probe = require('minitrue').Probe;
 
 const ESCAPE_KEY = 27;
@@ -122,7 +122,7 @@ const Item = React.createClass({
         const record = this.props.record;
         const completed = record.get('completed');
         const task = record.get('task');
-        console.log('item render');
+
         return(
             <li className={classNames({
                 completed: completed,

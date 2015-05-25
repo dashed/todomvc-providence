@@ -3,7 +3,7 @@
  *
  */
 
-const orwell = require('lib/orwell');
+const orwell = require('orwell');
 const Probe = require('minitrue').Probe;
 
 const List = require('./list');

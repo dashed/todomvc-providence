@@ -7,12 +7,8 @@
   "dependencies": {
     "classnames": "^2.1.1",
     "immutable": "^3.7.3",
-    "lodash.assign": "^3.2.0",
-    "lodash.isarray": "^3.0.3",
-    "lodash.isequal": "^3.0.4",
-    "lodash.isfunction": "^3.0.5",
-    "lodash.isplainobject": "^3.1.0",
     "minitrue": "^0.6.0",
+    "orwell": "^0.1.1",
     "react": "^0.13.3",
     "react-router": "^0.13.3",
     "todomvc-app-css": "^2.0.1",
@@ -23,9 +19,9 @@
     "babel-core": "*",
     "babel-loader": "*",
     "babel-runtime": "*",
-    "chai": "^2.3.0",
+    "chai": "*",
     "css-loader": "*",
-    "mocha": "^2.2.5",
+    "mocha": "*",
     "style-loader": "*",
     "webpack": "*"
   }
