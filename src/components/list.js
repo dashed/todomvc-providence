@@ -10,7 +10,6 @@ const Item = require('./item');
 const List = React.createClass({
 
     propTypes: {
-        tasksleftCursor: React.PropTypes.instanceOf(Probe).isRequired,
         todosCursor: React.PropTypes.instanceOf(Probe).isRequired,
         editingCursor: React.PropTypes.instanceOf(Probe).isRequired,
         filterTodo: React.PropTypes.func.isRequired
@@ -39,16 +38,16 @@ const List = React.createClass({
             if(filterTodo(record)) {
                 return;
             }
-
             todoItems.push(
                 <Item
                     recordCursor={todosCursor.cursor(key)}
                     editingCursor={editingCursor}
-                    tasksleftCursor={tasksleftCursor}
-                    key={record.get('key') + '.' + key}
+                    key={record.get('id') + '.' + key}
                 />
             );
         });
+        console.log('----');
+        console.log('list render');
         return(
             <ul className="todo-list">
                 {todoItems}

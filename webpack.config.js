@@ -17,7 +17,10 @@ module.exports = {
             'immutable',
             'react',
             'babel-runtime/regenerator',
-            'babel-runtime/core-js'
+            'babel-runtime/core-js',
+            'minitrue',
+            'react-router',
+            'classnames'
         ]
     },
 

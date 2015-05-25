@@ -19,7 +19,6 @@ module.exports = function(filterRecord, watchCursors = DEFAULTWATCH) {
         propTypes: {
             rootCursor: React.PropTypes.instanceOf(Probe).isRequired,
             todosCursor: React.PropTypes.instanceOf(Probe).isRequired,
-            tasksleftCursor: React.PropTypes.instanceOf(Probe).isRequired
         },
 
         render: function () {

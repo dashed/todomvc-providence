@@ -22,7 +22,6 @@ const Item = React.createClass({
 
     propTypes: {
         recordCursor: React.PropTypes.instanceOf(Probe).isRequired,
-        tasksleftCursor: React.PropTypes.instanceOf(Probe).isRequired,
         record: React.PropTypes.instanceOf(Immutable.Record).isRequired
     },
 
@@ -46,20 +45,9 @@ const Item = React.createClass({
             return record.set('completed', newCompletedVal);
         });
 
-        this.props.tasksleftCursor.update(function(x) {
-            return x + (newCompletedVal ? (-1) : 1);
-        });
     },
 
     handleDestroy() {
-        const completed = this.props.recordCursor.deref().get('completed');
-
-        if(!completed) {
-            this.props.tasksleftCursor.update(function(x) {
-                return x - 1;
-            });
-        }
-
         this.props.recordCursor.delete();
     },
 
@@ -134,7 +122,7 @@ const Item = React.createClass({
         const record = this.props.record;
         const completed = record.get('completed');
         const task = record.get('task');
-
+        console.log('item render');
         return(
             <li className={classNames({
                 completed: completed,
@@ -159,7 +147,7 @@ const Item = React.createClass({
 
 });
 
-function watchCursors({recordCursor }, manual) {
+function watchCursors({recordCursor }) {
     return [recordCursor];
 }
 

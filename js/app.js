@@ -1,5 +1,6 @@
-webpackJsonp([1],[
-/* 0 */
+webpackJsonp([1],{
+
+/***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(React) {/**
@@ -10,12 +11,12 @@ webpackJsonp([1],[
 	// todomvc assets
 	'use strict';
 	
-	__webpack_require__(51);
+	__webpack_require__(83);
 	
-	var Router = __webpack_require__(20),
-	    Probe = __webpack_require__(19).Probe,
-	    routes = __webpack_require__(14),
-	    store = __webpack_require__(15);
+	var Router = __webpack_require__(11),
+	    Probe = __webpack_require__(10).Probe,
+	    routes = __webpack_require__(36),
+	    store = __webpack_require__(37);
 	
 	function bootstrapRender(mountNode, rootCursor) {
 	    var Handler = undefined;
@@ -51,23 +52,11 @@ webpackJsonp([1],[
 	}
 	
 	Router.run(routes, bootstrapRender(document.getElementById('todoapp'), store));
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ },
-/* 1 */,
-/* 2 */,
-/* 3 */,
-/* 4 */,
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */,
-/* 11 */,
-/* 12 */,
-/* 13 */,
-/* 14 */
+
+/***/ 36:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(React) {/**
@@ -78,15 +67,15 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var Router = __webpack_require__(20);var Route = Router.Route;
+	var Router = __webpack_require__(11);var Route = Router.Route;
 	
 	var DefaultRoute = Router.DefaultRoute;
 	
 	/* components */
-	var App = __webpack_require__(47);
-	var All = __webpack_require__(48);
-	var Active = __webpack_require__(49);
-	var Completed = __webpack_require__(50);
+	var App = __webpack_require__(85);
+	var All = __webpack_require__(86);
+	var Active = __webpack_require__(87);
+	var Completed = __webpack_require__(88);
 	
 	module.exports = React.createElement(
 	    Route,
@@ -95,10 +84,11 @@ webpackJsonp([1],[
 	    React.createElement(Route, { name: 'active', handler: Active }),
 	    React.createElement(Route, { name: 'completed', handler: Completed })
 	);
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ },
-/* 15 */
+
+/***/ 37:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -108,128 +98,87 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var minitrue = __webpack_require__(19);
+	var NOT_SET = {};
 	
-	module.exports = minitrue({
-	  todos: [],
-	  editing: null,
-	  tasksleft: 0
+	var minitrue = __webpack_require__(10);
+	
+	var store = minitrue({
+	    todos: [],
+	    editing: null,
+	    tasksleft: 0
 	});
-
-/***/ },
-/* 16 */,
-/* 17 */,
-/* 18 */,
-/* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
 	
-	var Immutable = __webpack_require__(8);
-	var Iterable = Immutable.Iterable;
+	var tasksleftCursor = store.cursor('tasksleft');
 	
-	var Probe = __webpack_require__(170);
+	store.cursor('todos').on('update', function (newTodo, oldTodo, pathToChange) {
 	
-	// this is amalgamated to become the input options of a newly instantiated
-	// Probe object
-	var base = Immutable.fromJS({
-	    root: {
-	        unbox: function unbox(m) {
-	            return m.map;
-	        },
-	        box: function box(newRoot, m) {
-	            m.map = newRoot;
-	            return m;
+	    if (!Array.isArray(pathToChange)) {
+	        return;
+	    }
+	
+	    var oldRecord = oldTodo.getIn(pathToChange);
+	
+	    // case: deleted
+	    if (newTodo.size < oldTodo.size) {
+	        if (!oldRecord.get('completed')) {
+	            tasksleftCursor.update(function (x) {
+	                return x - 1;
+	            });
 	        }
+	        return;
 	    }
+	
+	    var record = newTodo.getIn(pathToChange);
+	
+	    if (record.get('completed') === oldRecord.get('completed')) {
+	        return;
+	    }
+	
+	    return tasksleftCursor.update(function (x) {
+	        return x + (record.get('completed') ? -1 : 1);
+	    });
 	});
 	
-	/**
-	 * Creates a Probe object with `data` as its unboxed root data.
-	 * If `data` is not an Immutable collection, it'll be converted into one via
-	 * Immutable.fromJS(data).
-	 *
-	 * @param  {Object | Immutable.Iterable } data
-	 * @return {Probe}
-	 */
-	module.exports = function minitrue() {
-	    var data = arguments[0] === undefined ? {} : arguments[0];
-	
-	    if (!Iterable.isIterable(data)) {
-	        data = Immutable.fromJS(data);
-	    }
-	
-	    return new Probe(base.setIn(['root', 'data'], {
-	        map: data
-	    }));
-	};
-	
-	module.exports.Probe = Probe;
+	module.exports = store;
 
 /***/ },
-/* 20 */
+
+/***/ 83:
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
-	exports.DefaultRoute = __webpack_require__(60);
-	exports.Link = __webpack_require__(61);
-	exports.NotFoundRoute = __webpack_require__(63);
-	exports.Redirect = __webpack_require__(62);
-	exports.Route = __webpack_require__(67);
-	exports.ActiveHandler = __webpack_require__(68);
-	exports.RouteHandler = exports.ActiveHandler;
-	
-	exports.HashLocation = __webpack_require__(66);
-	exports.HistoryLocation = __webpack_require__(73);
-	exports.RefreshLocation = __webpack_require__(71);
-	exports.StaticLocation = __webpack_require__(72);
-	exports.TestLocation = __webpack_require__(69);
-	
-	exports.ImitateBrowserBehavior = __webpack_require__(70);
-	exports.ScrollToTopBehavior = __webpack_require__(81);
-	
-	exports.History = __webpack_require__(80);
-	exports.Navigation = __webpack_require__(79);
-	exports.State = __webpack_require__(74);
-	
-	exports.createRoute = __webpack_require__(75).createRoute;
-	exports.createDefaultRoute = __webpack_require__(75).createDefaultRoute;
-	exports.createNotFoundRoute = __webpack_require__(75).createNotFoundRoute;
-	exports.createRedirect = __webpack_require__(75).createRedirect;
-	exports.createRoutesFromReactChildren = __webpack_require__(76);
-	
-	exports.create = __webpack_require__(77);
-	exports.run = __webpack_require__(78);
+	// load the styles
+	var content = __webpack_require__(84);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(109)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../css-loader/index.js!./index.css", function() {
+				var newContent = require("!!./../css-loader/index.js!./index.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
 
 /***/ },
-/* 21 */,
-/* 22 */,
-/* 23 */,
-/* 24 */,
-/* 25 */,
-/* 26 */,
-/* 27 */,
-/* 28 */,
-/* 29 */,
-/* 30 */,
-/* 31 */,
-/* 32 */,
-/* 33 */,
-/* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */,
-/* 41 */,
-/* 42 */,
-/* 43 */,
-/* 44 */,
-/* 45 */,
-/* 46 */,
-/* 47 */
+
+/***/ 84:
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(177)();
+	exports.push([module.id, "html,\nbody {\n\tmargin: 0;\n\tpadding: 0;\n}\n\nbutton {\n\tmargin: 0;\n\tpadding: 0;\n\tborder: 0;\n\tbackground: none;\n\tfont-size: 100%;\n\tvertical-align: baseline;\n\tfont-family: inherit;\n\tfont-weight: inherit;\n\tcolor: inherit;\n\t-webkit-appearance: none;\n\tappearance: none;\n\t-webkit-font-smoothing: antialiased;\n\t-moz-font-smoothing: antialiased;\n\tfont-smoothing: antialiased;\n}\n\nbody {\n\tfont: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;\n\tline-height: 1.4em;\n\tbackground: #f5f5f5;\n\tcolor: #4d4d4d;\n\tmin-width: 230px;\n\tmax-width: 550px;\n\tmargin: 0 auto;\n\t-webkit-font-smoothing: antialiased;\n\t-moz-font-smoothing: antialiased;\n\tfont-smoothing: antialiased;\n\tfont-weight: 300;\n}\n\nbutton,\ninput[type=\"checkbox\"] {\n\toutline: none;\n}\n\n.hidden {\n\tdisplay: none;\n}\n\n.todoapp {\n\tbackground: #fff;\n\tmargin: 130px 0 40px 0;\n\tposition: relative;\n\tbox-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2),\n\t            0 25px 50px 0 rgba(0, 0, 0, 0.1);\n}\n\n.todoapp input::-webkit-input-placeholder {\n\tfont-style: italic;\n\tfont-weight: 300;\n\tcolor: #e6e6e6;\n}\n\n.todoapp input::-moz-placeholder {\n\tfont-style: italic;\n\tfont-weight: 300;\n\tcolor: #e6e6e6;\n}\n\n.todoapp input::input-placeholder {\n\tfont-style: italic;\n\tfont-weight: 300;\n\tcolor: #e6e6e6;\n}\n\n.todoapp h1 {\n\tposition: absolute;\n\ttop: -155px;\n\twidth: 100%;\n\tfont-size: 100px;\n\tfont-weight: 100;\n\ttext-align: center;\n\tcolor: rgba(175, 47, 47, 0.15);\n\t-webkit-text-rendering: optimizeLegibility;\n\t-moz-text-rendering: optimizeLegibility;\n\ttext-rendering: optimizeLegibility;\n}\n\n.new-todo,\n.edit {\n\tposition: relative;\n\tmargin: 0;\n\twidth: 100%;\n\tfont-size: 24px;\n\tfont-family: inherit;\n\tfont-weight: inherit;\n\tline-height: 1.4em;\n\tborder: 0;\n\toutline: none;\n\tcolor: inherit;\n\tpadding: 6px;\n\tborder: 1px solid #999;\n\tbox-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);\n\tbox-sizing: border-box;\n\t-webkit-font-smoothing: antialiased;\n\t-moz-font-smoothing: antialiased;\n\tfont-smoothing: antialiased;\n}\n\n.new-todo {\n\tpadding: 16px 16px 16px 60px;\n\tborder: none;\n\tbackground: rgba(0, 0, 0, 0.003);\n\tbox-shadow: inset 0 -2px 1px rgba(0,0,0,0.03);\n}\n\n.main {\n\tposition: relative;\n\tz-index: 2;\n\tborder-top: 1px solid #e6e6e6;\n}\n\nlabel[for='toggle-all'] {\n\tdisplay: none;\n}\n\n.toggle-all {\n\tposition: absolute;\n\ttop: -55px;\n\tleft: -12px;\n\twidth: 60px;\n\theight: 34px;\n\ttext-align: center;\n\tborder: none; /* Mobile Safari */\n}\n\n.toggle-all:before {\n\tcontent: '❯';\n\tfont-size: 22px;\n\tcolor: #e6e6e6;\n\tpadding: 10px 27px 10px 27px;\n}\n\n.toggle-all:checked:before {\n\tcolor: #737373;\n}\n\n.todo-list {\n\tmargin: 0;\n\tpadding: 0;\n\tlist-style: none;\n}\n\n.todo-list li {\n\tposition: relative;\n\tfont-size: 24px;\n\tborder-bottom: 1px solid #ededed;\n}\n\n.todo-list li:last-child {\n\tborder-bottom: none;\n}\n\n.todo-list li.editing {\n\tborder-bottom: none;\n\tpadding: 0;\n}\n\n.todo-list li.editing .edit {\n\tdisplay: block;\n\twidth: 506px;\n\tpadding: 13px 17px 12px 17px;\n\tmargin: 0 0 0 43px;\n}\n\n.todo-list li.editing .view {\n\tdisplay: none;\n}\n\n.todo-list li .toggle {\n\ttext-align: center;\n\twidth: 40px;\n\t/* auto, since non-WebKit browsers doesn't support input styling */\n\theight: auto;\n\tposition: absolute;\n\ttop: 0;\n\tbottom: 0;\n\tmargin: auto 0;\n\tborder: none; /* Mobile Safari */\n\t-webkit-appearance: none;\n\tappearance: none;\n}\n\n.todo-list li .toggle:after {\n\tcontent: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"-10 -18 100 135\"><circle cx=\"50\" cy=\"50\" r=\"50\" fill=\"none\" stroke=\"#ededed\" stroke-width=\"3\"/></svg>');\n}\n\n.todo-list li .toggle:checked:after {\n\tcontent: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"-10 -18 100 135\"><circle cx=\"50\" cy=\"50\" r=\"50\" fill=\"none\" stroke=\"#bddad5\" stroke-width=\"3\"/><path fill=\"#5dc2af\" d=\"M72 25L42 71 27 56l-4 4 20 20 34-52z\"/></svg>');\n}\n\n.todo-list li label {\n\twhite-space: pre;\n\tword-break: break-word;\n\tpadding: 15px 60px 15px 15px;\n\tmargin-left: 45px;\n\tdisplay: block;\n\tline-height: 1.2;\n\ttransition: color 0.4s;\n}\n\n.todo-list li.completed label {\n\tcolor: #d9d9d9;\n\ttext-decoration: line-through;\n}\n\n.todo-list li .destroy {\n\tdisplay: none;\n\tposition: absolute;\n\ttop: 0;\n\tright: 10px;\n\tbottom: 0;\n\twidth: 40px;\n\theight: 40px;\n\tmargin: auto 0;\n\tfont-size: 30px;\n\tcolor: #cc9a9a;\n\tmargin-bottom: 11px;\n\ttransition: color 0.2s ease-out;\n}\n\n.todo-list li .destroy:hover {\n\tcolor: #af5b5e;\n}\n\n.todo-list li .destroy:after {\n\tcontent: '×';\n}\n\n.todo-list li:hover .destroy {\n\tdisplay: block;\n}\n\n.todo-list li .edit {\n\tdisplay: none;\n}\n\n.todo-list li.editing:last-child {\n\tmargin-bottom: -1px;\n}\n\n.footer {\n\tcolor: #777;\n\tpadding: 10px 15px;\n\theight: 20px;\n\ttext-align: center;\n\tborder-top: 1px solid #e6e6e6;\n}\n\n.footer:before {\n\tcontent: '';\n\tposition: absolute;\n\tright: 0;\n\tbottom: 0;\n\tleft: 0;\n\theight: 50px;\n\toverflow: hidden;\n\tbox-shadow: 0 1px 1px rgba(0, 0, 0, 0.2),\n\t            0 8px 0 -3px #f6f6f6,\n\t            0 9px 1px -3px rgba(0, 0, 0, 0.2),\n\t            0 16px 0 -6px #f6f6f6,\n\t            0 17px 2px -6px rgba(0, 0, 0, 0.2);\n}\n\n.todo-count {\n\tfloat: left;\n\ttext-align: left;\n}\n\n.todo-count strong {\n\tfont-weight: 300;\n}\n\n.filters {\n\tmargin: 0;\n\tpadding: 0;\n\tlist-style: none;\n\tposition: absolute;\n\tright: 0;\n\tleft: 0;\n}\n\n.filters li {\n\tdisplay: inline;\n}\n\n.filters li a {\n\tcolor: inherit;\n\tmargin: 3px;\n\tpadding: 3px 7px;\n\ttext-decoration: none;\n\tborder: 1px solid transparent;\n\tborder-radius: 3px;\n}\n\n.filters li a.selected,\n.filters li a:hover {\n\tborder-color: rgba(175, 47, 47, 0.1);\n}\n\n.filters li a.selected {\n\tborder-color: rgba(175, 47, 47, 0.2);\n}\n\n.clear-completed,\nhtml .clear-completed:active {\n\tfloat: right;\n\tposition: relative;\n\tline-height: 20px;\n\ttext-decoration: none;\n\tcursor: pointer;\n\tposition: relative;\n}\n\n.clear-completed:hover {\n\ttext-decoration: underline;\n}\n\n.info {\n\tmargin: 65px auto 0;\n\tcolor: #bfbfbf;\n\tfont-size: 10px;\n\ttext-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);\n\ttext-align: center;\n}\n\n.info p {\n\tline-height: 1;\n}\n\n.info a {\n\tcolor: inherit;\n\ttext-decoration: none;\n\tfont-weight: 400;\n}\n\n.info a:hover {\n\ttext-decoration: underline;\n}\n\n/*\n\tHack to remove background from Mobile Safari.\n\tCan't use it globally since it destroys checkboxes in Firefox\n*/\n@media screen and (-webkit-min-device-pixel-ratio:0) {\n\t.toggle-all,\n\t.todo-list li .toggle {\n\t\tbackground: none;\n\t}\n\n\t.todo-list li .toggle {\n\t\theight: 40px;\n\t}\n\n\t.toggle-all {\n\t\t-webkit-transform: rotate(90deg);\n\t\ttransform: rotate(90deg);\n\t\t-webkit-appearance: none;\n\t\tappearance: none;\n\t}\n}\n\n@media (max-width: 430px) {\n\t.footer {\n\t\theight: 50px;\n\t}\n\n\t.filters {\n\t\tbottom: 10px;\n\t}\n}\n", ""]);
+
+/***/ },
+
+/***/ 85:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(React) {/**
@@ -239,17 +188,17 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var _extends = __webpack_require__(164)['default'];
+	var _extends = __webpack_require__(178)['default'];
 	
-	var Router = __webpack_require__(20);
+	var Router = __webpack_require__(11);
 	var RouteHandler = Router.RouteHandler;
 	
-	var orwell = __webpack_require__(169);
-	var Probe = __webpack_require__(19).Probe;
+	var orwell = __webpack_require__(185);
+	var Probe = __webpack_require__(10).Probe;
 	
-	var Main = __webpack_require__(163);
-	var Header = __webpack_require__(165);
-	var Footer = __webpack_require__(166);
+	var Main = __webpack_require__(179);
+	var Header = __webpack_require__(180);
+	var Footer = __webpack_require__(181);
 	
 	var App = React.createClass({
 	    displayName: 'App',
@@ -281,10 +230,11 @@ webpackJsonp([1],[
 	});
 	
 	module.exports = App;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ },
-/* 48 */
+
+/***/ 86:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -294,7 +244,7 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var FilterList = __webpack_require__(167);
+	var FilterList = __webpack_require__(182);
 	
 	module.exports = FilterList(function (_) {
 	    return false;
@@ -321,7 +271,8 @@ webpackJsonp([1],[
 	}
 
 /***/ },
-/* 49 */
+
+/***/ 87:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -331,14 +282,15 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var FilterList = __webpack_require__(167);
+	var FilterList = __webpack_require__(182);
 	
 	module.exports = FilterList(function (record) {
 	  return record.get('completed');
 	});
 
 /***/ },
-/* 50 */
+
+/***/ 88:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -348,50 +300,15 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var FilterList = __webpack_require__(167);
+	var FilterList = __webpack_require__(182);
 	
 	module.exports = FilterList(function (record) {
 	  return !record.get('completed');
 	});
 
 /***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
 
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(52);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(56)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../css-loader/index.js!./index.css", function() {
-				var newContent = require("!!./../css-loader/index.js!./index.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(168)();
-	exports.push([module.id, "html,\nbody {\n\tmargin: 0;\n\tpadding: 0;\n}\n\nbutton {\n\tmargin: 0;\n\tpadding: 0;\n\tborder: 0;\n\tbackground: none;\n\tfont-size: 100%;\n\tvertical-align: baseline;\n\tfont-family: inherit;\n\tfont-weight: inherit;\n\tcolor: inherit;\n\t-webkit-appearance: none;\n\tappearance: none;\n\t-webkit-font-smoothing: antialiased;\n\t-moz-font-smoothing: antialiased;\n\tfont-smoothing: antialiased;\n}\n\nbody {\n\tfont: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;\n\tline-height: 1.4em;\n\tbackground: #f5f5f5;\n\tcolor: #4d4d4d;\n\tmin-width: 230px;\n\tmax-width: 550px;\n\tmargin: 0 auto;\n\t-webkit-font-smoothing: antialiased;\n\t-moz-font-smoothing: antialiased;\n\tfont-smoothing: antialiased;\n\tfont-weight: 300;\n}\n\nbutton,\ninput[type=\"checkbox\"] {\n\toutline: none;\n}\n\n.hidden {\n\tdisplay: none;\n}\n\n.todoapp {\n\tbackground: #fff;\n\tmargin: 130px 0 40px 0;\n\tposition: relative;\n\tbox-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2),\n\t            0 25px 50px 0 rgba(0, 0, 0, 0.1);\n}\n\n.todoapp input::-webkit-input-placeholder {\n\tfont-style: italic;\n\tfont-weight: 300;\n\tcolor: #e6e6e6;\n}\n\n.todoapp input::-moz-placeholder {\n\tfont-style: italic;\n\tfont-weight: 300;\n\tcolor: #e6e6e6;\n}\n\n.todoapp input::input-placeholder {\n\tfont-style: italic;\n\tfont-weight: 300;\n\tcolor: #e6e6e6;\n}\n\n.todoapp h1 {\n\tposition: absolute;\n\ttop: -155px;\n\twidth: 100%;\n\tfont-size: 100px;\n\tfont-weight: 100;\n\ttext-align: center;\n\tcolor: rgba(175, 47, 47, 0.15);\n\t-webkit-text-rendering: optimizeLegibility;\n\t-moz-text-rendering: optimizeLegibility;\n\ttext-rendering: optimizeLegibility;\n}\n\n.new-todo,\n.edit {\n\tposition: relative;\n\tmargin: 0;\n\twidth: 100%;\n\tfont-size: 24px;\n\tfont-family: inherit;\n\tfont-weight: inherit;\n\tline-height: 1.4em;\n\tborder: 0;\n\toutline: none;\n\tcolor: inherit;\n\tpadding: 6px;\n\tborder: 1px solid #999;\n\tbox-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);\n\tbox-sizing: border-box;\n\t-webkit-font-smoothing: antialiased;\n\t-moz-font-smoothing: antialiased;\n\tfont-smoothing: antialiased;\n}\n\n.new-todo {\n\tpadding: 16px 16px 16px 60px;\n\tborder: none;\n\tbackground: rgba(0, 0, 0, 0.003);\n\tbox-shadow: inset 0 -2px 1px rgba(0,0,0,0.03);\n}\n\n.main {\n\tposition: relative;\n\tz-index: 2;\n\tborder-top: 1px solid #e6e6e6;\n}\n\nlabel[for='toggle-all'] {\n\tdisplay: none;\n}\n\n.toggle-all {\n\tposition: absolute;\n\ttop: -55px;\n\tleft: -12px;\n\twidth: 60px;\n\theight: 34px;\n\ttext-align: center;\n\tborder: none; /* Mobile Safari */\n}\n\n.toggle-all:before {\n\tcontent: '❯';\n\tfont-size: 22px;\n\tcolor: #e6e6e6;\n\tpadding: 10px 27px 10px 27px;\n}\n\n.toggle-all:checked:before {\n\tcolor: #737373;\n}\n\n.todo-list {\n\tmargin: 0;\n\tpadding: 0;\n\tlist-style: none;\n}\n\n.todo-list li {\n\tposition: relative;\n\tfont-size: 24px;\n\tborder-bottom: 1px solid #ededed;\n}\n\n.todo-list li:last-child {\n\tborder-bottom: none;\n}\n\n.todo-list li.editing {\n\tborder-bottom: none;\n\tpadding: 0;\n}\n\n.todo-list li.editing .edit {\n\tdisplay: block;\n\twidth: 506px;\n\tpadding: 13px 17px 12px 17px;\n\tmargin: 0 0 0 43px;\n}\n\n.todo-list li.editing .view {\n\tdisplay: none;\n}\n\n.todo-list li .toggle {\n\ttext-align: center;\n\twidth: 40px;\n\t/* auto, since non-WebKit browsers doesn't support input styling */\n\theight: auto;\n\tposition: absolute;\n\ttop: 0;\n\tbottom: 0;\n\tmargin: auto 0;\n\tborder: none; /* Mobile Safari */\n\t-webkit-appearance: none;\n\tappearance: none;\n}\n\n.todo-list li .toggle:after {\n\tcontent: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"-10 -18 100 135\"><circle cx=\"50\" cy=\"50\" r=\"50\" fill=\"none\" stroke=\"#ededed\" stroke-width=\"3\"/></svg>');\n}\n\n.todo-list li .toggle:checked:after {\n\tcontent: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"-10 -18 100 135\"><circle cx=\"50\" cy=\"50\" r=\"50\" fill=\"none\" stroke=\"#bddad5\" stroke-width=\"3\"/><path fill=\"#5dc2af\" d=\"M72 25L42 71 27 56l-4 4 20 20 34-52z\"/></svg>');\n}\n\n.todo-list li label {\n\twhite-space: pre;\n\tword-break: break-word;\n\tpadding: 15px 60px 15px 15px;\n\tmargin-left: 45px;\n\tdisplay: block;\n\tline-height: 1.2;\n\ttransition: color 0.4s;\n}\n\n.todo-list li.completed label {\n\tcolor: #d9d9d9;\n\ttext-decoration: line-through;\n}\n\n.todo-list li .destroy {\n\tdisplay: none;\n\tposition: absolute;\n\ttop: 0;\n\tright: 10px;\n\tbottom: 0;\n\twidth: 40px;\n\theight: 40px;\n\tmargin: auto 0;\n\tfont-size: 30px;\n\tcolor: #cc9a9a;\n\tmargin-bottom: 11px;\n\ttransition: color 0.2s ease-out;\n}\n\n.todo-list li .destroy:hover {\n\tcolor: #af5b5e;\n}\n\n.todo-list li .destroy:after {\n\tcontent: '×';\n}\n\n.todo-list li:hover .destroy {\n\tdisplay: block;\n}\n\n.todo-list li .edit {\n\tdisplay: none;\n}\n\n.todo-list li.editing:last-child {\n\tmargin-bottom: -1px;\n}\n\n.footer {\n\tcolor: #777;\n\tpadding: 10px 15px;\n\theight: 20px;\n\ttext-align: center;\n\tborder-top: 1px solid #e6e6e6;\n}\n\n.footer:before {\n\tcontent: '';\n\tposition: absolute;\n\tright: 0;\n\tbottom: 0;\n\tleft: 0;\n\theight: 50px;\n\toverflow: hidden;\n\tbox-shadow: 0 1px 1px rgba(0, 0, 0, 0.2),\n\t            0 8px 0 -3px #f6f6f6,\n\t            0 9px 1px -3px rgba(0, 0, 0, 0.2),\n\t            0 16px 0 -6px #f6f6f6,\n\t            0 17px 2px -6px rgba(0, 0, 0, 0.2);\n}\n\n.todo-count {\n\tfloat: left;\n\ttext-align: left;\n}\n\n.todo-count strong {\n\tfont-weight: 300;\n}\n\n.filters {\n\tmargin: 0;\n\tpadding: 0;\n\tlist-style: none;\n\tposition: absolute;\n\tright: 0;\n\tleft: 0;\n}\n\n.filters li {\n\tdisplay: inline;\n}\n\n.filters li a {\n\tcolor: inherit;\n\tmargin: 3px;\n\tpadding: 3px 7px;\n\ttext-decoration: none;\n\tborder: 1px solid transparent;\n\tborder-radius: 3px;\n}\n\n.filters li a.selected,\n.filters li a:hover {\n\tborder-color: rgba(175, 47, 47, 0.1);\n}\n\n.filters li a.selected {\n\tborder-color: rgba(175, 47, 47, 0.2);\n}\n\n.clear-completed,\nhtml .clear-completed:active {\n\tfloat: right;\n\tposition: relative;\n\tline-height: 20px;\n\ttext-decoration: none;\n\tcursor: pointer;\n\tposition: relative;\n}\n\n.clear-completed:hover {\n\ttext-decoration: underline;\n}\n\n.info {\n\tmargin: 65px auto 0;\n\tcolor: #bfbfbf;\n\tfont-size: 10px;\n\ttext-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);\n\ttext-align: center;\n}\n\n.info p {\n\tline-height: 1;\n}\n\n.info a {\n\tcolor: inherit;\n\ttext-decoration: none;\n\tfont-weight: 400;\n}\n\n.info a:hover {\n\ttext-decoration: underline;\n}\n\n/*\n\tHack to remove background from Mobile Safari.\n\tCan't use it globally since it destroys checkboxes in Firefox\n*/\n@media screen and (-webkit-min-device-pixel-ratio:0) {\n\t.toggle-all,\n\t.todo-list li .toggle {\n\t\tbackground: none;\n\t}\n\n\t.todo-list li .toggle {\n\t\theight: 40px;\n\t}\n\n\t.toggle-all {\n\t\t-webkit-transform: rotate(90deg);\n\t\ttransform: rotate(90deg);\n\t\t-webkit-appearance: none;\n\t\tappearance: none;\n\t}\n}\n\n@media (max-width: 430px) {\n\t.footer {\n\t\theight: 50px;\n\t}\n\n\t.filters {\n\t\tbottom: 10px;\n\t}\n}\n", ""]);
-
-/***/ },
-/* 53 */,
-/* 54 */,
-/* 55 */,
-/* 56 */
+/***/ 109:
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -616,2100 +533,90 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 57 */,
-/* 58 */,
-/* 59 */,
-/* 60 */
+
+/***/ 177:
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	// css base code, injected by the css-loader
+	module.exports = function() {
+		var list = [];
 	
-	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
+		// return the list of modules as css string
+		list.toString = function toString() {
+			var result = [];
+			for(var i = 0; i < this.length; i++) {
+				var item = this[i];
+				if(item[2]) {
+					result.push("@media " + item[2] + "{" + item[1] + "}");
+				} else {
+					result.push(item[1]);
+				}
+			}
+			return result.join("");
+		};
 	
-	var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
-	
-	var PropTypes = __webpack_require__(171);
-	var RouteHandler = __webpack_require__(68);
-	var Route = __webpack_require__(67);
-	
-	/**
-	 * A <DefaultRoute> component is a special kind of <Route> that
-	 * renders when its parent matches but none of its siblings do.
-	 * Only one such route may be used at any given level in the
-	 * route hierarchy.
-	 */
-	
-	var DefaultRoute = (function (_Route) {
-	  function DefaultRoute() {
-	    _classCallCheck(this, DefaultRoute);
-	
-	    if (_Route != null) {
-	      _Route.apply(this, arguments);
-	    }
-	  }
-	
-	  _inherits(DefaultRoute, _Route);
-	
-	  return DefaultRoute;
-	})(Route);
-	
-	// TODO: Include these in the above class definition
-	// once we can use ES7 property initializers.
-	// https://github.com/babel/babel/issues/619
-	
-	DefaultRoute.propTypes = {
-	  name: PropTypes.string,
-	  path: PropTypes.falsy,
-	  children: PropTypes.falsy,
-	  handler: PropTypes.func.isRequired
+		// import a list of modules into the list
+		list.i = function(modules, mediaQuery) {
+			if(typeof modules === "string")
+				modules = [[null, modules, ""]];
+			var alreadyImportedModules = {};
+			for(var i = 0; i < this.length; i++) {
+				var id = this[i][0];
+				if(typeof id === "number")
+					alreadyImportedModules[id] = true;
+			}
+			for(i = 0; i < modules.length; i++) {
+				var item = modules[i];
+				// skip already imported module
+				// this implementation is not 100% perfect for weird media query combinations
+				//  when a module is imported multiple times with different media queries.
+				//  I hope this will never occur (Hey this way we have smaller bundles)
+				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+					if(mediaQuery && !item[2]) {
+						item[2] = mediaQuery;
+					} else if(mediaQuery) {
+						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+					}
+					list.push(item);
+				}
+			}
+		};
+		return list;
 	};
-	
-	DefaultRoute.defaultProps = {
-	  handler: RouteHandler
-	};
-	
-	module.exports = DefaultRoute;
+
 
 /***/ },
-/* 61 */
+
+/***/ 178:
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	
-	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
-	
-	var React = __webpack_require__(7);
-	var assign = __webpack_require__(43);
-	var PropTypes = __webpack_require__(171);
-	
-	function isLeftClickEvent(event) {
-	  return event.button === 0;
-	}
-	
-	function isModifiedEvent(event) {
-	  return !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
-	}
-	
-	/**
-	 * <Link> components are used to create an <a> element that links to a route.
-	 * When that route is active, the link gets an "active" class name (or the
-	 * value of its `activeClassName` prop).
-	 *
-	 * For example, assuming you have the following route:
-	 *
-	 *   <Route name="showPost" path="/posts/:postID" handler={Post}/>
-	 *
-	 * You could use the following component to link to that route:
-	 *
-	 *   <Link to="showPost" params={{ postID: "123" }} />
-	 *
-	 * In addition to params, links may pass along query string parameters
-	 * using the `query` prop.
-	 *
-	 *   <Link to="showPost" params={{ postID: "123" }} query={{ show:true }}/>
-	 */
-	
-	var Link = (function (_React$Component) {
-	  function Link() {
-	    _classCallCheck(this, Link);
-	
-	    if (_React$Component != null) {
-	      _React$Component.apply(this, arguments);
-	    }
-	  }
-	
-	  _inherits(Link, _React$Component);
-	
-	  _createClass(Link, [{
-	    key: 'handleClick',
-	    value: function handleClick(event) {
-	      var allowTransition = true;
-	      var clickResult;
-	
-	      if (this.props.onClick) clickResult = this.props.onClick(event);
-	
-	      if (isModifiedEvent(event) || !isLeftClickEvent(event)) {
-	        return;
-	      }if (clickResult === false || event.defaultPrevented === true) allowTransition = false;
-	
-	      event.preventDefault();
-	
-	      if (allowTransition) this.context.router.transitionTo(this.props.to, this.props.params, this.props.query);
-	    }
-	  }, {
-	    key: 'getHref',
-	
-	    /**
-	     * Returns the value of the "href" attribute to use on the DOM element.
-	     */
-	    value: function getHref() {
-	      return this.context.router.makeHref(this.props.to, this.props.params, this.props.query);
-	    }
-	  }, {
-	    key: 'getClassName',
-	
-	    /**
-	     * Returns the value of the "class" attribute to use on the DOM element, which contains
-	     * the value of the activeClassName property when this <Link> is active.
-	     */
-	    value: function getClassName() {
-	      var className = this.props.className;
-	
-	      if (this.getActiveState()) className += ' ' + this.props.activeClassName;
-	
-	      return className;
-	    }
-	  }, {
-	    key: 'getActiveState',
-	    value: function getActiveState() {
-	      return this.context.router.isActive(this.props.to, this.props.params, this.props.query);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var props = assign({}, this.props, {
-	        href: this.getHref(),
-	        className: this.getClassName(),
-	        onClick: this.handleClick.bind(this)
-	      });
-	
-	      if (props.activeStyle && this.getActiveState()) props.style = props.activeStyle;
-	
-	      return React.DOM.a(props, this.props.children);
-	    }
-	  }]);
-	
-	  return Link;
-	})(React.Component);
-	
-	// TODO: Include these in the above class definition
-	// once we can use ES7 property initializers.
-	// https://github.com/babel/babel/issues/619
-	
-	Link.contextTypes = {
-	  router: PropTypes.router.isRequired
-	};
-	
-	Link.propTypes = {
-	  activeClassName: PropTypes.string.isRequired,
-	  to: PropTypes.oneOfType([PropTypes.string, PropTypes.route]).isRequired,
-	  params: PropTypes.object,
-	  query: PropTypes.object,
-	  activeStyle: PropTypes.object,
-	  onClick: PropTypes.func
-	};
-	
-	Link.defaultProps = {
-	  activeClassName: 'active',
-	  className: ''
-	};
-	
-	module.exports = Link;
-
-/***/ },
-/* 62 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
-	
-	var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
-	
-	var PropTypes = __webpack_require__(171);
-	var Route = __webpack_require__(67);
-	
-	/**
-	 * A <Redirect> component is a special kind of <Route> that always
-	 * redirects to another route when it matches.
-	 */
-	
-	var Redirect = (function (_Route) {
-	  function Redirect() {
-	    _classCallCheck(this, Redirect);
-	
-	    if (_Route != null) {
-	      _Route.apply(this, arguments);
-	    }
-	  }
-	
-	  _inherits(Redirect, _Route);
-	
-	  return Redirect;
-	})(Route);
-	
-	// TODO: Include these in the above class definition
-	// once we can use ES7 property initializers.
-	// https://github.com/babel/babel/issues/619
-	
-	Redirect.propTypes = {
-	  path: PropTypes.string,
-	  from: PropTypes.string, // Alias for path.
-	  to: PropTypes.string,
-	  handler: PropTypes.falsy
-	};
-	
-	// Redirects should not have a default handler
-	Redirect.defaultProps = {};
-	
-	module.exports = Redirect;
-
-/***/ },
-/* 63 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
-	
-	var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
-	
-	var PropTypes = __webpack_require__(171);
-	var RouteHandler = __webpack_require__(68);
-	var Route = __webpack_require__(67);
-	
-	/**
-	 * A <NotFoundRoute> is a special kind of <Route> that
-	 * renders when the beginning of its parent's path matches
-	 * but none of its siblings do, including any <DefaultRoute>.
-	 * Only one such route may be used at any given level in the
-	 * route hierarchy.
-	 */
-	
-	var NotFoundRoute = (function (_Route) {
-	  function NotFoundRoute() {
-	    _classCallCheck(this, NotFoundRoute);
-	
-	    if (_Route != null) {
-	      _Route.apply(this, arguments);
-	    }
-	  }
-	
-	  _inherits(NotFoundRoute, _Route);
-	
-	  return NotFoundRoute;
-	})(Route);
-	
-	// TODO: Include these in the above class definition
-	// once we can use ES7 property initializers.
-	// https://github.com/babel/babel/issues/619
-	
-	NotFoundRoute.propTypes = {
-	  name: PropTypes.string,
-	  path: PropTypes.falsy,
-	  children: PropTypes.falsy,
-	  handler: PropTypes.func.isRequired
-	};
-	
-	NotFoundRoute.defaultProps = {
-	  handler: RouteHandler
-	};
-	
-	module.exports = NotFoundRoute;
-
-/***/ },
-/* 64 */,
-/* 65 */,
-/* 66 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var LocationActions = __webpack_require__(172);
-	var History = __webpack_require__(80);
-	
-	var _listeners = [];
-	var _isListening = false;
-	var _actionType;
-	
-	function notifyChange(type) {
-	  if (type === LocationActions.PUSH) History.length += 1;
-	
-	  var change = {
-	    path: HashLocation.getCurrentPath(),
-	    type: type
-	  };
-	
-	  _listeners.forEach(function (listener) {
-	    listener.call(HashLocation, change);
-	  });
-	}
-	
-	function ensureSlash() {
-	  var path = HashLocation.getCurrentPath();
-	
-	  if (path.charAt(0) === '/') {
-	    return true;
-	  }HashLocation.replace('/' + path);
-	
-	  return false;
-	}
-	
-	function onHashChange() {
-	  if (ensureSlash()) {
-	    // If we don't have an _actionType then all we know is the hash
-	    // changed. It was probably caused by the user clicking the Back
-	    // button, but may have also been the Forward button or manual
-	    // manipulation. So just guess 'pop'.
-	    var curActionType = _actionType;
-	    _actionType = null;
-	    notifyChange(curActionType || LocationActions.POP);
-	  }
-	}
-	
-	/**
-	 * A Location that uses `window.location.hash`.
-	 */
-	var HashLocation = {
-	
-	  addChangeListener: function addChangeListener(listener) {
-	    _listeners.push(listener);
-	
-	    // Do this BEFORE listening for hashchange.
-	    ensureSlash();
-	
-	    if (!_isListening) {
-	      if (window.addEventListener) {
-	        window.addEventListener('hashchange', onHashChange, false);
-	      } else {
-	        window.attachEvent('onhashchange', onHashChange);
-	      }
-	
-	      _isListening = true;
-	    }
-	  },
-	
-	  removeChangeListener: function removeChangeListener(listener) {
-	    _listeners = _listeners.filter(function (l) {
-	      return l !== listener;
-	    });
-	
-	    if (_listeners.length === 0) {
-	      if (window.removeEventListener) {
-	        window.removeEventListener('hashchange', onHashChange, false);
-	      } else {
-	        window.removeEvent('onhashchange', onHashChange);
-	      }
-	
-	      _isListening = false;
-	    }
-	  },
-	
-	  push: function push(path) {
-	    _actionType = LocationActions.PUSH;
-	    window.location.hash = path;
-	  },
-	
-	  replace: function replace(path) {
-	    _actionType = LocationActions.REPLACE;
-	    window.location.replace(window.location.pathname + window.location.search + '#' + path);
-	  },
-	
-	  pop: function pop() {
-	    _actionType = LocationActions.POP;
-	    History.back();
-	  },
-	
-	  getCurrentPath: function getCurrentPath() {
-	    return decodeURI(
-	    // We can't use window.location.hash here because it's not
-	    // consistent across browsers - Firefox will pre-decode it!
-	    window.location.href.split('#')[1] || '');
-	  },
-	
-	  toString: function toString() {
-	    return '<HashLocation>';
-	  }
-	
-	};
-	
-	module.exports = HashLocation;
-
-/***/ },
-/* 67 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
-	
-	var React = __webpack_require__(7);
-	var invariant = __webpack_require__(105);
-	var PropTypes = __webpack_require__(171);
-	var RouteHandler = __webpack_require__(68);
-	
-	/**
-	 * <Route> components specify components that are rendered to the page when the
-	 * URL matches a given pattern.
-	 *
-	 * Routes are arranged in a nested tree structure. When a new URL is requested,
-	 * the tree is searched depth-first to find a route whose path matches the URL.
-	 * When one is found, all routes in the tree that lead to it are considered
-	 * "active" and their components are rendered into the DOM, nested in the same
-	 * order as they are in the tree.
-	 *
-	 * The preferred way to configure a router is using JSX. The XML-like syntax is
-	 * a great way to visualize how routes are laid out in an application.
-	 *
-	 *   var routes = [
-	 *     <Route handler={App}>
-	 *       <Route name="login" handler={Login}/>
-	 *       <Route name="logout" handler={Logout}/>
-	 *       <Route name="about" handler={About}/>
-	 *     </Route>
-	 *   ];
-	 *   
-	 *   Router.run(routes, function (Handler) {
-	 *     React.render(<Handler/>, document.body);
-	 *   });
-	 *
-	 * Handlers for Route components that contain children can render their active
-	 * child route using a <RouteHandler> element.
-	 *
-	 *   var App = React.createClass({
-	 *     render: function () {
-	 *       return (
-	 *         <div class="application">
-	 *           <RouteHandler/>
-	 *         </div>
-	 *       );
-	 *     }
-	 *   });
-	 *
-	 * If no handler is provided for the route, it will render a matched child route.
-	 */
-	
-	var Route = (function (_React$Component) {
-	  function Route() {
-	    _classCallCheck(this, Route);
-	
-	    if (_React$Component != null) {
-	      _React$Component.apply(this, arguments);
-	    }
-	  }
-	
-	  _inherits(Route, _React$Component);
-	
-	  _createClass(Route, [{
-	    key: 'render',
-	    value: function render() {
-	      invariant(false, '%s elements are for router configuration only and should not be rendered', this.constructor.name);
-	    }
-	  }]);
-	
-	  return Route;
-	})(React.Component);
-	
-	// TODO: Include these in the above class definition
-	// once we can use ES7 property initializers.
-	// https://github.com/babel/babel/issues/619
-	
-	Route.propTypes = {
-	  name: PropTypes.string,
-	  path: PropTypes.string,
-	  handler: PropTypes.func,
-	  ignoreScrollBehavior: PropTypes.bool
-	};
-	
-	Route.defaultProps = {
-	  handler: RouteHandler
-	};
-	
-	module.exports = Route;
-
-/***/ },
-/* 68 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
-	
-	var React = __webpack_require__(7);
-	var ContextWrapper = __webpack_require__(176);
-	var assign = __webpack_require__(43);
-	var PropTypes = __webpack_require__(171);
-	
-	var REF_NAME = '__routeHandler__';
-	
-	/**
-	 * A <RouteHandler> component renders the active child route handler
-	 * when routes are nested.
-	 */
-	
-	var RouteHandler = (function (_React$Component) {
-	  function RouteHandler() {
-	    _classCallCheck(this, RouteHandler);
-	
-	    if (_React$Component != null) {
-	      _React$Component.apply(this, arguments);
-	    }
-	  }
-	
-	  _inherits(RouteHandler, _React$Component);
-	
-	  _createClass(RouteHandler, [{
-	    key: 'getChildContext',
-	    value: function getChildContext() {
-	      return {
-	        routeDepth: this.context.routeDepth + 1
-	      };
-	    }
-	  }, {
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      this._updateRouteComponent(this.refs[REF_NAME]);
-	    }
-	  }, {
-	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate() {
-	      this._updateRouteComponent(this.refs[REF_NAME]);
-	    }
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      this._updateRouteComponent(null);
-	    }
-	  }, {
-	    key: '_updateRouteComponent',
-	    value: function _updateRouteComponent(component) {
-	      this.context.router.setRouteComponentAtDepth(this.getRouteDepth(), component);
-	    }
-	  }, {
-	    key: 'getRouteDepth',
-	    value: function getRouteDepth() {
-	      return this.context.routeDepth;
-	    }
-	  }, {
-	    key: 'createChildRouteHandler',
-	    value: function createChildRouteHandler(props) {
-	      var route = this.context.router.getRouteAtDepth(this.getRouteDepth());
-	
-	      if (route == null) {
-	        return null;
-	      }var childProps = assign({}, props || this.props, {
-	        ref: REF_NAME,
-	        params: this.context.router.getCurrentParams(),
-	        query: this.context.router.getCurrentQuery()
-	      });
-	
-	      return React.createElement(route.handler, childProps);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var handler = this.createChildRouteHandler();
-	      // <script/> for things like <CSSTransitionGroup/> that don't like null
-	      return handler ? React.createElement(
-	        ContextWrapper,
-	        null,
-	        handler
-	      ) : React.createElement('script', null);
-	    }
-	  }]);
-	
-	  return RouteHandler;
-	})(React.Component);
-	
-	// TODO: Include these in the above class definition
-	// once we can use ES7 property initializers.
-	// https://github.com/babel/babel/issues/619
-	
-	RouteHandler.contextTypes = {
-	  routeDepth: PropTypes.number.isRequired,
-	  router: PropTypes.router.isRequired
-	};
-	
-	RouteHandler.childContextTypes = {
-	  routeDepth: PropTypes.number.isRequired
-	};
-	
-	module.exports = RouteHandler;
-
-/***/ },
-/* 69 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var invariant = __webpack_require__(105);
-	var LocationActions = __webpack_require__(172);
-	var History = __webpack_require__(80);
-	
-	/**
-	 * A location that is convenient for testing and does not require a DOM.
-	 */
-	
-	var TestLocation = (function () {
-	  function TestLocation(history) {
-	    _classCallCheck(this, TestLocation);
-	
-	    this.history = history || [];
-	    this.listeners = [];
-	    this._updateHistoryLength();
-	  }
-	
-	  _createClass(TestLocation, [{
-	    key: 'needsDOM',
-	    get: function () {
-	      return false;
-	    }
-	  }, {
-	    key: '_updateHistoryLength',
-	    value: function _updateHistoryLength() {
-	      History.length = this.history.length;
-	    }
-	  }, {
-	    key: '_notifyChange',
-	    value: function _notifyChange(type) {
-	      var change = {
-	        path: this.getCurrentPath(),
-	        type: type
-	      };
-	
-	      for (var i = 0, len = this.listeners.length; i < len; ++i) this.listeners[i].call(this, change);
-	    }
-	  }, {
-	    key: 'addChangeListener',
-	    value: function addChangeListener(listener) {
-	      this.listeners.push(listener);
-	    }
-	  }, {
-	    key: 'removeChangeListener',
-	    value: function removeChangeListener(listener) {
-	      this.listeners = this.listeners.filter(function (l) {
-	        return l !== listener;
-	      });
-	    }
-	  }, {
-	    key: 'push',
-	    value: function push(path) {
-	      this.history.push(path);
-	      this._updateHistoryLength();
-	      this._notifyChange(LocationActions.PUSH);
-	    }
-	  }, {
-	    key: 'replace',
-	    value: function replace(path) {
-	      invariant(this.history.length, 'You cannot replace the current path with no history');
-	
-	      this.history[this.history.length - 1] = path;
-	
-	      this._notifyChange(LocationActions.REPLACE);
-	    }
-	  }, {
-	    key: 'pop',
-	    value: function pop() {
-	      this.history.pop();
-	      this._updateHistoryLength();
-	      this._notifyChange(LocationActions.POP);
-	    }
-	  }, {
-	    key: 'getCurrentPath',
-	    value: function getCurrentPath() {
-	      return this.history[this.history.length - 1];
-	    }
-	  }, {
-	    key: 'toString',
-	    value: function toString() {
-	      return '<TestLocation>';
-	    }
-	  }]);
-	
-	  return TestLocation;
-	})();
-	
-	module.exports = TestLocation;
-
-/***/ },
-/* 70 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var LocationActions = __webpack_require__(172);
-	
-	/**
-	 * A scroll behavior that attempts to imitate the default behavior
-	 * of modern browsers.
-	 */
-	var ImitateBrowserBehavior = {
-	
-	  updateScrollPosition: function updateScrollPosition(position, actionType) {
-	    switch (actionType) {
-	      case LocationActions.PUSH:
-	      case LocationActions.REPLACE:
-	        window.scrollTo(0, 0);
-	        break;
-	      case LocationActions.POP:
-	        if (position) {
-	          window.scrollTo(position.x, position.y);
-	        } else {
-	          window.scrollTo(0, 0);
-	        }
-	        break;
-	    }
-	  }
-	
-	};
-	
-	module.exports = ImitateBrowserBehavior;
-
-/***/ },
-/* 71 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var HistoryLocation = __webpack_require__(73);
-	var History = __webpack_require__(80);
-	
-	/**
-	 * A Location that uses full page refreshes. This is used as
-	 * the fallback for HistoryLocation in browsers that do not
-	 * support the HTML5 history API.
-	 */
-	var RefreshLocation = {
-	
-	  push: function push(path) {
-	    window.location = path;
-	  },
-	
-	  replace: function replace(path) {
-	    window.location.replace(path);
-	  },
-	
-	  pop: History.back,
-	
-	  getCurrentPath: HistoryLocation.getCurrentPath,
-	
-	  toString: function toString() {
-	    return '<RefreshLocation>';
-	  }
-	
-	};
-	
-	module.exports = RefreshLocation;
-
-/***/ },
-/* 72 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var invariant = __webpack_require__(105);
-	
-	function throwCannotModify() {
-	  invariant(false, 'You cannot modify a static location');
-	}
-	
-	/**
-	 * A location that only ever contains a single path. Useful in
-	 * stateless environments like servers where there is no path history,
-	 * only the path that was used in the request.
-	 */
-	
-	var StaticLocation = (function () {
-	  function StaticLocation(path) {
-	    _classCallCheck(this, StaticLocation);
-	
-	    this.path = path;
-	  }
-	
-	  _createClass(StaticLocation, [{
-	    key: 'getCurrentPath',
-	    value: function getCurrentPath() {
-	      return this.path;
-	    }
-	  }, {
-	    key: 'toString',
-	    value: function toString() {
-	      return '<StaticLocation path="' + this.path + '">';
-	    }
-	  }]);
-	
-	  return StaticLocation;
-	})();
-	
-	// TODO: Include these in the above class definition
-	// once we can use ES7 property initializers.
-	// https://github.com/babel/babel/issues/619
-	
-	StaticLocation.prototype.push = throwCannotModify;
-	StaticLocation.prototype.replace = throwCannotModify;
-	StaticLocation.prototype.pop = throwCannotModify;
-	
-	module.exports = StaticLocation;
-
-/***/ },
-/* 73 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var LocationActions = __webpack_require__(172);
-	var History = __webpack_require__(80);
-	
-	var _listeners = [];
-	var _isListening = false;
-	
-	function notifyChange(type) {
-	  var change = {
-	    path: HistoryLocation.getCurrentPath(),
-	    type: type
-	  };
-	
-	  _listeners.forEach(function (listener) {
-	    listener.call(HistoryLocation, change);
-	  });
-	}
-	
-	function onPopState(event) {
-	  if (event.state === undefined) {
-	    return;
-	  } // Ignore extraneous popstate events in WebKit.
-	
-	  notifyChange(LocationActions.POP);
-	}
-	
-	/**
-	 * A Location that uses HTML5 history.
-	 */
-	var HistoryLocation = {
-	
-	  addChangeListener: function addChangeListener(listener) {
-	    _listeners.push(listener);
-	
-	    if (!_isListening) {
-	      if (window.addEventListener) {
-	        window.addEventListener('popstate', onPopState, false);
-	      } else {
-	        window.attachEvent('onpopstate', onPopState);
-	      }
-	
-	      _isListening = true;
-	    }
-	  },
-	
-	  removeChangeListener: function removeChangeListener(listener) {
-	    _listeners = _listeners.filter(function (l) {
-	      return l !== listener;
-	    });
-	
-	    if (_listeners.length === 0) {
-	      if (window.addEventListener) {
-	        window.removeEventListener('popstate', onPopState, false);
-	      } else {
-	        window.removeEvent('onpopstate', onPopState);
-	      }
-	
-	      _isListening = false;
-	    }
-	  },
-	
-	  push: function push(path) {
-	    window.history.pushState({ path: path }, '', path);
-	    History.length += 1;
-	    notifyChange(LocationActions.PUSH);
-	  },
-	
-	  replace: function replace(path) {
-	    window.history.replaceState({ path: path }, '', path);
-	    notifyChange(LocationActions.REPLACE);
-	  },
-	
-	  pop: History.back,
-	
-	  getCurrentPath: function getCurrentPath() {
-	    return decodeURI(window.location.pathname + window.location.search);
-	  },
-	
-	  toString: function toString() {
-	    return '<HistoryLocation>';
-	  }
-	
-	};
-	
-	module.exports = HistoryLocation;
-
-/***/ },
-/* 74 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var PropTypes = __webpack_require__(171);
-	
-	/**
-	 * A mixin for components that need to know the path, routes, URL
-	 * params and query that are currently active.
-	 *
-	 * Example:
-	 *
-	 *   var AboutLink = React.createClass({
-	 *     mixins: [ Router.State ],
-	 *     render() {
-	 *       var className = this.props.className;
-	 *
-	 *       if (this.isActive('about'))
-	 *         className += ' is-active';
-	 *
-	 *       return React.DOM.a({ className: className }, this.props.children);
-	 *     }
-	 *   });
-	 */
-	var State = {
-	
-	  contextTypes: {
-	    router: PropTypes.router.isRequired
-	  },
-	
-	  /**
-	   * Returns the current URL path.
-	   */
-	  getPath: function getPath() {
-	    return this.context.router.getCurrentPath();
-	  },
-	
-	  /**
-	   * Returns the current URL path without the query string.
-	   */
-	  getPathname: function getPathname() {
-	    return this.context.router.getCurrentPathname();
-	  },
-	
-	  /**
-	   * Returns an object of the URL params that are currently active.
-	   */
-	  getParams: function getParams() {
-	    return this.context.router.getCurrentParams();
-	  },
-	
-	  /**
-	   * Returns an object of the query params that are currently active.
-	   */
-	  getQuery: function getQuery() {
-	    return this.context.router.getCurrentQuery();
-	  },
-	
-	  /**
-	   * Returns an array of the routes that are currently active.
-	   */
-	  getRoutes: function getRoutes() {
-	    return this.context.router.getCurrentRoutes();
-	  },
-	
-	  /**
-	   * A helper method to determine if a given route, params, and query
-	   * are active.
-	   */
-	  isActive: function isActive(to, params, query) {
-	    return this.context.router.isActive(to, params, query);
-	  }
-	
-	};
-	
-	module.exports = State;
-
-/***/ },
-/* 75 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var assign = __webpack_require__(43);
-	var invariant = __webpack_require__(105);
-	var warning = __webpack_require__(108);
-	var PathUtils = __webpack_require__(177);
-	
-	var _currentRoute;
-	
-	var Route = (function () {
-	  function Route(name, path, ignoreScrollBehavior, isDefault, isNotFound, onEnter, onLeave, handler) {
-	    _classCallCheck(this, Route);
-	
-	    this.name = name;
-	    this.path = path;
-	    this.paramNames = PathUtils.extractParamNames(this.path);
-	    this.ignoreScrollBehavior = !!ignoreScrollBehavior;
-	    this.isDefault = !!isDefault;
-	    this.isNotFound = !!isNotFound;
-	    this.onEnter = onEnter;
-	    this.onLeave = onLeave;
-	    this.handler = handler;
-	  }
-	
-	  _createClass(Route, [{
-	    key: 'appendChild',
-	
-	    /**
-	     * Appends the given route to this route's child routes.
-	     */
-	    value: function appendChild(route) {
-	      invariant(route instanceof Route, 'route.appendChild must use a valid Route');
-	
-	      if (!this.childRoutes) this.childRoutes = [];
-	
-	      this.childRoutes.push(route);
-	    }
-	  }, {
-	    key: 'toString',
-	    value: function toString() {
-	      var string = '<Route';
-	
-	      if (this.name) string += ' name="' + this.name + '"';
-	
-	      string += ' path="' + this.path + '">';
-	
-	      return string;
-	    }
-	  }], [{
-	    key: 'createRoute',
-	
-	    /**
-	     * Creates and returns a new route. Options may be a URL pathname string
-	     * with placeholders for named params or an object with any of the following
-	     * properties:
-	     *
-	     * - name                     The name of the route. This is used to lookup a
-	     *                            route relative to its parent route and should be
-	     *                            unique among all child routes of the same parent
-	     * - path                     A URL pathname string with optional placeholders
-	     *                            that specify the names of params to extract from
-	     *                            the URL when the path matches. Defaults to `/${name}`
-	     *                            when there is a name given, or the path of the parent
-	     *                            route, or /
-	     * - ignoreScrollBehavior     True to make this route (and all descendants) ignore
-	     *                            the scroll behavior of the router
-	     * - isDefault                True to make this route the default route among all
-	     *                            its siblings
-	     * - isNotFound               True to make this route the "not found" route among
-	     *                            all its siblings
-	     * - onEnter                  A transition hook that will be called when the
-	     *                            router is going to enter this route
-	     * - onLeave                  A transition hook that will be called when the
-	     *                            router is going to leave this route
-	     * - handler                  A React component that will be rendered when
-	     *                            this route is active
-	     * - parentRoute              The parent route to use for this route. This option
-	     *                            is automatically supplied when creating routes inside
-	     *                            the callback to another invocation of createRoute. You
-	     *                            only ever need to use this when declaring routes
-	     *                            independently of one another to manually piece together
-	     *                            the route hierarchy
-	     *
-	     * The callback may be used to structure your route hierarchy. Any call to
-	     * createRoute, createDefaultRoute, createNotFoundRoute, or createRedirect
-	     * inside the callback automatically uses this route as its parent.
-	     */
-	    value: function createRoute(options, callback) {
-	      options = options || {};
-	
-	      if (typeof options === 'string') options = { path: options };
-	
-	      var parentRoute = _currentRoute;
-	
-	      if (parentRoute) {
-	        warning(options.parentRoute == null || options.parentRoute === parentRoute, 'You should not use parentRoute with createRoute inside another route\'s child callback; it is ignored');
-	      } else {
-	        parentRoute = options.parentRoute;
-	      }
-	
-	      var name = options.name;
-	      var path = options.path || name;
-	
-	      if (path && !(options.isDefault || options.isNotFound)) {
-	        if (PathUtils.isAbsolute(path)) {
-	          if (parentRoute) {
-	            invariant(path === parentRoute.path || parentRoute.paramNames.length === 0, 'You cannot nest path "%s" inside "%s"; the parent requires URL parameters', path, parentRoute.path);
-	          }
-	        } else if (parentRoute) {
-	          // Relative paths extend their parent.
-	          path = PathUtils.join(parentRoute.path, path);
-	        } else {
-	          path = '/' + path;
-	        }
-	      } else {
-	        path = parentRoute ? parentRoute.path : '/';
-	      }
-	
-	      if (options.isNotFound && !/\*$/.test(path)) path += '*'; // Auto-append * to the path of not found routes.
-	
-	      var route = new Route(name, path, options.ignoreScrollBehavior, options.isDefault, options.isNotFound, options.onEnter, options.onLeave, options.handler);
-	
-	      if (parentRoute) {
-	        if (route.isDefault) {
-	          invariant(parentRoute.defaultRoute == null, '%s may not have more than one default route', parentRoute);
-	
-	          parentRoute.defaultRoute = route;
-	        } else if (route.isNotFound) {
-	          invariant(parentRoute.notFoundRoute == null, '%s may not have more than one not found route', parentRoute);
-	
-	          parentRoute.notFoundRoute = route;
-	        }
-	
-	        parentRoute.appendChild(route);
-	      }
-	
-	      // Any routes created in the callback
-	      // use this route as their parent.
-	      if (typeof callback === 'function') {
-	        var currentRoute = _currentRoute;
-	        _currentRoute = route;
-	        callback.call(route, route);
-	        _currentRoute = currentRoute;
-	      }
-	
-	      return route;
-	    }
-	  }, {
-	    key: 'createDefaultRoute',
-	
-	    /**
-	     * Creates and returns a route that is rendered when its parent matches
-	     * the current URL.
-	     */
-	    value: function createDefaultRoute(options) {
-	      return Route.createRoute(assign({}, options, { isDefault: true }));
-	    }
-	  }, {
-	    key: 'createNotFoundRoute',
-	
-	    /**
-	     * Creates and returns a route that is rendered when its parent matches
-	     * the current URL but none of its siblings do.
-	     */
-	    value: function createNotFoundRoute(options) {
-	      return Route.createRoute(assign({}, options, { isNotFound: true }));
-	    }
-	  }, {
-	    key: 'createRedirect',
-	
-	    /**
-	     * Creates and returns a route that automatically redirects the transition
-	     * to another route. In addition to the normal options to createRoute, this
-	     * function accepts the following options:
-	     *
-	     * - from         An alias for the `path` option. Defaults to *
-	     * - to           The path/route/route name to redirect to
-	     * - params       The params to use in the redirect URL. Defaults
-	     *                to using the current params
-	     * - query        The query to use in the redirect URL. Defaults
-	     *                to using the current query
-	     */
-	    value: function createRedirect(options) {
-	      return Route.createRoute(assign({}, options, {
-	        path: options.path || options.from || '*',
-	        onEnter: function onEnter(transition, params, query) {
-	          transition.redirect(options.to, options.params || params, options.query || query);
-	        }
-	      }));
-	    }
-	  }]);
-	
-	  return Route;
-	})();
-	
-	module.exports = Route;
-
-/***/ },
-/* 76 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* jshint -W084 */
-	'use strict';
-	
-	var React = __webpack_require__(7);
-	var assign = __webpack_require__(43);
-	var warning = __webpack_require__(108);
-	var DefaultRoute = __webpack_require__(60);
-	var NotFoundRoute = __webpack_require__(63);
-	var Redirect = __webpack_require__(62);
-	var Route = __webpack_require__(75);
-	
-	function checkPropTypes(componentName, propTypes, props) {
-	  componentName = componentName || 'UnknownComponent';
-	
-	  for (var propName in propTypes) {
-	    if (propTypes.hasOwnProperty(propName)) {
-	      var error = propTypes[propName](props, propName, componentName);
-	
-	      if (error instanceof Error) warning(false, error.message);
-	    }
-	  }
-	}
-	
-	function createRouteOptions(props) {
-	  var options = assign({}, props);
-	  var handler = options.handler;
-	
-	  if (handler) {
-	    options.onEnter = handler.willTransitionTo;
-	    options.onLeave = handler.willTransitionFrom;
-	  }
-	
-	  return options;
-	}
-	
-	function createRouteFromReactElement(element) {
-	  if (!React.isValidElement(element)) {
-	    return;
-	  }var type = element.type;
-	  var props = assign({}, type.defaultProps, element.props);
-	
-	  if (type.propTypes) checkPropTypes(type.displayName, type.propTypes, props);
-	
-	  if (type === DefaultRoute) {
-	    return Route.createDefaultRoute(createRouteOptions(props));
-	  }if (type === NotFoundRoute) {
-	    return Route.createNotFoundRoute(createRouteOptions(props));
-	  }if (type === Redirect) {
-	    return Route.createRedirect(createRouteOptions(props));
-	  }return Route.createRoute(createRouteOptions(props), function () {
-	    if (props.children) createRoutesFromReactChildren(props.children);
-	  });
-	}
-	
-	/**
-	 * Creates and returns an array of routes created from the given
-	 * ReactChildren, all of which should be one of <Route>, <DefaultRoute>,
-	 * <NotFoundRoute>, or <Redirect>, e.g.:
-	 *
-	 *   var { createRoutesFromReactChildren, Route, Redirect } = require('react-router');
-	 *
-	 *   var routes = createRoutesFromReactChildren(
-	 *     <Route path="/" handler={App}>
-	 *       <Route name="user" path="/user/:userId" handler={User}>
-	 *         <Route name="task" path="tasks/:taskId" handler={Task}/>
-	 *         <Redirect from="todos/:taskId" to="task"/>
-	 *       </Route>
-	 *     </Route>
-	 *   );
-	 */
-	function createRoutesFromReactChildren(children) {
-	  var routes = [];
-	
-	  React.Children.forEach(children, function (child) {
-	    if (child = createRouteFromReactElement(child)) routes.push(child);
-	  });
-	
-	  return routes;
-	}
-	
-	module.exports = createRoutesFromReactChildren;
-
-/***/ },
-/* 77 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/* jshint -W058 */
-	'use strict';
-	
-	var React = __webpack_require__(7);
-	var warning = __webpack_require__(108);
-	var invariant = __webpack_require__(105);
-	var canUseDOM = __webpack_require__(46).canUseDOM;
-	var LocationActions = __webpack_require__(172);
-	var ImitateBrowserBehavior = __webpack_require__(70);
-	var HashLocation = __webpack_require__(66);
-	var HistoryLocation = __webpack_require__(73);
-	var RefreshLocation = __webpack_require__(71);
-	var StaticLocation = __webpack_require__(72);
-	var ScrollHistory = __webpack_require__(178);
-	var createRoutesFromReactChildren = __webpack_require__(76);
-	var isReactChildren = __webpack_require__(179);
-	var Transition = __webpack_require__(180);
-	var PropTypes = __webpack_require__(171);
-	var Redirect = __webpack_require__(181);
-	var History = __webpack_require__(80);
-	var Cancellation = __webpack_require__(182);
-	var Match = __webpack_require__(183);
-	var Route = __webpack_require__(75);
-	var supportsHistory = __webpack_require__(184);
-	var PathUtils = __webpack_require__(177);
-	
-	/**
-	 * The default location for new routers.
-	 */
-	var DEFAULT_LOCATION = canUseDOM ? HashLocation : '/';
-	
-	/**
-	 * The default scroll behavior for new routers.
-	 */
-	var DEFAULT_SCROLL_BEHAVIOR = canUseDOM ? ImitateBrowserBehavior : null;
-	
-	function hasProperties(object, properties) {
-	  for (var propertyName in properties) if (properties.hasOwnProperty(propertyName) && object[propertyName] !== properties[propertyName]) {
-	    return false;
-	  }return true;
-	}
-	
-	function hasMatch(routes, route, prevParams, nextParams, prevQuery, nextQuery) {
-	  return routes.some(function (r) {
-	    if (r !== route) return false;
-	
-	    var paramNames = route.paramNames;
-	    var paramName;
-	
-	    // Ensure that all params the route cares about did not change.
-	    for (var i = 0, len = paramNames.length; i < len; ++i) {
-	      paramName = paramNames[i];
-	
-	      if (nextParams[paramName] !== prevParams[paramName]) return false;
-	    }
-	
-	    // Ensure the query hasn't changed.
-	    return hasProperties(prevQuery, nextQuery) && hasProperties(nextQuery, prevQuery);
-	  });
-	}
-	
-	function addRoutesToNamedRoutes(routes, namedRoutes) {
-	  var route;
-	  for (var i = 0, len = routes.length; i < len; ++i) {
-	    route = routes[i];
-	
-	    if (route.name) {
-	      invariant(namedRoutes[route.name] == null, 'You may not have more than one route named "%s"', route.name);
-	
-	      namedRoutes[route.name] = route;
-	    }
-	
-	    if (route.childRoutes) addRoutesToNamedRoutes(route.childRoutes, namedRoutes);
-	  }
-	}
-	
-	function routeIsActive(activeRoutes, routeName) {
-	  return activeRoutes.some(function (route) {
-	    return route.name === routeName;
-	  });
-	}
-	
-	function paramsAreActive(activeParams, params) {
-	  for (var property in params) if (String(activeParams[property]) !== String(params[property])) {
-	    return false;
-	  }return true;
-	}
-	
-	function queryIsActive(activeQuery, query) {
-	  for (var property in query) if (String(activeQuery[property]) !== String(query[property])) {
-	    return false;
-	  }return true;
-	}
-	
-	/**
-	 * Creates and returns a new router using the given options. A router
-	 * is a ReactComponent class that knows how to react to changes in the
-	 * URL and keep the contents of the page in sync.
-	 *
-	 * Options may be any of the following:
-	 *
-	 * - routes           (required) The route config
-	 * - location         The location to use. Defaults to HashLocation when
-	 *                    the DOM is available, "/" otherwise
-	 * - scrollBehavior   The scroll behavior to use. Defaults to ImitateBrowserBehavior
-	 *                    when the DOM is available, null otherwise
-	 * - onError          A function that is used to handle errors
-	 * - onAbort          A function that is used to handle aborted transitions
-	 *
-	 * When rendering in a server-side environment, the location should simply
-	 * be the URL path that was used in the request, including the query string.
-	 */
-	function createRouter(options) {
-	  options = options || {};
-	
-	  if (isReactChildren(options)) options = { routes: options };
-	
-	  var mountedComponents = [];
-	  var location = options.location || DEFAULT_LOCATION;
-	  var scrollBehavior = options.scrollBehavior || DEFAULT_SCROLL_BEHAVIOR;
-	  var state = {};
-	  var nextState = {};
-	  var pendingTransition = null;
-	  var dispatchHandler = null;
-	
-	  if (typeof location === 'string') location = new StaticLocation(location);
-	
-	  if (location instanceof StaticLocation) {
-	    warning(!canUseDOM || process.env.NODE_ENV === 'test', 'You should not use a static location in a DOM environment because ' + 'the router will not be kept in sync with the current URL');
-	  } else {
-	    invariant(canUseDOM || location.needsDOM === false, 'You cannot use %s without a DOM', location);
-	  }
-	
-	  // Automatically fall back to full page refreshes in
-	  // browsers that don't support the HTML history API.
-	  if (location === HistoryLocation && !supportsHistory()) location = RefreshLocation;
-	
-	  var Router = React.createClass({
-	
-	    displayName: 'Router',
-	
-	    statics: {
-	
-	      isRunning: false,
-	
-	      cancelPendingTransition: function cancelPendingTransition() {
-	        if (pendingTransition) {
-	          pendingTransition.cancel();
-	          pendingTransition = null;
-	        }
-	      },
-	
-	      clearAllRoutes: function clearAllRoutes() {
-	        Router.cancelPendingTransition();
-	        Router.namedRoutes = {};
-	        Router.routes = [];
-	      },
-	
-	      /**
-	       * Adds routes to this router from the given children object (see ReactChildren).
-	       */
-	      addRoutes: function addRoutes(routes) {
-	        if (isReactChildren(routes)) routes = createRoutesFromReactChildren(routes);
-	
-	        addRoutesToNamedRoutes(routes, Router.namedRoutes);
-	
-	        Router.routes.push.apply(Router.routes, routes);
-	      },
-	
-	      /**
-	       * Replaces routes of this router from the given children object (see ReactChildren).
-	       */
-	      replaceRoutes: function replaceRoutes(routes) {
-	        Router.clearAllRoutes();
-	        Router.addRoutes(routes);
-	        Router.refresh();
-	      },
-	
-	      /**
-	       * Performs a match of the given path against this router and returns an object
-	       * with the { routes, params, pathname, query } that match. Returns null if no
-	       * match can be made.
-	       */
-	      match: function match(path) {
-	        return Match.findMatch(Router.routes, path);
-	      },
-	
-	      /**
-	       * Returns an absolute URL path created from the given route
-	       * name, URL parameters, and query.
-	       */
-	      makePath: function makePath(to, params, query) {
-	        var path;
-	        if (PathUtils.isAbsolute(to)) {
-	          path = to;
-	        } else {
-	          var route = to instanceof Route ? to : Router.namedRoutes[to];
-	
-	          invariant(route instanceof Route, 'Cannot find a route named "%s"', to);
-	
-	          path = route.path;
-	        }
-	
-	        return PathUtils.withQuery(PathUtils.injectParams(path, params), query);
-	      },
-	
-	      /**
-	       * Returns a string that may safely be used as the href of a link
-	       * to the route with the given name, URL parameters, and query.
-	       */
-	      makeHref: function makeHref(to, params, query) {
-	        var path = Router.makePath(to, params, query);
-	        return location === HashLocation ? '#' + path : path;
-	      },
-	
-	      /**
-	       * Transitions to the URL specified in the arguments by pushing
-	       * a new URL onto the history stack.
-	       */
-	      transitionTo: function transitionTo(to, params, query) {
-	        var path = Router.makePath(to, params, query);
-	
-	        if (pendingTransition) {
-	          // Replace so pending location does not stay in history.
-	          location.replace(path);
-	        } else {
-	          location.push(path);
-	        }
-	      },
-	
-	      /**
-	       * Transitions to the URL specified in the arguments by replacing
-	       * the current URL in the history stack.
-	       */
-	      replaceWith: function replaceWith(to, params, query) {
-	        location.replace(Router.makePath(to, params, query));
-	      },
-	
-	      /**
-	       * Transitions to the previous URL if one is available. Returns true if the
-	       * router was able to go back, false otherwise.
-	       *
-	       * Note: The router only tracks history entries in your application, not the
-	       * current browser session, so you can safely call this function without guarding
-	       * against sending the user back to some other site. However, when using
-	       * RefreshLocation (which is the fallback for HistoryLocation in browsers that
-	       * don't support HTML5 history) this method will *always* send the client back
-	       * because we cannot reliably track history length.
-	       */
-	      goBack: function goBack() {
-	        if (History.length > 1 || location === RefreshLocation) {
-	          location.pop();
-	          return true;
-	        }
-	
-	        warning(false, 'goBack() was ignored because there is no router history');
-	
-	        return false;
-	      },
-	
-	      handleAbort: options.onAbort || function (abortReason) {
-	        if (location instanceof StaticLocation) throw new Error('Unhandled aborted transition! Reason: ' + abortReason);
-	
-	        if (abortReason instanceof Cancellation) {
-	          return;
-	        } else if (abortReason instanceof Redirect) {
-	          location.replace(Router.makePath(abortReason.to, abortReason.params, abortReason.query));
-	        } else {
-	          location.pop();
-	        }
-	      },
-	
-	      handleError: options.onError || function (error) {
-	        // Throw so we don't silently swallow async errors.
-	        throw error; // This error probably originated in a transition hook.
-	      },
-	
-	      handleLocationChange: function handleLocationChange(change) {
-	        Router.dispatch(change.path, change.type);
-	      },
-	
-	      /**
-	       * Performs a transition to the given path and calls callback(error, abortReason)
-	       * when the transition is finished. If both arguments are null the router's state
-	       * was updated. Otherwise the transition did not complete.
-	       *
-	       * In a transition, a router first determines which routes are involved by beginning
-	       * with the current route, up the route tree to the first parent route that is shared
-	       * with the destination route, and back down the tree to the destination route. The
-	       * willTransitionFrom hook is invoked on all route handlers we're transitioning away
-	       * from, in reverse nesting order. Likewise, the willTransitionTo hook is invoked on
-	       * all route handlers we're transitioning to.
-	       *
-	       * Both willTransitionFrom and willTransitionTo hooks may either abort or redirect the
-	       * transition. To resolve asynchronously, they may use the callback argument. If no
-	       * hooks wait, the transition is fully synchronous.
-	       */
-	      dispatch: function dispatch(path, action) {
-	        Router.cancelPendingTransition();
-	
-	        var prevPath = state.path;
-	        var isRefreshing = action == null;
-	
-	        if (prevPath === path && !isRefreshing) {
-	          return;
-	        } // Nothing to do!
-	
-	        // Record the scroll position as early as possible to
-	        // get it before browsers try update it automatically.
-	        if (prevPath && action === LocationActions.PUSH) Router.recordScrollPosition(prevPath);
-	
-	        var match = Router.match(path);
-	
-	        warning(match != null, 'No route matches path "%s". Make sure you have <Route path="%s"> somewhere in your routes', path, path);
-	
-	        if (match == null) match = {};
-	
-	        var prevRoutes = state.routes || [];
-	        var prevParams = state.params || {};
-	        var prevQuery = state.query || {};
-	
-	        var nextRoutes = match.routes || [];
-	        var nextParams = match.params || {};
-	        var nextQuery = match.query || {};
-	
-	        var fromRoutes, toRoutes;
-	        if (prevRoutes.length) {
-	          fromRoutes = prevRoutes.filter(function (route) {
-	            return !hasMatch(nextRoutes, route, prevParams, nextParams, prevQuery, nextQuery);
-	          });
-	
-	          toRoutes = nextRoutes.filter(function (route) {
-	            return !hasMatch(prevRoutes, route, prevParams, nextParams, prevQuery, nextQuery);
-	          });
-	        } else {
-	          fromRoutes = [];
-	          toRoutes = nextRoutes;
-	        }
-	
-	        var transition = new Transition(path, Router.replaceWith.bind(Router, path));
-	        pendingTransition = transition;
-	
-	        var fromComponents = mountedComponents.slice(prevRoutes.length - fromRoutes.length);
-	
-	        Transition.from(transition, fromRoutes, fromComponents, function (error) {
-	          if (error || transition.abortReason) return dispatchHandler.call(Router, error, transition); // No need to continue.
-	
-	          Transition.to(transition, toRoutes, nextParams, nextQuery, function (error) {
-	            dispatchHandler.call(Router, error, transition, {
-	              path: path,
-	              action: action,
-	              pathname: match.pathname,
-	              routes: nextRoutes,
-	              params: nextParams,
-	              query: nextQuery
-	            });
-	          });
-	        });
-	      },
-	
-	      /**
-	       * Starts this router and calls callback(router, state) when the route changes.
-	       *
-	       * If the router's location is static (i.e. a URL path in a server environment)
-	       * the callback is called only once. Otherwise, the location should be one of the
-	       * Router.*Location objects (e.g. Router.HashLocation or Router.HistoryLocation).
-	       */
-	      run: function run(callback) {
-	        invariant(!Router.isRunning, 'Router is already running');
-	
-	        dispatchHandler = function (error, transition, newState) {
-	          if (error) Router.handleError(error);
-	
-	          if (pendingTransition !== transition) return;
-	
-	          pendingTransition = null;
-	
-	          if (transition.abortReason) {
-	            Router.handleAbort(transition.abortReason);
-	          } else {
-	            callback.call(Router, Router, nextState = newState);
-	          }
-	        };
-	
-	        if (!(location instanceof StaticLocation)) {
-	          if (location.addChangeListener) location.addChangeListener(Router.handleLocationChange);
-	
-	          Router.isRunning = true;
-	        }
-	
-	        // Bootstrap using the current path.
-	        Router.refresh();
-	      },
-	
-	      refresh: function refresh() {
-	        Router.dispatch(location.getCurrentPath(), null);
-	      },
-	
-	      stop: function stop() {
-	        Router.cancelPendingTransition();
-	
-	        if (location.removeChangeListener) location.removeChangeListener(Router.handleLocationChange);
-	
-	        Router.isRunning = false;
-	      },
-	
-	      getLocation: function getLocation() {
-	        return location;
-	      },
-	
-	      getScrollBehavior: function getScrollBehavior() {
-	        return scrollBehavior;
-	      },
-	
-	      getRouteAtDepth: function getRouteAtDepth(routeDepth) {
-	        var routes = state.routes;
-	        return routes && routes[routeDepth];
-	      },
-	
-	      setRouteComponentAtDepth: function setRouteComponentAtDepth(routeDepth, component) {
-	        mountedComponents[routeDepth] = component;
-	      },
-	
-	      /**
-	       * Returns the current URL path + query string.
-	       */
-	      getCurrentPath: function getCurrentPath() {
-	        return state.path;
-	      },
-	
-	      /**
-	       * Returns the current URL path without the query string.
-	       */
-	      getCurrentPathname: function getCurrentPathname() {
-	        return state.pathname;
-	      },
-	
-	      /**
-	       * Returns an object of the currently active URL parameters.
-	       */
-	      getCurrentParams: function getCurrentParams() {
-	        return state.params;
-	      },
-	
-	      /**
-	       * Returns an object of the currently active query parameters.
-	       */
-	      getCurrentQuery: function getCurrentQuery() {
-	        return state.query;
-	      },
-	
-	      /**
-	       * Returns an array of the currently active routes.
-	       */
-	      getCurrentRoutes: function getCurrentRoutes() {
-	        return state.routes;
-	      },
-	
-	      /**
-	       * Returns true if the given route, params, and query are active.
-	       */
-	      isActive: function isActive(to, params, query) {
-	        if (PathUtils.isAbsolute(to)) {
-	          return to === state.path;
-	        }return routeIsActive(state.routes, to) && paramsAreActive(state.params, params) && (query == null || queryIsActive(state.query, query));
-	      }
-	
-	    },
-	
-	    mixins: [ScrollHistory],
-	
-	    propTypes: {
-	      children: PropTypes.falsy
-	    },
-	
-	    childContextTypes: {
-	      routeDepth: PropTypes.number.isRequired,
-	      router: PropTypes.router.isRequired
-	    },
-	
-	    getChildContext: function getChildContext() {
-	      return {
-	        routeDepth: 1,
-	        router: Router
-	      };
-	    },
-	
-	    getInitialState: function getInitialState() {
-	      return state = nextState;
-	    },
-	
-	    componentWillReceiveProps: function componentWillReceiveProps() {
-	      this.setState(state = nextState);
-	    },
-	
-	    componentWillUnmount: function componentWillUnmount() {
-	      Router.stop();
-	    },
-	
-	    render: function render() {
-	      var route = Router.getRouteAtDepth(0);
-	      return route ? React.createElement(route.handler, this.props) : null;
-	    }
-	
-	  });
-	
-	  Router.clearAllRoutes();
-	
-	  if (options.routes) Router.addRoutes(options.routes);
-	
-	  return Router;
-	}
-	
-	module.exports = createRouter;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
-
-/***/ },
-/* 78 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var createRouter = __webpack_require__(77);
-	
-	/**
-	 * A high-level convenience method that creates, configures, and
-	 * runs a router in one shot. The method signature is:
-	 *
-	 *   Router.run(routes[, location ], callback);
-	 *
-	 * Using `window.location.hash` to manage the URL, you could do:
-	 *
-	 *   Router.run(routes, function (Handler) {
-	 *     React.render(<Handler/>, document.body);
-	 *   });
-	 * 
-	 * Using HTML5 history and a custom "cursor" prop:
-	 * 
-	 *   Router.run(routes, Router.HistoryLocation, function (Handler) {
-	 *     React.render(<Handler cursor={cursor}/>, document.body);
-	 *   });
-	 *
-	 * Returns the newly created router.
-	 *
-	 * Note: If you need to specify further options for your router such
-	 * as error/abort handling or custom scroll behavior, use Router.create
-	 * instead.
-	 *
-	 *   var router = Router.create(options);
-	 *   router.run(function (Handler) {
-	 *     // ...
-	 *   });
-	 */
-	function runRouter(routes, location, callback) {
-	  if (typeof location === 'function') {
-	    callback = location;
-	    location = null;
-	  }
-	
-	  var router = createRouter({
-	    routes: routes,
-	    location: location
-	  });
-	
-	  router.run(callback);
-	
-	  return router;
-	}
-	
-	module.exports = runRouter;
-
-/***/ },
-/* 79 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var PropTypes = __webpack_require__(171);
-	
-	/**
-	 * A mixin for components that modify the URL.
-	 *
-	 * Example:
-	 *
-	 *   var MyLink = React.createClass({
-	 *     mixins: [ Router.Navigation ],
-	 *     handleClick(event) {
-	 *       event.preventDefault();
-	 *       this.transitionTo('aRoute', { the: 'params' }, { the: 'query' });
-	 *     },
-	 *     render() {
-	 *       return (
-	 *         <a onClick={this.handleClick}>Click me!</a>
-	 *       );
-	 *     }
-	 *   });
-	 */
-	var Navigation = {
-	
-	  contextTypes: {
-	    router: PropTypes.router.isRequired
-	  },
-	
-	  /**
-	   * Returns an absolute URL path created from the given route
-	   * name, URL parameters, and query values.
-	   */
-	  makePath: function makePath(to, params, query) {
-	    return this.context.router.makePath(to, params, query);
-	  },
-	
-	  /**
-	   * Returns a string that may safely be used as the href of a
-	   * link to the route with the given name.
-	   */
-	  makeHref: function makeHref(to, params, query) {
-	    return this.context.router.makeHref(to, params, query);
-	  },
-	
-	  /**
-	   * Transitions to the URL specified in the arguments by pushing
-	   * a new URL onto the history stack.
-	   */
-	  transitionTo: function transitionTo(to, params, query) {
-	    this.context.router.transitionTo(to, params, query);
-	  },
-	
-	  /**
-	   * Transitions to the URL specified in the arguments by replacing
-	   * the current URL in the history stack.
-	   */
-	  replaceWith: function replaceWith(to, params, query) {
-	    this.context.router.replaceWith(to, params, query);
-	  },
-	
-	  /**
-	   * Transitions to the previous URL.
-	   */
-	  goBack: function goBack() {
-	    return this.context.router.goBack();
-	  }
-	
-	};
-	
-	module.exports = Navigation;
-
-/***/ },
-/* 80 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var invariant = __webpack_require__(105);
-	var canUseDOM = __webpack_require__(46).canUseDOM;
-	
-	var History = {
-	
-	  /**
-	   * The current number of entries in the history.
-	   *
-	   * Note: This property is read-only.
-	   */
-	  length: 1,
-	
-	  /**
-	   * Sends the browser back one entry in the history.
-	   */
-	  back: function back() {
-	    invariant(canUseDOM, 'Cannot use History.back without a DOM');
-	
-	    // Do this first so that History.length will
-	    // be accurate in location change listeners.
-	    History.length -= 1;
-	
-	    window.history.back();
-	  }
-	
-	};
-	
-	module.exports = History;
-
-/***/ },
-/* 81 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * A scroll behavior that always scrolls to the top of the page
-	 * after a transition.
-	 */
 	"use strict";
 	
-	var ScrollToTopBehavior = {
+	var _Object$assign = __webpack_require__(297)["default"];
 	
-	  updateScrollPosition: function updateScrollPosition() {
-	    window.scrollTo(0, 0);
+	exports["default"] = _Object$assign || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];
+	
+	    for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
+	    }
 	  }
 	
+	  return target;
 	};
 	
-	module.exports = ScrollToTopBehavior;
+	exports.__esModule = true;
 
 /***/ },
-/* 82 */,
-/* 83 */,
-/* 84 */,
-/* 85 */,
-/* 86 */,
-/* 87 */,
-/* 88 */,
-/* 89 */,
-/* 90 */,
-/* 91 */,
-/* 92 */,
-/* 93 */,
-/* 94 */,
-/* 95 */,
-/* 96 */,
-/* 97 */,
-/* 98 */,
-/* 99 */,
-/* 100 */,
-/* 101 */,
-/* 102 */,
-/* 103 */,
-/* 104 */,
-/* 105 */,
-/* 106 */,
-/* 107 */,
-/* 108 */,
-/* 109 */,
-/* 110 */,
-/* 111 */,
-/* 112 */,
-/* 113 */,
-/* 114 */,
-/* 115 */,
-/* 116 */,
-/* 117 */,
-/* 118 */,
-/* 119 */,
-/* 120 */,
-/* 121 */,
-/* 122 */,
-/* 123 */,
-/* 124 */,
-/* 125 */,
-/* 126 */,
-/* 127 */,
-/* 128 */,
-/* 129 */,
-/* 130 */,
-/* 131 */,
-/* 132 */,
-/* 133 */,
-/* 134 */,
-/* 135 */,
-/* 136 */,
-/* 137 */,
-/* 138 */,
-/* 139 */,
-/* 140 */,
-/* 141 */,
-/* 142 */,
-/* 143 */,
-/* 144 */,
-/* 145 */,
-/* 146 */,
-/* 147 */,
-/* 148 */,
-/* 149 */,
-/* 150 */,
-/* 151 */,
-/* 152 */,
-/* 153 */,
-/* 154 */,
-/* 155 */,
-/* 156 */,
-/* 157 */,
-/* 158 */,
-/* 159 */,
-/* 160 */,
-/* 161 */,
-/* 162 */,
-/* 163 */
+
+/***/ 179:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(React) {/**
@@ -2719,12 +626,12 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var _require = __webpack_require__(20);
+	var _require = __webpack_require__(11);
 	
 	var RouteHandler = _require.RouteHandler;
 	
-	var orwell = __webpack_require__(169);
-	var Probe = __webpack_require__(19).Probe;
+	var orwell = __webpack_require__(185);
+	var Probe = __webpack_require__(10).Probe;
 	
 	var Main = React.createClass({
 	    displayName: 'Main',
@@ -2788,34 +695,11 @@ webpackJsonp([1],[
 	}
 	
 	module.exports = orwell(Main, watchCursors, assignNewProps);
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ },
-/* 164 */
-/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	
-	var _Object$assign = __webpack_require__(292)["default"];
-	
-	exports["default"] = _Object$assign || function (target) {
-	  for (var i = 1; i < arguments.length; i++) {
-	    var source = arguments[i];
-	
-	    for (var key in source) {
-	      if (Object.prototype.hasOwnProperty.call(source, key)) {
-	        target[key] = source[key];
-	      }
-	    }
-	  }
-	
-	  return target;
-	};
-	
-	exports.__esModule = true;
-
-/***/ },
-/* 165 */
+/***/ 180:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(React) {/**
@@ -2825,10 +709,10 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var PureRenderMixin = __webpack_require__(293).addons.PureRenderMixin;
+	var PureRenderMixin = __webpack_require__(298).addons.PureRenderMixin;
 	
-	var Probe = __webpack_require__(19).Probe;
-	var TodoModel = __webpack_require__(297);
+	var Probe = __webpack_require__(10).Probe;
+	var TodoModel = __webpack_require__(302);
 	var ENTER_KEY = 13;
 	
 	module.exports = React.createClass({
@@ -2888,10 +772,11 @@ webpackJsonp([1],[
 	        );
 	    }
 	});
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ },
-/* 166 */
+
+/***/ 181:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(React, Immutable) {/**
@@ -2901,10 +786,10 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var Router = __webpack_require__(20);var Link = Router.Link;
+	var Router = __webpack_require__(11);var Link = Router.Link;
 	
-	var orwell = __webpack_require__(169);
-	var Probe = __webpack_require__(19).Probe;
+	var orwell = __webpack_require__(185);
+	var Probe = __webpack_require__(10).Probe;
 	
 	var _require = __webpack_require__(8);
 	
@@ -3016,10 +901,11 @@ webpackJsonp([1],[
 	}
 	
 	module.exports = orwell(Footer, watchCursors, assignNewProps);
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(8)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(8)))
 
 /***/ },
-/* 167 */
+
+/***/ 182:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(React) {/**
@@ -3029,12 +915,12 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var _extends = __webpack_require__(164)['default'];
+	var _extends = __webpack_require__(178)['default'];
 	
-	var orwell = __webpack_require__(169);
-	var Probe = __webpack_require__(19).Probe;
+	var orwell = __webpack_require__(185);
+	var Probe = __webpack_require__(10).Probe;
 	
-	var List = __webpack_require__(294);
+	var List = __webpack_require__(299);
 	
 	var DEFAULTWATCH = function DEFAULTWATCH(_ref) {
 	    var rootCursor = _ref.rootCursor;
@@ -3050,9 +936,7 @@ webpackJsonp([1],[
 	
 	        propTypes: {
 	            rootCursor: React.PropTypes.instanceOf(Probe).isRequired,
-	            todosCursor: React.PropTypes.instanceOf(Probe).isRequired,
-	            tasksleftCursor: React.PropTypes.instanceOf(Probe).isRequired
-	        },
+	            todosCursor: React.PropTypes.instanceOf(Probe).isRequired },
 	
 	        render: function render() {
 	            var rootCursor = this.props.rootCursor;
@@ -3065,66 +949,11 @@ webpackJsonp([1],[
 	    });
 	    return orwell(Filtered, watchCursors);
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ },
-/* 168 */
-/***/ function(module, exports, __webpack_require__) {
 
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	// css base code, injected by the css-loader
-	module.exports = function() {
-		var list = [];
-	
-		// return the list of modules as css string
-		list.toString = function toString() {
-			var result = [];
-			for(var i = 0; i < this.length; i++) {
-				var item = this[i];
-				if(item[2]) {
-					result.push("@media " + item[2] + "{" + item[1] + "}");
-				} else {
-					result.push(item[1]);
-				}
-			}
-			return result.join("");
-		};
-	
-		// import a list of modules into the list
-		list.i = function(modules, mediaQuery) {
-			if(typeof modules === "string")
-				modules = [[null, modules, ""]];
-			var alreadyImportedModules = {};
-			for(var i = 0; i < this.length; i++) {
-				var id = this[i][0];
-				if(typeof id === "number")
-					alreadyImportedModules[id] = true;
-			}
-			for(i = 0; i < modules.length; i++) {
-				var item = modules[i];
-				// skip already imported module
-				// this implementation is not 100% perfect for weird media query combinations
-				//  when a module is imported multiple times with different media queries.
-				//  I hope this will never occur (Hey this way we have smaller bundles)
-				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-					if(mediaQuery && !item[2]) {
-						item[2] = mediaQuery;
-					} else if(mediaQuery) {
-						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-					}
-					list.push(item);
-				}
-			}
-		};
-		return list;
-	};
-
-
-/***/ },
-/* 169 */
+/***/ 185:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3163,19 +992,19 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var _getIterator = __webpack_require__(295)['default'];
+	var _getIterator = __webpack_require__(300)['default'];
 	
-	var _Object$keys = __webpack_require__(296)['default'];
+	var _Object$keys = __webpack_require__(301)['default'];
 	
-	var React = __webpack_require__(7);
-	var isFunction = __webpack_require__(189);
-	var isArray = __webpack_require__(3);
-	var isPlainObject = __webpack_require__(2);
-	var assign = __webpack_require__(4);
-	var isEqual = __webpack_require__(300);
-	var Probe = __webpack_require__(170);
+	var React = __webpack_require__(9);
+	var isFunction = __webpack_require__(3);
+	var isArray = __webpack_require__(2);
+	var isPlainObject = __webpack_require__(4);
+	var assign = __webpack_require__(189);
+	var isEqual = __webpack_require__(339);
+	var Probe = __webpack_require__(47);
 	
-	var CACHED = {};
+	var NOT_SET = {};
 	var DO_NOTHING = function DO_NOTHING(_) {
 	    return void 0;
 	};
@@ -3288,6 +1117,8 @@ webpackJsonp([1],[
 	            // has occured at these cursors, this component shall update.
 	            var cursorsToWatch = watchCursors.call(null, this.props, manual);
 	
+	            // TODO: support cursorsToWatch that may be a promise.
+	
 	            // watchCursors may return a single cursor
 	            if (cursorsToWatch instanceof Probe) {
 	                cursorsToWatch = [cursorsToWatch];
@@ -3372,11 +1203,11 @@ webpackJsonp([1],[
 	        return void 0;
 	    }
 	
-	    if (!isEqual(valueA.keyPath(), valueB.keyPath(), cursorCompare)) {
+	    if (!isEqual(valueA.path(), valueB.path())) {
 	        return false;
 	    }
 	
-	    return valueA.firstValue() === valueB.deref();
+	    return valueA.prev().deref() === valueB.deref();
 	}
 	
 	function __shouldComponentUpdateShallow(nextProps, nextState) {
@@ -3425,1176 +1256,23 @@ webpackJsonp([1],[
 	}
 
 /***/ },
-/* 170 */
+
+/***/ 297:
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	
-	var _bind = Function.prototype.bind;
-	var Immutable = __webpack_require__(8);
-	var Iterable = Immutable.Iterable;
-	
-	var Providence = __webpack_require__(341);
-	
-	var newKeyPath = Providence.prototype.__utils.newKeyPath;
-	
-	/* constants */
-	// sentinel values
-	var NOT_SET = {};
-	var LISTENERS = {}; // listen to any change
-	var LISTENERS_UPDATED = {};
-	var LISTENERS_DELETED = {};
-	var LISTENERS_ADDED = {};
-	
-	var LISTENERS_PATH = [LISTENERS];
-	var KEYPATH_PATH = ['keyPath'];
-	var _ONUPDATE_PATH = ['_onUpdate']; // internal _onUpdate
-	
-	module.exports = Probe;
-	
-	function makeProbe() {
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	        args[_key] = arguments[_key];
-	    }
-	
-	    return new (_bind.apply(Probe, [null].concat(args)))();
-	}
-	
-	/**
-	 * Probe constructor with the same argument input as the Probe constructor.
-	 */
-	function Probe() {
-	
-	    // TODO: add test case for this
-	    if (!(this instanceof Probe)) {
-	        return makeProbe.apply(null, arguments);
-	    }
-	
-	    Providence.apply(this, arguments);
-	
-	    var options = this._options;
-	
-	    if (!options.hasIn(_ONUPDATE_PATH)) {
-	
-	        var _onUpdate = function _onUpdate(options, keyPath, newRoot, oldRoot) {
-	            // TODO: add test case for propagate
-	            notifyListeners(options, keyPath, newRoot, oldRoot, options.get('propagate', true));
-	        };
-	
-	        this._options = options = options.setIn(_ONUPDATE_PATH, _onUpdate);
-	    }
-	
-	    if (!options.hasIn(LISTENERS_PATH)) {
-	        // a reference plain object is used so that it is shared among all Probe
-	        // objects that inherit it.
-	        this._options = options.setIn(LISTENERS_PATH, {
-	            data: Immutable.Map()
-	        });
-	    }
-	}
-	
-	var ProbePrototype = Object.create(Providence.prototype);
-	Probe.prototype = ProbePrototype;
-	
-	ProbePrototype.constructor = Probe;
-	
-	/**
-	 * Add observer/listener to listen for changes at this Probe object's keypath.
-	 * Be aware that observation isn't scoped to the root data.
-	 *
-	 * listener function would be added to a lookup table that is shared among all
-	 * Probe objects that inherit it.
-	 *
-	 * @param  {Function} listener
-	 * @return {Function}          Returns unobserve function.
-	 */
-	ProbePrototype.observe = function (listener) {
-	    return this.on('any', listener);
-	};
-	
-	/**
-	 * Remove observer at this Probe object's keypath.
-	 *
-	 * @param  {Function} listener
-	 * @return {Bool}          Returns true if unobserve is successful; false otherwise.
-	 */
-	ProbePrototype.unobserve = function (listener) {
-	    return this.removeListener('any', listener);
-	};
-	/**
-	 * Add listener that'll be called whenever event occurs at keypath.
-	 *
-	 * event may be one of: any, update, swap, add, remove, delete
-	 *
-	 * listener function would be added to a lookup table that is shared among all
-	 * Probe objects that inherit it.
-	 *
-	 * @param  {String} event
-	 * @param  {Function} listener
-	 * @return {Function}          Return unsubcribe function that may be called at
-	 *                             most once; since it's associated with .on(), which
-	 *                             was called.
-	 */
-	ProbePrototype.on = function (event, listener) {
-	    var _this = this;
-	
-	    var listenerKey = fetchListenerKey(event);
-	    var options = this._options;
-	
-	    // unbox listeners
-	    var boxed = options.getIn(LISTENERS_PATH);
-	    var listeners = boxed.data;
-	    var keyPath = options.getIn(KEYPATH_PATH);
-	
-	    var listenerKeyPath = newKeyPath(keyPath, [listenerKey, listener]);
-	
-	    if (!listeners.hasIn(listenerKeyPath)) {
-	        boxed.data = listeners.setIn(listenerKeyPath, listener);
-	    }
-	
-	    var unsubbed = false;
-	    return function () {
-	        if (!unsubbed) {
-	            unsubbed = true;
-	            _this.removeListener(event, listener);
-	        }
-	    };
-	};
-	
-	/**
-	 * Add a listener that's only called once when event occurs.
-	 *
-	 * event may be one of: any, update, swap, add, remove, delete
-	 *
-	 * @param  {String} event
-	 * @param  {Function} listener
-	 * @return {Function}          Return unsubcribe function that may be called at
-	 *                             most once; since it's associated with .on(), which
-	 *                             was called. Once listener has been called, the
-	 *                             unsubcribe function will be defunct; and calling it
-	 *                             has no effect.
-	 */
-	ProbePrototype.once = function (event, listener) {
-	    var unsubscribe = undefined;
-	    var executed = false;
-	
-	    var wrapped = function wrapped() {
-	        if (!executed && typeof unsubscribe === 'function') {
-	            executed = true;
-	            listener.apply(null, arguments);
-	            unsubscribe();
-	        }
-	    };
-	
-	    return unsubscribe = this.on(event, wrapped);
-	};
-	
-	/**
-	 * Remove listener, if it exists, from event.
-	 * If the same listener is observing another event at the same keypath, that
-	 * listener will not be removed.
-	 *
-	 * event may be one of: any, update, swap, add, remove, delete
-	 *
-	 * Returns this for chaining.
-	 *
-	 * @param  {String} event
-	 * @param  {[type]} listener
-	 * @return {Probe}
-	 */
-	ProbePrototype.removeListener = function (event, listener) {
-	    var listenerKey = fetchListenerKey(event);
-	    deletePathListeners.call(this, [listenerKey, listener]);
-	    return this;
-	};
-	
-	/**
-	 * Remove all listeners, if any, from event.
-	 *
-	 * event may be one of: any, update, swap, add, remove, delete
-	 *
-	 * Returns this for chaining.
-	 *
-	 * @param  {String} event
-	 * @return {Probe}
-	 */
-	ProbePrototype.removeListeners = function (event) {
-	    var listenerKey = fetchListenerKey(event);
-	    deletePathListeners.call(this, [listenerKey]);
-	    return this;
-	};
-	
-	/* helpers */
-	
-	function deletePathListeners(pathToDelete) {
-	    var options = this._options;
-	
-	    // unbox listeners
-	    var boxed = options.getIn(LISTENERS_PATH);
-	    var listeners = boxed.data;
-	    var keyPath = options.getIn(KEYPATH_PATH);
-	
-	    var listenerKeyPath = newKeyPath(keyPath, pathToDelete);
-	
-	    boxed.data = listeners.deleteIn(listenerKeyPath);
-	}
-	
-	function fetchListenerKey(event) {
-	
-	    var listenerKey = undefined;
-	    event = event.toLowerCase();
-	
-	    switch (event) {
-	        case 'any':
-	            listenerKey = LISTENERS;
-	            break;
-	        case 'update':
-	        case 'swap':
-	            listenerKey = LISTENERS_UPDATED;
-	            break;
-	        case 'add':
-	            listenerKey = LISTENERS_ADDED;
-	            break;
-	        case 'delete':
-	        case 'remove':
-	            listenerKey = LISTENERS_DELETED;
-	            break;
-	        default:
-	            throw Error('Invalid event: ' + event + '. Must be one of: any, update, swap, add, delete');
-	            break;
-	    }
-	    return listenerKey;
-	}
-	
-	// observation helpers
-	function callObservers(ctxObservers, observers, args) {
-	    if (ctxObservers === NOT_SET) {
-	        return;
-	    }
-	    observers.count++;
-	    ctxObservers.forEach(function (fn) {
-	        fn.apply(null, args);
-	    });
-	}
-	
-	function callListeners(observers, currentNew, currentOld) {
-	
-	    var newSet = currentNew !== NOT_SET;
-	    var oldSet = currentOld !== NOT_SET;
-	    var __currentNew = newSet ? currentNew : void 0;
-	    var __currentOld = oldSet ? currentOld : void 0;
-	    var args = [__currentNew, __currentOld];
-	    var observersAny = observers.observersAny;
-	    var observersAdd = observers.observersAdd;
-	    var observersUpdate = observers.observersUpdate;
-	    var observersDelete = observers.observersDelete;
-	
-	    if (oldSet && newSet) {
-	        callObservers(observersUpdate, observers, args);
-	    } else if (!oldSet && newSet) {
-	        callObservers(observersAdd, observers, args);
-	    } else if (oldSet && !newSet) {
-	        callObservers(observersDelete, observers, args);
-	    }
-	    callObservers(observersAny, observers, args);
-	}
-	
-	function notifyListeners(options, keyPath, newRoot, oldRoot) {
-	    var propagate = arguments[4] === undefined ? true : arguments[4];
-	
-	    // fetch listeners
-	    var boxed = options.getIn(LISTENERS_PATH);
-	    var listeners = boxed.data;
-	
-	    var current = listeners;
-	    var currentNew = newRoot;
-	    var currentOld = oldRoot;
-	    var n = 0;
-	    var len = keyPath.length;
-	
-	    // notify listeners for every subpath of keyPath
-	    //
-	    // invariant:
-	    // current !== NOT_SET  => there are listeners in current and subtrees of current
-	    // currentOld !== currentNew => current subtrees are different
-	    while (current !== NOT_SET && currentOld !== currentNew && n < len) {
-	
-	        if (propagate) {
-	            callListeners(extractListeners(current), currentNew, currentOld);
-	        }
-	
-	        var atom = keyPath[n++];
-	        current = current.get(atom, NOT_SET);
-	        currentNew = currentNew === NOT_SET ? NOT_SET : currentNew.get(atom, NOT_SET);
-	        currentOld = currentOld === NOT_SET ? NOT_SET : currentOld.get(atom, NOT_SET);
-	    }
-	
-	    return __notifyListeners(current, currentNew, currentOld, propagate);
-	}
-	
-	/**
-	 * Call observers in listeners using currentNew and currentOld.
-	 * If propagate is true, and if either currentNew or currentOld is an Immutable object,
-	 * then recursively call __notifyListeners when keys of listeners intersect with the union
-	 * of the keys of currentNew and currentOld. The recursion is done in depth-first search manner.
-	 *
-	 * @param  {Immutable Map|Object}  listeners  [description]
-	 * @param  {any}  currentNew [description]
-	 * @param  {any}  currentOld [description]
-	 * @param  {Boolean} propagate  [description]
-	 */
-	// TODO: refactor listeners.forEach as abstracted function
-	function __notifyListeners(listeners, currentNew, currentOld) {
-	    var propagate = arguments[3] === undefined ? true : arguments[3];
-	
-	    if (currentOld === currentNew || listeners === NOT_SET) {
-	        return;
-	    }
-	
-	    var observers = extractListeners(listeners);
-	    callListeners(observers, currentNew, currentOld);
-	    var listenersSize = listeners.size - observers.count;
-	
-	    if (!propagate || listenersSize <= 0) {
-	        return;
-	    }
-	
-	    var isImmutableNew = currentNew === NOT_SET ? false : Iterable.isIterable(currentNew);
-	    var isImmutableOld = currentOld === NOT_SET ? false : Iterable.isIterable(currentOld);
-	
-	    if (!isImmutableNew && !isImmutableOld) {
-	        return;
-	    }
-	
-	    // case: value changed from/to non-Immutable value to/from Immutable object
-	    if (!isImmutableNew || !isImmutableOld) {
-	        var _ret = (function () {
-	
-	            var tree = isImmutableNew ? currentNew : currentOld;
-	            var isNew = tree === currentNew;
-	            var isOld = tree === currentOld;
-	
-	            if (tree.size <= listenersSize) {
-	                tree.forEach(function (value, key) {
-	                    var subListeners = listeners.get(key, NOT_SET);
-	                    if (subListeners === NOT_SET) {
-	                        return;
-	                    }
-	
-	                    var __currentNew = isNew ? value : NOT_SET;
-	                    var __currentOld = isOld ? value : NOT_SET;
-	                    __notifyListeners(subListeners, __currentNew, __currentOld);
-	                });
-	                return {
-	                    v: undefined
-	                };
-	            }
-	
-	            listeners.forEach(function (subListeners, key) {
-	
-	                if (skipListenerKey(key)) {
-	                    return;
-	                }
-	
-	                var __currentNew = isNew ? tree.get(key, NOT_SET) : NOT_SET;
-	                var __currentOld = isOld ? tree.get(key, NOT_SET) : NOT_SET;
-	                __notifyListeners(subListeners, __currentNew, __currentOld);
-	            });
-	            return {
-	                v: undefined
-	            };
-	        })();
-	
-	        if (typeof _ret === 'object') return _ret.v;
-	    }
-	
-	    // NOTE: invariant: currentNew and currentOld are both immutable objects
-	    // ideally the set of keys to traverse is:
-	    // [currentNew.keys() union currentOld.keys()] intersection listeners.keys()
-	
-	    var newSize = currentNew.size;
-	    var oldSize = currentOld.size;
-	
-	    if (newSize <= 0 && oldSize <= 0) {
-	        return;
-	    }
-	
-	    // TODO: better heuristic? l*log(n*o) <= o*log(l*n) + n*log(l*o)
-	    if (listenersSize <= newSize + oldSize) {
-	        listeners.forEach(function (subListeners, key) {
-	
-	            if (skipListenerKey(key)) {
-	                return;
-	            }
-	
-	            var __currentNew = currentNew.get(key, NOT_SET);
-	            var __currentOld = currentOld.get(key, NOT_SET);
-	            __notifyListeners(subListeners, __currentNew, __currentOld);
-	        });
-	        return;
-	    }
-	
-	    currentNew.forEach(function (__currentNew, key) {
-	        var subListeners = listeners.get(key, NOT_SET);
-	        if (subListeners === NOT_SET) {
-	            return;
-	        }
-	
-	        var __currentOld = currentOld.get(key, NOT_SET);
-	        __notifyListeners(subListeners, __currentNew, __currentOld);
-	    });
-	
-	    currentOld.forEach(function (__currentOld, key) {
-	        var __currentNew = currentNew.get(key, NOT_SET);
-	        if (__currentNew !== NOT_SET) {
-	            return;
-	        }
-	
-	        var subListeners = listeners.get(key, NOT_SET);
-	        if (subListeners === NOT_SET) {
-	            return;
-	        }
-	        __notifyListeners(subListeners, __currentNew, __currentOld);
-	    });
-	
-	    // NOTE: refactored into above code to reduce number of iterations on number of keys
-	    //
-	    // Immutable.Set(currentNew.keySeq()).union(currentOld.keySeq()).forEach(function(key) {
-	    //     const subListeners = listeners.get(key, NOT_SET);
-	    //     if(subListeners === NOT_SET) {
-	    //         return;
-	    //     }
-	
-	    //     const __currentNew = currentNew.get(key, NOT_SET);
-	    //     const __currentOld = currentOld.get(key, NOT_SET);
-	    //     __notifyListeners(subListeners, __currentNew, __currentOld);
-	    // });
-	}
-	
-	function skipListenerKey(key) {
-	    switch (key) {
-	        case LISTENERS:
-	        case LISTENERS_UPDATED:
-	        case LISTENERS_ADDED:
-	        case LISTENERS_DELETED:
-	            return true;
-	    }
-	    return false;
-	}
-	
-	function extractListeners(listeners) {
-	    return {
-	        observersAny: listeners.get(LISTENERS, NOT_SET),
-	        observersAdd: listeners.get(LISTENERS_ADDED, NOT_SET),
-	        observersUpdate: listeners.get(LISTENERS_UPDATED, NOT_SET),
-	        observersDelete: listeners.get(LISTENERS_DELETED, NOT_SET),
-	        count: 0
-	    };
-	}
-	/* unobserve */
+	module.exports = { "default": __webpack_require__(343), __esModule: true };
 
 /***/ },
-/* 171 */
+
+/***/ 298:
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	
-	var assign = __webpack_require__(43);
-	var ReactPropTypes = __webpack_require__(7).PropTypes;
-	var Route = __webpack_require__(75);
-	
-	var PropTypes = assign({}, ReactPropTypes, {
-	
-	  /**
-	   * Indicates that a prop should be falsy.
-	   */
-	  falsy: function falsy(props, propName, componentName) {
-	    if (props[propName]) {
-	      return new Error('<' + componentName + '> should not have a "' + propName + '" prop');
-	    }
-	  },
-	
-	  /**
-	   * Indicates that a prop should be a Route object.
-	   */
-	  route: ReactPropTypes.instanceOf(Route),
-	
-	  /**
-	   * Indicates that a prop should be a Router object.
-	   */
-	  //router: ReactPropTypes.instanceOf(Router) // TODO
-	  router: ReactPropTypes.func
-	
-	});
-	
-	module.exports = PropTypes;
-
-/***/ },
-/* 172 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Actions that modify the URL.
-	 */
-	'use strict';
-	
-	var LocationActions = {
-	
-	  /**
-	   * Indicates a new location is being pushed to the history stack.
-	   */
-	  PUSH: 'push',
-	
-	  /**
-	   * Indicates the current location should be replaced.
-	   */
-	  REPLACE: 'replace',
-	
-	  /**
-	   * Indicates the most recent entry should be removed from the history stack.
-	   */
-	  POP: 'pop'
-	
-	};
-	
-	module.exports = LocationActions;
-
-/***/ },
-/* 173 */,
-/* 174 */,
-/* 175 */,
-/* 176 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
-	
-	/**
-	 * This component is necessary to get around a context warning
-	 * present in React 0.13.0. It sovles this by providing a separation
-	 * between the "owner" and "parent" contexts.
-	 */
-	
-	var React = __webpack_require__(7);
-	
-	var ContextWrapper = (function (_React$Component) {
-	  function ContextWrapper() {
-	    _classCallCheck(this, ContextWrapper);
-	
-	    if (_React$Component != null) {
-	      _React$Component.apply(this, arguments);
-	    }
-	  }
-	
-	  _inherits(ContextWrapper, _React$Component);
-	
-	  _createClass(ContextWrapper, [{
-	    key: 'render',
-	    value: function render() {
-	      return this.props.children;
-	    }
-	  }]);
-	
-	  return ContextWrapper;
-	})(React.Component);
-	
-	module.exports = ContextWrapper;
-
-/***/ },
-/* 177 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var invariant = __webpack_require__(105);
-	var assign = __webpack_require__(339);
-	var qs = __webpack_require__(340);
-	
-	var paramCompileMatcher = /:([a-zA-Z_$][a-zA-Z0-9_$]*)|[*.()\[\]\\+|{}^$]/g;
-	var paramInjectMatcher = /:([a-zA-Z_$][a-zA-Z0-9_$?]*[?]?)|[*]/g;
-	var paramInjectTrailingSlashMatcher = /\/\/\?|\/\?\/|\/\?/g;
-	var queryMatcher = /\?(.*)$/;
-	
-	var _compiledPatterns = {};
-	
-	function compilePattern(pattern) {
-	  if (!(pattern in _compiledPatterns)) {
-	    var paramNames = [];
-	    var source = pattern.replace(paramCompileMatcher, function (match, paramName) {
-	      if (paramName) {
-	        paramNames.push(paramName);
-	        return '([^/?#]+)';
-	      } else if (match === '*') {
-	        paramNames.push('splat');
-	        return '(.*?)';
-	      } else {
-	        return '\\' + match;
-	      }
-	    });
-	
-	    _compiledPatterns[pattern] = {
-	      matcher: new RegExp('^' + source + '$', 'i'),
-	      paramNames: paramNames
-	    };
-	  }
-	
-	  return _compiledPatterns[pattern];
-	}
-	
-	var PathUtils = {
-	
-	  /**
-	   * Returns true if the given path is absolute.
-	   */
-	  isAbsolute: function isAbsolute(path) {
-	    return path.charAt(0) === '/';
-	  },
-	
-	  /**
-	   * Joins two URL paths together.
-	   */
-	  join: function join(a, b) {
-	    return a.replace(/\/*$/, '/') + b;
-	  },
-	
-	  /**
-	   * Returns an array of the names of all parameters in the given pattern.
-	   */
-	  extractParamNames: function extractParamNames(pattern) {
-	    return compilePattern(pattern).paramNames;
-	  },
-	
-	  /**
-	   * Extracts the portions of the given URL path that match the given pattern
-	   * and returns an object of param name => value pairs. Returns null if the
-	   * pattern does not match the given path.
-	   */
-	  extractParams: function extractParams(pattern, path) {
-	    var _compilePattern = compilePattern(pattern);
-	
-	    var matcher = _compilePattern.matcher;
-	    var paramNames = _compilePattern.paramNames;
-	
-	    var match = path.match(matcher);
-	
-	    if (!match) {
-	      return null;
-	    }var params = {};
-	
-	    paramNames.forEach(function (paramName, index) {
-	      params[paramName] = match[index + 1];
-	    });
-	
-	    return params;
-	  },
-	
-	  /**
-	   * Returns a version of the given route path with params interpolated. Throws
-	   * if there is a dynamic segment of the route path for which there is no param.
-	   */
-	  injectParams: function injectParams(pattern, params) {
-	    params = params || {};
-	
-	    var splatIndex = 0;
-	
-	    return pattern.replace(paramInjectMatcher, function (match, paramName) {
-	      paramName = paramName || 'splat';
-	
-	      // If param is optional don't check for existence
-	      if (paramName.slice(-1) === '?') {
-	        paramName = paramName.slice(0, -1);
-	
-	        if (params[paramName] == null) return '';
-	      } else {
-	        invariant(params[paramName] != null, 'Missing "%s" parameter for path "%s"', paramName, pattern);
-	      }
-	
-	      var segment;
-	      if (paramName === 'splat' && Array.isArray(params[paramName])) {
-	        segment = params[paramName][splatIndex++];
-	
-	        invariant(segment != null, 'Missing splat # %s for path "%s"', splatIndex, pattern);
-	      } else {
-	        segment = params[paramName];
-	      }
-	
-	      return segment;
-	    }).replace(paramInjectTrailingSlashMatcher, '/');
-	  },
-	
-	  /**
-	   * Returns an object that is the result of parsing any query string contained
-	   * in the given path, null if the path contains no query string.
-	   */
-	  extractQuery: function extractQuery(path) {
-	    var match = path.match(queryMatcher);
-	    return match && qs.parse(match[1]);
-	  },
-	
-	  /**
-	   * Returns a version of the given path without the query string.
-	   */
-	  withoutQuery: function withoutQuery(path) {
-	    return path.replace(queryMatcher, '');
-	  },
-	
-	  /**
-	   * Returns a version of the given path with the parameters in the given
-	   * query merged into the query string.
-	   */
-	  withQuery: function withQuery(path, query) {
-	    var existingQuery = PathUtils.extractQuery(path);
-	
-	    if (existingQuery) query = query ? assign(existingQuery, query) : existingQuery;
-	
-	    var queryString = qs.stringify(query, { arrayFormat: 'brackets' });
-	
-	    if (queryString) {
-	      return PathUtils.withoutQuery(path) + '?' + queryString;
-	    }return PathUtils.withoutQuery(path);
-	  }
-	
-	};
-	
-	module.exports = PathUtils;
-
-/***/ },
-/* 178 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var invariant = __webpack_require__(105);
-	var canUseDOM = __webpack_require__(46).canUseDOM;
-	var getWindowScrollPosition = __webpack_require__(299);
-	
-	function shouldUpdateScroll(state, prevState) {
-	  if (!prevState) {
-	    return true;
-	  } // Don't update scroll position when only the query has changed.
-	  if (state.pathname === prevState.pathname) {
-	    return false;
-	  }var routes = state.routes;
-	  var prevRoutes = prevState.routes;
-	
-	  var sharedAncestorRoutes = routes.filter(function (route) {
-	    return prevRoutes.indexOf(route) !== -1;
-	  });
-	
-	  return !sharedAncestorRoutes.some(function (route) {
-	    return route.ignoreScrollBehavior;
-	  });
-	}
-	
-	/**
-	 * Provides the router with the ability to manage window scroll position
-	 * according to its scroll behavior.
-	 */
-	var ScrollHistory = {
-	
-	  statics: {
-	
-	    /**
-	     * Records curent scroll position as the last known position for the given URL path.
-	     */
-	    recordScrollPosition: function recordScrollPosition(path) {
-	      if (!this.scrollHistory) this.scrollHistory = {};
-	
-	      this.scrollHistory[path] = getWindowScrollPosition();
-	    },
-	
-	    /**
-	     * Returns the last known scroll position for the given URL path.
-	     */
-	    getScrollPosition: function getScrollPosition(path) {
-	      if (!this.scrollHistory) this.scrollHistory = {};
-	
-	      return this.scrollHistory[path] || null;
-	    }
-	
-	  },
-	
-	  componentWillMount: function componentWillMount() {
-	    invariant(this.constructor.getScrollBehavior() == null || canUseDOM, 'Cannot use scroll behavior without a DOM');
-	  },
-	
-	  componentDidMount: function componentDidMount() {
-	    this._updateScroll();
-	  },
-	
-	  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
-	    this._updateScroll(prevState);
-	  },
-	
-	  _updateScroll: function _updateScroll(prevState) {
-	    if (!shouldUpdateScroll(this.state, prevState)) {
-	      return;
-	    }var scrollBehavior = this.constructor.getScrollBehavior();
-	
-	    if (scrollBehavior) scrollBehavior.updateScrollPosition(this.constructor.getScrollPosition(this.state.path), this.state.action);
-	  }
-	
-	};
-	
-	module.exports = ScrollHistory;
-
-/***/ },
-/* 179 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(7);
-	
-	function isValidChild(object) {
-	  return object == null || React.isValidElement(object);
-	}
-	
-	function isReactChildren(object) {
-	  return isValidChild(object) || Array.isArray(object) && object.every(isValidChild);
-	}
-	
-	module.exports = isReactChildren;
-
-/***/ },
-/* 180 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* jshint -W058 */
-	
-	'use strict';
-	
-	var Cancellation = __webpack_require__(182);
-	var Redirect = __webpack_require__(181);
-	
-	/**
-	 * Encapsulates a transition to a given path.
-	 *
-	 * The willTransitionTo and willTransitionFrom handlers receive
-	 * an instance of this class as their first argument.
-	 */
-	function Transition(path, retry) {
-	  this.path = path;
-	  this.abortReason = null;
-	  // TODO: Change this to router.retryTransition(transition)
-	  this.retry = retry.bind(this);
-	}
-	
-	Transition.prototype.abort = function (reason) {
-	  if (this.abortReason == null) this.abortReason = reason || 'ABORT';
-	};
-	
-	Transition.prototype.redirect = function (to, params, query) {
-	  this.abort(new Redirect(to, params, query));
-	};
-	
-	Transition.prototype.cancel = function () {
-	  this.abort(new Cancellation());
-	};
-	
-	Transition.from = function (transition, routes, components, callback) {
-	  routes.reduce(function (callback, route, index) {
-	    return function (error) {
-	      if (error || transition.abortReason) {
-	        callback(error);
-	      } else if (route.onLeave) {
-	        try {
-	          route.onLeave(transition, components[index], callback);
-	
-	          // If there is no callback in the argument list, call it automatically.
-	          if (route.onLeave.length < 3) callback();
-	        } catch (e) {
-	          callback(e);
-	        }
-	      } else {
-	        callback();
-	      }
-	    };
-	  }, callback)();
-	};
-	
-	Transition.to = function (transition, routes, params, query, callback) {
-	  routes.reduceRight(function (callback, route) {
-	    return function (error) {
-	      if (error || transition.abortReason) {
-	        callback(error);
-	      } else if (route.onEnter) {
-	        try {
-	          route.onEnter(transition, params, query, callback);
-	
-	          // If there is no callback in the argument list, call it automatically.
-	          if (route.onEnter.length < 4) callback();
-	        } catch (e) {
-	          callback(e);
-	        }
-	      } else {
-	        callback();
-	      }
-	    };
-	  }, callback)();
-	};
-	
-	module.exports = Transition;
-
-/***/ },
-/* 181 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Encapsulates a redirect to the given route.
-	 */
-	"use strict";
-	
-	function Redirect(to, params, query) {
-	  this.to = to;
-	  this.params = params;
-	  this.query = query;
-	}
-	
-	module.exports = Redirect;
-
-/***/ },
-/* 182 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Represents a cancellation caused by navigating away
-	 * before the previous transition has fully resolved.
-	 */
-	"use strict";
-	
-	function Cancellation() {}
-	
-	module.exports = Cancellation;
-
-/***/ },
-/* 183 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	/* jshint -W084 */
-	var PathUtils = __webpack_require__(177);
-	
-	function deepSearch(route, pathname, query) {
-	  // Check the subtree first to find the most deeply-nested match.
-	  var childRoutes = route.childRoutes;
-	  if (childRoutes) {
-	    var match, childRoute;
-	    for (var i = 0, len = childRoutes.length; i < len; ++i) {
-	      childRoute = childRoutes[i];
-	
-	      if (childRoute.isDefault || childRoute.isNotFound) continue; // Check these in order later.
-	
-	      if (match = deepSearch(childRoute, pathname, query)) {
-	        // A route in the subtree matched! Add this route and we're done.
-	        match.routes.unshift(route);
-	        return match;
-	      }
-	    }
-	  }
-	
-	  // No child routes matched; try the default route.
-	  var defaultRoute = route.defaultRoute;
-	  if (defaultRoute && (params = PathUtils.extractParams(defaultRoute.path, pathname))) {
-	    return new Match(pathname, params, query, [route, defaultRoute]);
-	  } // Does the "not found" route match?
-	  var notFoundRoute = route.notFoundRoute;
-	  if (notFoundRoute && (params = PathUtils.extractParams(notFoundRoute.path, pathname))) {
-	    return new Match(pathname, params, query, [route, notFoundRoute]);
-	  } // Last attempt: check this route.
-	  var params = PathUtils.extractParams(route.path, pathname);
-	  if (params) {
-	    return new Match(pathname, params, query, [route]);
-	  }return null;
-	}
-	
-	var Match = (function () {
-	  function Match(pathname, params, query, routes) {
-	    _classCallCheck(this, Match);
-	
-	    this.pathname = pathname;
-	    this.params = params;
-	    this.query = query;
-	    this.routes = routes;
-	  }
-	
-	  _createClass(Match, null, [{
-	    key: 'findMatch',
-	
-	    /**
-	     * Attempts to match depth-first a route in the given route's
-	     * subtree against the given path and returns the match if it
-	     * succeeds, null if no match can be made.
-	     */
-	    value: function findMatch(routes, path) {
-	      var pathname = PathUtils.withoutQuery(path);
-	      var query = PathUtils.extractQuery(path);
-	      var match = null;
-	
-	      for (var i = 0, len = routes.length; match == null && i < len; ++i) match = deepSearch(routes[i], pathname, query);
-	
-	      return match;
-	    }
-	  }]);
-	
-	  return Match;
-	})();
-	
-	module.exports = Match;
-
-/***/ },
-/* 184 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	function supportsHistory() {
-	  /*! taken from modernizr
-	   * https://github.com/Modernizr/Modernizr/blob/master/LICENSE
-	   * https://github.com/Modernizr/Modernizr/blob/master/feature-detects/history.js
-	   * changed to avoid false negatives for Windows Phones: https://github.com/rackt/react-router/issues/586
-	   */
-	  var ua = navigator.userAgent;
-	  if ((ua.indexOf('Android 2.') !== -1 || ua.indexOf('Android 4.0') !== -1) && ua.indexOf('Mobile Safari') !== -1 && ua.indexOf('Chrome') === -1 && ua.indexOf('Windows Phone') === -1) {
-	    return false;
-	  }
-	  return window.history && 'pushState' in window.history;
-	}
-	
-	module.exports = supportsHistory;
-
-/***/ },
-/* 185 */,
-/* 186 */,
-/* 187 */,
-/* 188 */,
-/* 189 */,
-/* 190 */,
-/* 191 */,
-/* 192 */,
-/* 193 */,
-/* 194 */,
-/* 195 */,
-/* 196 */,
-/* 197 */,
-/* 198 */,
-/* 199 */,
-/* 200 */,
-/* 201 */,
-/* 202 */,
-/* 203 */,
-/* 204 */,
-/* 205 */,
-/* 206 */,
-/* 207 */,
-/* 208 */,
-/* 209 */,
-/* 210 */,
-/* 211 */,
-/* 212 */,
-/* 213 */,
-/* 214 */,
-/* 215 */,
-/* 216 */,
-/* 217 */,
-/* 218 */,
-/* 219 */,
-/* 220 */,
-/* 221 */,
-/* 222 */,
-/* 223 */,
-/* 224 */,
-/* 225 */,
-/* 226 */,
-/* 227 */,
-/* 228 */,
-/* 229 */,
-/* 230 */,
-/* 231 */,
-/* 232 */,
-/* 233 */,
-/* 234 */,
-/* 235 */,
-/* 236 */,
-/* 237 */,
-/* 238 */,
-/* 239 */,
-/* 240 */,
-/* 241 */,
-/* 242 */,
-/* 243 */,
-/* 244 */,
-/* 245 */,
-/* 246 */,
-/* 247 */,
-/* 248 */,
-/* 249 */,
-/* 250 */,
-/* 251 */,
-/* 252 */,
-/* 253 */,
-/* 254 */,
-/* 255 */,
-/* 256 */,
-/* 257 */,
-/* 258 */,
-/* 259 */,
-/* 260 */,
-/* 261 */,
-/* 262 */,
-/* 263 */,
-/* 264 */,
-/* 265 */,
-/* 266 */,
-/* 267 */,
-/* 268 */,
-/* 269 */,
-/* 270 */,
-/* 271 */,
-/* 272 */,
-/* 273 */,
-/* 274 */,
-/* 275 */,
-/* 276 */,
-/* 277 */,
-/* 278 */,
-/* 279 */,
-/* 280 */,
-/* 281 */,
-/* 282 */,
-/* 283 */,
-/* 284 */,
-/* 285 */,
-/* 286 */,
-/* 287 */,
-/* 288 */,
-/* 289 */,
-/* 290 */,
-/* 291 */,
-/* 292 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(335), __esModule: true };
-
-/***/ },
-/* 293 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(334);
+	module.exports = __webpack_require__(344);
 
 
 /***/ },
-/* 294 */
+
+/***/ 299:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(React) {/**
@@ -4604,15 +1282,14 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var orwell = __webpack_require__(169);
-	var Probe = __webpack_require__(19).Probe;
-	var Item = __webpack_require__(336);
+	var orwell = __webpack_require__(185);
+	var Probe = __webpack_require__(10).Probe;
+	var Item = __webpack_require__(345);
 	
 	var List = React.createClass({
 	    displayName: 'List',
 	
 	    propTypes: {
-	        tasksleftCursor: React.PropTypes.instanceOf(Probe).isRequired,
 	        todosCursor: React.PropTypes.instanceOf(Probe).isRequired,
 	        editingCursor: React.PropTypes.instanceOf(Probe).isRequired,
 	        filterTodo: React.PropTypes.func.isRequired
@@ -4637,14 +1314,14 @@ webpackJsonp([1],[
 	            if (filterTodo(record)) {
 	                return;
 	            }
-	
 	            todoItems.push(React.createElement(Item, {
 	                recordCursor: todosCursor.cursor(key),
 	                editingCursor: editingCursor,
-	                tasksleftCursor: tasksleftCursor,
-	                key: record.get('key') + '.' + key
+	                key: record.get('id') + '.' + key
 	            }));
 	        });
+	        console.log('----');
+	        console.log('list render');
 	        return React.createElement(
 	            'ul',
 	            { className: 'todo-list' },
@@ -4654,22 +1331,25 @@ webpackJsonp([1],[
 	});
 	
 	module.exports = orwell(List);
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ },
-/* 295 */
+
+/***/ 300:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(337), __esModule: true };
+	module.exports = { "default": __webpack_require__(346), __esModule: true };
 
 /***/ },
-/* 296 */
+
+/***/ 301:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(338), __esModule: true };
+	module.exports = { "default": __webpack_require__(347), __esModule: true };
 
 /***/ },
-/* 297 */
+
+/***/ 302:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4684,12 +1364,12 @@ webpackJsonp([1],[
 	var Record = _require.Record;
 	
 	var TodoItem = Record({
-	    key: 0,
+	    id: 0,
 	    completed: false,
 	    task: ''
 	});
 	
-	var key = 0;
+	var id = 0;
 	
 	module.exports = {
 	
@@ -4699,37 +1379,14 @@ webpackJsonp([1],[
 	    create: function create(task) {
 	        return new TodoItem({
 	            task: task,
-	            key: key++
+	            id: id++
 	        });
 	    }
 	};
 
 /***/ },
-/* 298 */,
-/* 299 */
-/***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	
-	var invariant = __webpack_require__(105);
-	var canUseDOM = __webpack_require__(46).canUseDOM;
-	
-	/**
-	 * Returns the current scroll position of the window as { x, y }.
-	 */
-	function getWindowScrollPosition() {
-	  invariant(canUseDOM, 'Cannot get current scroll position without a DOM');
-	
-	  return {
-	    x: window.pageXOffset || document.documentElement.scrollLeft,
-	    y: window.pageYOffset || document.documentElement.scrollTop
-	  };
-	}
-	
-	module.exports = getWindowScrollPosition;
-
-/***/ },
-/* 300 */
+/***/ 339:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4740,8 +1397,8 @@ webpackJsonp([1],[
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseIsEqual = __webpack_require__(356),
-	    bindCallback = __webpack_require__(55);
+	var baseIsEqual = __webpack_require__(365),
+	    bindCallback = __webpack_require__(90);
 	
 	/**
 	 * Performs a deep comparison between two values to determine if they are
@@ -4797,40 +1454,16 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 301 */,
-/* 302 */,
-/* 303 */,
-/* 304 */,
-/* 305 */,
-/* 306 */,
-/* 307 */,
-/* 308 */,
-/* 309 */,
-/* 310 */,
-/* 311 */,
-/* 312 */,
-/* 313 */,
-/* 314 */,
-/* 315 */,
-/* 316 */,
-/* 317 */,
-/* 318 */,
-/* 319 */,
-/* 320 */,
-/* 321 */,
-/* 322 */,
-/* 323 */,
-/* 324 */,
-/* 325 */,
-/* 326 */,
-/* 327 */,
-/* 328 */,
-/* 329 */,
-/* 330 */,
-/* 331 */,
-/* 332 */,
-/* 333 */,
-/* 334 */
+
+/***/ 343:
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(188);
+	module.exports = __webpack_require__(105).core.Object.assign;
+
+/***/ },
+
+/***/ 344:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -4853,18 +1486,18 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var LinkedStateMixin = __webpack_require__(348);
-	var React = __webpack_require__(17);
+	var LinkedStateMixin = __webpack_require__(356);
+	var React = __webpack_require__(13);
 	var ReactComponentWithPureRenderMixin =
-	  __webpack_require__(349);
-	var ReactCSSTransitionGroup = __webpack_require__(350);
-	var ReactFragment = __webpack_require__(111);
-	var ReactTransitionGroup = __webpack_require__(351);
-	var ReactUpdates = __webpack_require__(154);
+	  __webpack_require__(357);
+	var ReactCSSTransitionGroup = __webpack_require__(358);
+	var ReactFragment = __webpack_require__(115);
+	var ReactTransitionGroup = __webpack_require__(359);
+	var ReactUpdates = __webpack_require__(165);
 	
-	var cx = __webpack_require__(352);
-	var cloneWithProps = __webpack_require__(353);
-	var update = __webpack_require__(354);
+	var cx = __webpack_require__(360);
+	var cloneWithProps = __webpack_require__(361);
+	var update = __webpack_require__(362);
 	
 	React.addons = {
 	  CSSTransitionGroup: ReactCSSTransitionGroup,
@@ -4880,23 +1513,17 @@ webpackJsonp([1],[
 	};
 	
 	if ("production" !== process.env.NODE_ENV) {
-	  React.addons.Perf = __webpack_require__(140);
-	  React.addons.TestUtils = __webpack_require__(355);
+	  React.addons.Perf = __webpack_require__(159);
+	  React.addons.TestUtils = __webpack_require__(363);
 	}
 	
 	module.exports = React;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(82)))
 
 /***/ },
-/* 335 */
-/***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(1);
-	module.exports = __webpack_require__(98).core.Object.assign;
-
-/***/ },
-/* 336 */
+/***/ 345:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(React, Immutable) {/**
@@ -4906,10 +1533,10 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var classNames = __webpack_require__(359);
+	var classNames = __webpack_require__(5);
 	
-	var orwell = __webpack_require__(169);
-	var Probe = __webpack_require__(19).Probe;
+	var orwell = __webpack_require__(185);
+	var Probe = __webpack_require__(10).Probe;
 	
 	var ESCAPE_KEY = 27;
 	var ENTER_KEY = 13;
@@ -4926,7 +1553,6 @@ webpackJsonp([1],[
 	
 	    propTypes: {
 	        recordCursor: React.PropTypes.instanceOf(Probe).isRequired,
-	        tasksleftCursor: React.PropTypes.instanceOf(Probe).isRequired,
 	        record: React.PropTypes.instanceOf(Immutable.Record).isRequired
 	    },
 	
@@ -4949,21 +1575,9 @@ webpackJsonp([1],[
 	        this.props.recordCursor.update(function (record) {
 	            return record.set('completed', newCompletedVal);
 	        });
-	
-	        this.props.tasksleftCursor.update(function (x) {
-	            return x + (newCompletedVal ? -1 : 1);
-	        });
 	    },
 	
 	    handleDestroy: function handleDestroy() {
-	        var completed = this.props.recordCursor.deref().get('completed');
-	
-	        if (!completed) {
-	            this.props.tasksleftCursor.update(function (x) {
-	                return x - 1;
-	            });
-	        }
-	
 	        this.props.recordCursor['delete']();
 	    },
 	
@@ -5040,7 +1654,7 @@ webpackJsonp([1],[
 	        var record = this.props.record;
 	        var completed = record.get('completed');
 	        var task = record.get('task');
-	
+	        console.log('item render');
 	        return React.createElement(
 	            'li',
 	            { className: classNames({
@@ -5071,7 +1685,7 @@ webpackJsonp([1],[
 	
 	});
 	
-	function watchCursors(_ref, manual) {
+	function watchCursors(_ref) {
 	    var recordCursor = _ref.recordCursor;
 	
 	    return [recordCursor];
@@ -5086,584 +1700,29 @@ webpackJsonp([1],[
 	}
 	
 	module.exports = orwell(Item, watchCursors, getPropsFromCursors);
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(8)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(8)))
 
 /***/ },
-/* 337 */
+
+/***/ 346:
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(174);
-	__webpack_require__(173);
-	__webpack_require__(85);
-	module.exports = __webpack_require__(98).core.getIterator;
+	__webpack_require__(233);
+	__webpack_require__(200);
+	__webpack_require__(93);
+	module.exports = __webpack_require__(105).core.getIterator;
 
 /***/ },
-/* 338 */
+
+/***/ 347:
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(192);
-	module.exports = __webpack_require__(98).core.Object.keys;
+	module.exports = __webpack_require__(105).core.Object.keys;
 
 /***/ },
-/* 339 */
-/***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	
-	function ToObject(val) {
-		if (val == null) {
-			throw new TypeError('Object.assign cannot be called with null or undefined');
-		}
-	
-		return Object(val);
-	}
-	
-	module.exports = Object.assign || function (target, source) {
-		var from;
-		var keys;
-		var to = ToObject(target);
-	
-		for (var s = 1; s < arguments.length; s++) {
-			from = arguments[s];
-			keys = Object.keys(Object(from));
-	
-			for (var i = 0; i < keys.length; i++) {
-				to[keys[i]] = from[keys[i]];
-			}
-		}
-	
-		return to;
-	};
-
-
-/***/ },
-/* 340 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(358);
-
-
-/***/ },
-/* 341 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 *
-	 * Abstract Om-style cursors that may be adapted to data structures of any type.
-	 * This intended to be an alternative to immutable-js Cursors.
-	 *
-	 * By default, Providence cursors will be unboxed to an Immutable object type.
-	 * However, Providence will not provide the default initial root data, which
-	 * should be provided by the caller.
-	 *
-	 */
-	'use strict';
-	
-	var Immutable = __webpack_require__(8);
-	var Map = Immutable.Map;
-	var Iterable = Immutable.Iterable;
-	
-	var isPlainObject = __webpack_require__(2);
-	var objGet = __webpack_require__(361);
-	var objSet = __webpack_require__(362);
-	var objHas = __webpack_require__(363);
-	
-	var utils = __webpack_require__(357);
-	// TODO: make these overridable externally
-	var valToKeyPath = utils.valToKeyPath;
-	var newKeyPath = utils.newKeyPath;
-	
-	/* constants */
-	var NOT_SET = {}; // sentinel value
-	var IDENTITY = function IDENTITY(x) {
-	    return x;
-	};
-	var INITIAL_KEYPATH = [];
-	// paths
-	var UNBOXER_PATH = ['root', 'unbox'];
-	var BOXER_PATH = ['root', 'box'];
-	var DATA_PATH = ['root', 'data'];
-	var KEYPATH_PATH = ['keyPath'];
-	var GETIN_PATH = ['getIn'];
-	var SETIN_PATH = ['setIn'];
-	var DELETEIN_PATH = ['deleteIn'];
-	var ONUPDATE_PATH = ['onUpdate'];
-	// Internal _onUpdate function; useful for when Providence is inherited.
-	// Whereas, onUpdate function is used by users.
-	var _ONUPDATE_PATH = ['_onUpdate'];
-	
-	// DEFAULTS is an array of 2-tuple arrays where the first element of the tuple is the key path
-	// to be checked, and the second element is the function that will be called to generate the value
-	// to be used to set on the key path in the case that there is no value set in the key path.
-	var DEFAULTS = [[UNBOXER_PATH, IDENTITY], [BOXER_PATH, IDENTITY], [KEYPATH_PATH, INITIAL_KEYPATH], [GETIN_PATH, _defaultGetIn], [SETIN_PATH, _defaultSetIn], [DELETEIN_PATH, _defaultDeleteIn]];
-	var PATH = 0;
-	var VALUE = 1;
-	
-	module.exports = Providence;
-	
-	/**
-	 * Create a Providence cursor given options.
-	 * Options may either be plain object or an Immutable Map.
-	 *
-	 * @param {Object | Immutable Map} options Defines the character of the providence cursor.
-	 */
-	function Providence() {
-	    var options = arguments[0] === undefined ? NOT_SET : arguments[0];
-	    var skipDataCheck = arguments[1] === undefined ? false : arguments[1];
-	    var skipProcessOptions = arguments[2] === undefined ? false : arguments[2];
-	
-	    if (options === NOT_SET) {
-	        throw new Error('Expected options to be a plain object or an Immutable Map');
-	    }
-	
-	    // This will not support constructors that are extending Providence.
-	    // They should provide their own setup in their constructor function.
-	    if (!(this instanceof Providence)) {
-	        return new Providence(options, skipDataCheck, skipProcessOptions);
-	    }
-	
-	    this._options = skipProcessOptions ? options : processOptions(options);
-	
-	    // Used for caching value of the Providence object.
-	    // When the unboxed root data and this._refUnboxedRootData are equal,
-	    // then unboxed root data hasn't changed since the previous look up, and thus
-	    // this._cachedValue and value at keypath also hasn't changed.
-	    this._refUnboxedRootData = NOT_SET;
-	    this._cachedValue = NOT_SET;
-	
-	    this._firstValue = NOT_SET;
-	
-	    if (!skipDataCheck && this._options.getIn(DATA_PATH, NOT_SET) === NOT_SET) {
-	        throw new Error('value at path [\'root\', \'data\'] is required!');
-	    }
-	}
-	
-	Providence.prototype.constructor = Providence;
-	Providence.prototype.__utils = utils;
-	
-	/**
-	 * Returns string representation of `this.deref()`.
-	 *
-	 * @return {String}
-	 */
-	Providence.prototype.toString = function () {
-	    return String(this.deref());
-	};
-	
-	/**
-	 * Dereference by unboxing the root data and getting the value at keypath.
-	 * If keypath happens to not exist, notSetValue is, instead, returned.
-	 * If notSetValue is not provided, it becomes value: void 0.
-	 *
-	 * @param  {any} notSetValue
-	 * @return {any}             The sub-structure value at keypath relative to
-	 *                           root data.
-	 */
-	Providence.prototype.valueOf = Providence.prototype.deref = function (notSetValue) {
-	
-	    var options = this._options;
-	
-	    // unbox root data
-	
-	    var _unboxRootData = this.unboxRootData();
-	
-	    var rootData = _unboxRootData.rootData;
-	    var unboxed = _unboxRootData.unboxed;
-	
-	    // check if value was cached
-	    if (this._refUnboxedRootData === unboxed) {
-	        var _resolvedValue = this._cachedValue;
-	        return _resolvedValue === NOT_SET ? notSetValue : _resolvedValue;
-	    }
-	
-	    var keyPath = options.getIn(KEYPATH_PATH);
-	    var fetchGetIn = options.getIn(GETIN_PATH);
-	    var getIn = fetchGetIn(unboxed);
-	
-	    var resolvedValue = getIn(keyPath, NOT_SET);
-	
-	    // cache
-	    this._refUnboxedRootData = unboxed;
-	    this._cachedValue = resolvedValue;
-	
-	    if (this._firstValue === NOT_SET) {
-	        this._firstValue = resolvedValue;
-	    }
-	
-	    return resolvedValue === NOT_SET ? notSetValue : resolvedValue;
-	};
-	
-	Providence.prototype.cachedValue = function (notSetValue) {
-	    return this._cachedValue === NOT_SET ? notSetValue : this._cachedValue;
-	};
-	
-	Providence.prototype.firstValue = function () {
-	    return this._firstValue === NOT_SET ? this.deref() : this._firstValue;
-	};
-	
-	/**
-	 * Return true if a keypath exists within the unboxed root data.
-	 *
-	 * @return {Bool}
-	 */
-	Providence.prototype.exists = function () {
-	    return this.deref(NOT_SET) !== NOT_SET;
-	};
-	
-	/**
-	 * Returns the array representation of the keypath.
-	 *
-	 * @type {Array}
-	 */
-	Providence.prototype.keypath = Providence.prototype.keyPath = function () {
-	    return this._options.getIn(KEYPATH_PATH);
-	};
-	
-	/**
-	 * Returns providence cursor's options. It is safe to modify this object since
-	 * it is an Immutable Map object; and any changes will not reflect back to the
-	 * originating cursor, unless it is used as the new options.
-	 *
-	 * @return {Immutable Map}
-	 */
-	Providence.prototype.options = function () {
-	    return this._options;
-	};
-	
-	/**
-	 * Create a new Providence object with options via this instance.
-	 *
-	 * @param  {Immutable Map | Object} newOptions
-	 * @return {Providence}
-	 */
-	Providence.prototype['new'] = function (newOptions) {
-	    return new this.constructor(newOptions);
-	};
-	
-	/**
-	 * When given no arguments, return itself.
-	 *
-	 * By default, this is the same behaviour as cursor() method for immutable-js
-	 * cursors:
-	 * - Returns a sub-cursor following the path keyValue starting from this cursor.
-	 * - If keyValue is not an array, an array containing keyValue is instead used.
-	 *
-	 * @param  {any | array } keyValue
-	 * @return {Providence}
-	 */
-	Providence.prototype.cursor = function (keyValue) {
-	
-	    if (arguments.length === 0) {
-	        return this;
-	    }
-	
-	    // TODO: overridable valToKeyPath; expect this to be a pure function
-	    // valToKeyPath converts keyValue to keyPath
-	    var subKeyPath = valToKeyPath(keyValue);
-	
-	    // TODO: validateKeyPath that returns bool; expect this to be a pure function
-	    // be able to abort cursor procedure. aborting returns this instead.
-	    if (subKeyPath.length === 0) {
-	        return this;
-	    }
-	
-	    var options = this._options;
-	
-	    var keyPath = options.getIn(KEYPATH_PATH);
-	    var newOptions = options.setIn(KEYPATH_PATH, newKeyPath(keyPath, subKeyPath));
-	
-	    return new this.constructor(newOptions, true, true);
-	};
-	
-	/**
-	 * Update value in the unboxed root data at keypath using the updater function.
-	 * If the keypath exists, updater is called using:
-	 * - the value at keypath
-	 * - unboxed root data
-	 * - boxed root data
-	 *
-	 * If keypath doesn't exist, notSetValue is used as the initial value.
-	 * If notSetValue is not defined, it has value void 0.
-	 *
-	 * If updater returns the same value the value at keypath (or notSetValue),
-	 * then no changes has truly occured, and the current cursor is instead returned.
-	 *
-	 * Otherwise, the new value is replaced at keypath of the unboxed root data,
-	 * and a new providence cursor is returned with the new boxed root data.
-	 * In addition, any defined functions at onUpdate and/or _onUpdate within options
-	 * will be called with the following:
-	 * - options
-	 * - cursor keypath
-	 * - new unboxed root data with the new value
-	 * - previous unboxed root data
-	 *
-	 * @param  {any} notSetValue
-	 * @param  {Function} updater
-	 * @return {Providence}
-	 */
-	Providence.prototype.update = function (notSetValue, updater) {
-	
-	    if (!updater) {
-	        updater = notSetValue;
-	        notSetValue = void 0;
-	    }
-	
-	    var options = this._options;
-	
-	    // unbox root data
-	
-	    var _unboxRootData2 = this.unboxRootData();
-	
-	    var rootData = _unboxRootData2.rootData;
-	    var unboxed = _unboxRootData2.unboxed;
-	
-	    // fetch state at keypath
-	    var fetchGetIn = options.getIn(GETIN_PATH);
-	    var getIn = fetchGetIn(unboxed);
-	    var keyPath = options.getIn(KEYPATH_PATH);
-	    var state = getIn(keyPath, notSetValue);
-	
-	    // get new state
-	    //
-	    // call updater with:
-	    // - state      the object to be updated
-	    // - unboxed    unboxed root data
-	    // - rootData   boxed root data
-	    var newState = updater.call(null, state, unboxed, rootData);
-	
-	    // TODO: delegate to an overridable: confirmChange(prev, next)
-	    if (state === newState) {
-	        return this;
-	    }
-	
-	    // merge new state at keyPath into root data
-	    var fetchSetIn = options.getIn(SETIN_PATH);
-	    var setIn = fetchSetIn(unboxed);
-	    var newRootData = setIn(keyPath, newState);
-	
-	    // box new root data
-	    var boxer = options.getIn(BOXER_PATH);
-	    var boxed = boxer(newRootData, rootData);
-	
-	    callOnUpdate(options, keyPath, newRootData, unboxed);
-	
-	    var newOptions = options.setIn(DATA_PATH, boxed);
-	
-	    return new this.constructor(newOptions, true, true);
-	};
-	
-	/**
-	 * Delete value at keypath.
-	 *
-	 * If the new unboxed root data is the same as the previous, original unboxed root data,
-	 * then the current cursor is returned.
-	 *
-	 * Otherwise, any defined functions at onUpdate and/or _onUpdate within options
-	 * will be called with the following:
-	 * - options
-	 * - cursor keypath
-	 * - new unboxed root data with the new value
-	 * - previous unboxed root data
-	 *
-	 * In addition, the new providence cursor containing the new unboxed root data
-	 * will be returned.
-	 *
-	 * @type {Providence}
-	 */
-	Providence.prototype.remove = Providence.prototype['delete'] = function () {
-	
-	    var options = this._options;
-	
-	    // unbox root data
-	
-	    var _unboxRootData3 = this.unboxRootData();
-	
-	    var rootData = _unboxRootData3.rootData;
-	    var unboxed = _unboxRootData3.unboxed;
-	
-	    var fetchDeleteIn = options.getIn(DELETEIN_PATH);
-	    var deleteIn = fetchDeleteIn(unboxed);
-	    var keyPath = options.getIn(KEYPATH_PATH);
-	    var newRootData = deleteIn(keyPath);
-	
-	    // TODO: delegate to an overridable: confirmChange(prev, next)
-	    if (unboxed === newRootData) {
-	        return this;
-	    }
-	
-	    // box new root data
-	    var boxer = options.getIn(BOXER_PATH);
-	    var boxed = boxer(newRootData, rootData);
-	
-	    callOnUpdate(options, keyPath, newRootData, unboxed);
-	
-	    var newOptions = options.setIn(DATA_PATH, boxed);
-	
-	    return new this.constructor(newOptions, true, true);
-	};
-	
-	Providence.prototype.unboxRootData = function () {
-	    var options = this._options;
-	
-	    var unboxer = options.getIn(UNBOXER_PATH);
-	    var rootData = options.getIn(DATA_PATH);
-	    return {
-	        rootData: rootData,
-	        unboxed: unboxer(rootData)
-	    };
-	};
-	
-	/* helpers */
-	
-	// Process and convert options to an Immutable Map if it isn't one already.
-	//
-	// processOptions is called whenever a new Providence object is created.
-	//
-	// We take advantage of structural sharing (a la flyweight) when a child
-	// Providence object inherit options from its parent.
-	function processOptions(options) {
-	    options = validateOptions(options);
-	
-	    return options;
-	}
-	
-	var __immutableSetIfNotSet = setIfNotSet.bind(null, _ImmutableHasIn, _ImmutableSetIn);
-	var immutableValidateOptions = __validateOptions.bind(null, __immutableSetIfNotSet);
-	
-	var __plainSetIfNotSet = setIfNotSet.bind(null, _plainHasIn, _plainSetIn);
-	var plainValidateOptions = __validateOptions.bind(null, __plainSetIfNotSet);
-	
-	function validateOptions(options) {
-	
-	    if (Map.isMap(options)) {
-	        return immutableValidateOptions(options);
-	    }
-	
-	    if (Iterable.isIterable(options)) {
-	        throw new Error('Expected options to be an Immutable Map!');
-	    }
-	
-	    if (!isPlainObject(options)) {
-	        throw new Error('Expected options to be a plain object');
-	    }
-	
-	    options = plainValidateOptions(options);
-	
-	    // preserve values that Immutable.fromJS may transform; which is undesirable.
-	    var getIn = _plainGetIn(options);
-	    var setIn = _plainSetIn(options);
-	
-	    var rootData = getIn(DATA_PATH, NOT_SET);
-	    var keyPath = getIn(KEYPATH_PATH, NOT_SET);
-	
-	    // Set null values for paths so that they're not transformed by Immutable.fromJS().
-	    // We do this in case that rootData is a deeply nested plain object.
-	    //
-	    // NOTE: This is a side-effect; we restore the values later.
-	    //
-	    // TODO: document this side-effect and potential for unintended effect
-	    // with Object.observe(...)
-	    if (rootData !== NOT_SET) {
-	        setIn(DATA_PATH, null);
-	    }
-	
-	    if (keyPath !== NOT_SET) {
-	        setIn(KEYPATH_PATH, null);
-	    }
-	
-	    options = Immutable.fromJS(options);
-	
-	    // restore values
-	    if (rootData !== NOT_SET) {
-	        options = options.setIn(DATA_PATH, rootData);
-	        setIn(DATA_PATH, rootData);
-	    }
-	
-	    if (keyPath !== NOT_SET) {
-	        options = options.setIn(KEYPATH_PATH, keyPath);
-	        setIn(KEYPATH_PATH, keyPath);
-	    }
-	
-	    return options;
-	}
-	
-	function __validateOptions(_setIfNotSet, _options) {
-	
-	    var options = _options;
-	    var n = DEFAULTS.length;
-	
-	    while (n-- > 0) {
-	        var current = DEFAULTS[n];
-	        options = _setIfNotSet(options, current[PATH], current[VALUE]);
-	    }
-	
-	    return options;
-	}
-	
-	function setIfNotSet(_fetchHasIn, _fetchSetIn, options, path, value) {
-	
-	    var _hasIn = _fetchHasIn(options);
-	
-	    if (!_hasIn(path)) {
-	        var _setIn = _fetchSetIn(options);
-	        return _setIn(path, value);
-	    }
-	
-	    return options;
-	}
-	
-	function callOnUpdate(options, keyPath, newRoot, oldRoot) {
-	    var _onUpdate = options.getIn(_ONUPDATE_PATH, NOT_SET);
-	    if (_onUpdate !== NOT_SET) {
-	        _onUpdate.call(null, options, keyPath, newRoot, oldRoot);
-	    }
-	
-	    var onUpdate = options.getIn(ONUPDATE_PATH, NOT_SET);
-	    if (onUpdate !== NOT_SET) {
-	        onUpdate.call(null, options, keyPath, newRoot, oldRoot);
-	    }
-	}
-	
-	function _plainHasIn(obj) {
-	    return objHas.bind(objHas, obj);
-	}
-	
-	function _plainSetIn(obj) {
-	    return objSet.bind(objSet, obj);
-	}
-	
-	function _plainGetIn(obj) {
-	    return objGet.bind(objGet, obj);
-	}
-	
-	function _ImmutableHasIn(obj) {
-	    return obj.hasIn.bind(obj);
-	}
-	
-	function _ImmutableSetIn(obj) {
-	    return obj.setIn.bind(obj);
-	}
-	
-	function _defaultGetIn(rootData) {
-	    return rootData.getIn.bind(rootData);
-	}
-	
-	function _defaultSetIn(rootData) {
-	    return rootData.setIn.bind(rootData);
-	}
-	
-	function _defaultDeleteIn(rootData) {
-	    return rootData.deleteIn.bind(rootData);
-	}
-
-/***/ },
-/* 342 */,
-/* 343 */,
-/* 344 */,
-/* 345 */,
-/* 346 */,
-/* 347 */,
-/* 348 */
+/***/ 356:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5680,8 +1739,8 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var ReactLink = __webpack_require__(364);
-	var ReactStateSetters = __webpack_require__(365);
+	var ReactLink = __webpack_require__(370);
+	var ReactStateSetters = __webpack_require__(371);
 	
 	/**
 	 * A simple mixin around ReactLink.forState().
@@ -5708,7 +1767,8 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 349 */
+
+/***/ 357:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5724,7 +1784,7 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var shallowEqual = __webpack_require__(273);
+	var shallowEqual = __webpack_require__(279);
 	
 	/**
 	 * If your React component's render function is "pure", e.g. it will render the
@@ -5761,7 +1821,8 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 350 */
+
+/***/ 358:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5778,15 +1839,15 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var React = __webpack_require__(17);
+	var React = __webpack_require__(13);
 	
-	var assign = __webpack_require__(43);
+	var assign = __webpack_require__(65);
 	
 	var ReactTransitionGroup = React.createFactory(
-	  __webpack_require__(351)
+	  __webpack_require__(359)
 	);
 	var ReactCSSTransitionGroupChild = React.createFactory(
-	  __webpack_require__(366)
+	  __webpack_require__(372)
 	);
 	
 	var ReactCSSTransitionGroup = React.createClass({
@@ -5835,7 +1896,8 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 351 */
+
+/***/ 359:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5851,12 +1913,12 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var React = __webpack_require__(17);
-	var ReactTransitionChildMapping = __webpack_require__(367);
+	var React = __webpack_require__(13);
+	var ReactTransitionChildMapping = __webpack_require__(373);
 	
-	var assign = __webpack_require__(43);
-	var cloneWithProps = __webpack_require__(353);
-	var emptyFunction = __webpack_require__(148);
+	var assign = __webpack_require__(65);
+	var cloneWithProps = __webpack_require__(361);
+	var emptyFunction = __webpack_require__(171);
 	
 	var ReactTransitionGroup = React.createClass({
 	  displayName: 'ReactTransitionGroup',
@@ -6069,7 +2131,8 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 352 */
+
+/***/ 360:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -6100,7 +2163,7 @@ webpackJsonp([1],[
 	 */
 	
 	'use strict';
-	var warning = __webpack_require__(108);
+	var warning = __webpack_require__(73);
 	
 	var warned = false;
 	
@@ -6125,10 +2188,11 @@ webpackJsonp([1],[
 	
 	module.exports = cx;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(82)))
 
 /***/ },
-/* 353 */
+
+/***/ 361:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -6145,11 +2209,11 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var ReactElement = __webpack_require__(32);
-	var ReactPropTransferer = __webpack_require__(368);
+	var ReactElement = __webpack_require__(54);
+	var ReactPropTransferer = __webpack_require__(374);
 	
-	var keyOf = __webpack_require__(107);
-	var warning = __webpack_require__(108);
+	var keyOf = __webpack_require__(124);
+	var warning = __webpack_require__(73);
 	
 	var CHILDREN_PROP = keyOf({children: null});
 	
@@ -6187,10 +2251,11 @@ webpackJsonp([1],[
 	
 	module.exports = cloneWithProps;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(82)))
 
 /***/ },
-/* 354 */
+
+/***/ 362:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -6208,9 +2273,9 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var assign = __webpack_require__(43);
-	var keyOf = __webpack_require__(107);
-	var invariant = __webpack_require__(105);
+	var assign = __webpack_require__(65);
+	var keyOf = __webpack_require__(124);
+	var invariant = __webpack_require__(70);
 	var hasOwnProperty = {}.hasOwnProperty;
 	
 	function shallowCopy(x) {
@@ -6361,10 +2426,11 @@ webpackJsonp([1],[
 	
 	module.exports = update;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(82)))
 
 /***/ },
-/* 355 */
+
+/***/ 363:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6380,22 +2446,22 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var EventConstants = __webpack_require__(109);
-	var EventPluginHub = __webpack_require__(254);
-	var EventPropagators = __webpack_require__(249);
-	var React = __webpack_require__(17);
-	var ReactElement = __webpack_require__(32);
-	var ReactEmptyComponent = __webpack_require__(152);
-	var ReactBrowserEventEmitter = __webpack_require__(151);
-	var ReactCompositeComponent = __webpack_require__(291);
-	var ReactInstanceHandles = __webpack_require__(41);
-	var ReactInstanceMap = __webpack_require__(101);
-	var ReactMount = __webpack_require__(40);
-	var ReactUpdates = __webpack_require__(154);
-	var SyntheticEvent = __webpack_require__(255);
+	var EventConstants = __webpack_require__(113);
+	var EventPluginHub = __webpack_require__(262);
+	var EventPropagators = __webpack_require__(258);
+	var React = __webpack_require__(13);
+	var ReactElement = __webpack_require__(54);
+	var ReactEmptyComponent = __webpack_require__(163);
+	var ReactBrowserEventEmitter = __webpack_require__(162);
+	var ReactCompositeComponent = __webpack_require__(295);
+	var ReactInstanceHandles = __webpack_require__(59);
+	var ReactInstanceMap = __webpack_require__(120);
+	var ReactMount = __webpack_require__(60);
+	var ReactUpdates = __webpack_require__(165);
+	var SyntheticEvent = __webpack_require__(263);
 	
-	var assign = __webpack_require__(43);
-	var emptyObject = __webpack_require__(113);
+	var assign = __webpack_require__(65);
+	var emptyObject = __webpack_require__(125);
 	
 	var topLevelTypes = EventConstants.topLevelTypes;
 	
@@ -6882,20 +2948,21 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 356 */
+
+/***/ 365:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * lodash 3.0.6 (Custom Build) <https://lodash.com/>
+	 * lodash 3.0.7 (Custom Build) <https://lodash.com/>
 	 * Build: `lodash modern modularize exports="npm" -o ./`
 	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var isArray = __webpack_require__(3),
-	    isTypedArray = __webpack_require__(372),
-	    keys = __webpack_require__(12);
+	var isArray = __webpack_require__(2),
+	    isTypedArray = __webpack_require__(376),
+	    keys = __webpack_require__(14);
 	
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]',
@@ -6907,6 +2974,17 @@ webpackJsonp([1],[
 	    objectTag = '[object Object]',
 	    regexpTag = '[object RegExp]',
 	    stringTag = '[object String]';
+	
+	/**
+	 * Checks if `value` is object-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
 	
 	/** Used for native method references. */
 	var objectProto = Object.prototype;
@@ -6959,7 +3037,7 @@ webpackJsonp([1],[
 	  if (value === other) {
 	    return true;
 	  }
-	  if (value == null || other == null || (!isObject(value) && !isObject(other))) {
+	  if (value == null || other == null || (!isObject(value) && !isObjectLike(other))) {
 	    return value !== value && other !== other;
 	  }
 	  return baseIsEqualDeep(value, other, baseIsEqual, customizer, isLoose, stackA, stackB);
@@ -7219,489 +3297,8 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 357 */
-/***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * utils.js
-	 */
-	
-	'use strict';
-	
-	var Immutable = __webpack_require__(8);
-	var Iterable = Immutable.Iterable;
-	
-	module.exports = {
-	    valToKeyPath: valToKeyPath,
-	    newKeyPath: newKeyPath,
-	    listToKeyPath: listToKeyPath
-	};
-	
-	function valToKeyPath(val) {
-	    return Array.isArray(val) ? val : Iterable.isIterable(val) ? val.toArray() : [val];
-	}
-	
-	function newKeyPath(head, tail) {
-	    return head.concat(listToKeyPath(tail));
-	}
-	
-	function listToKeyPath(list) {
-	    return Array.isArray(list) ? list : Immutable.Iterable(list).toArray();
-	}
-
-/***/ },
-/* 358 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// Load modules
-	
-	var Stringify = __webpack_require__(369);
-	var Parse = __webpack_require__(370);
-	
-	
-	// Declare internals
-	
-	var internals = {};
-	
-	
-	module.exports = {
-	    stringify: Stringify,
-	    parse: Parse
-	};
-
-
-/***/ },
-/* 359 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	  Copyright (c) 2015 Jed Watson.
-	  Licensed under the MIT License (MIT), see
-	  http://jedwatson.github.io/classnames
-	*/
-	
-	function classNames () {
-		'use strict';
-	
-		var classes = '';
-	
-		for (var i = 0; i < arguments.length; i++) {
-			var arg = arguments[i];
-			if (!arg) continue;
-	
-			var argType = typeof arg;
-	
-			if ('string' === argType || 'number' === argType) {
-				classes += ' ' + arg;
-	
-			} else if (Array.isArray(arg)) {
-				classes += ' ' + classNames.apply(null, arg);
-	
-			} else if ('object' === argType) {
-				for (var key in arg) {
-					if (arg.hasOwnProperty(key) && arg[key]) {
-						classes += ' ' + key;
-					}
-				}
-			}
-		}
-	
-		return classes.substr(1);
-	}
-	
-	// safely export classNames for node / browserify
-	if (typeof module !== 'undefined' && module.exports) {
-		module.exports = classNames;
-	}
-	
-	/* global define */
-	// safely export classNames for RequireJS
-	if (true) {
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
-			return classNames;
-		}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	}
-
-
-/***/ },
-/* 360 */,
-/* 361 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * lodash 3.7.0 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	var baseGet = __webpack_require__(377),
-	    toPath = __webpack_require__(378);
-	
-	/**
-	 * Gets the property value of `path` on `object`. If the resolved value is
-	 * `undefined` the `defaultValue` is used in its place.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Object
-	 * @param {Object} object The object to query.
-	 * @param {Array|string} path The path of the property to get.
-	 * @param {*} [defaultValue] The value returned if the resolved value is `undefined`.
-	 * @returns {*} Returns the resolved value.
-	 * @example
-	 *
-	 * var object = { 'a': [{ 'b': { 'c': 3 } }] };
-	 *
-	 * _.get(object, 'a[0].b.c');
-	 * // => 3
-	 *
-	 * _.get(object, ['a', '0', 'b', 'c']);
-	 * // => 3
-	 *
-	 * _.get(object, 'a.b.c', 'default');
-	 * // => 'default'
-	 */
-	function get(object, path, defaultValue) {
-	  var result = object == null ? undefined : baseGet(object, toPath(path), path + '');
-	  return result === undefined ? defaultValue : result;
-	}
-	
-	module.exports = get;
-
-
-/***/ },
-/* 362 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * lodash 3.7.2 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	var toPath = __webpack_require__(378),
-	    isArray = __webpack_require__(3);
-	
-	/** Used to match property names within property paths. */
-	var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\n\\]|\\.)*?\1)\]/,
-	    reIsPlainProp = /^\w*$/;
-	
-	/**
-	 * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
-	 * of an array-like value.
-	 */
-	var MAX_SAFE_INTEGER = 9007199254740991;
-	
-	/**
-	 * Checks if `value` is a valid array-like index.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
-	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
-	 */
-	function isIndex(value, length) {
-	  value = typeof value == 'number' ? value : parseFloat(value);
-	  length = length == null ? MAX_SAFE_INTEGER : length;
-	  return value > -1 && value % 1 == 0 && value < length;
-	}
-	
-	/**
-	 * Checks if `value` is a property name and not a property path.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @param {Object} [object] The object to query keys on.
-	 * @returns {boolean} Returns `true` if `value` is a property name, else `false`.
-	 */
-	function isKey(value, object) {
-	  var type = typeof value;
-	  if ((type == 'string' && reIsPlainProp.test(value)) || type == 'number') {
-	    return true;
-	  }
-	  if (isArray(value)) {
-	    return false;
-	  }
-	  var result = !reIsDeepProp.test(value);
-	  return result || (object != null && value in toObject(object));
-	}
-	
-	/**
-	 * Converts `value` to an object if it's not one.
-	 *
-	 * @private
-	 * @param {*} value The value to process.
-	 * @returns {Object} Returns the object.
-	 */
-	function toObject(value) {
-	  return isObject(value) ? value : Object(value);
-	}
-	
-	/**
-	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
-	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
-	 * @example
-	 *
-	 * _.isObject({});
-	 * // => true
-	 *
-	 * _.isObject([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObject(1);
-	 * // => false
-	 */
-	function isObject(value) {
-	  // Avoid a V8 JIT bug in Chrome 19-20.
-	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
-	  var type = typeof value;
-	  return !!value && (type == 'object' || type == 'function');
-	}
-	
-	/**
-	 * Sets the property value of `path` on `object`. If a portion of `path`
-	 * does not exist it is created.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Object
-	 * @param {Object} object The object to augment.
-	 * @param {Array|string} path The path of the property to set.
-	 * @param {*} value The value to set.
-	 * @returns {Object} Returns `object`.
-	 * @example
-	 *
-	 * var object = { 'a': [{ 'b': { 'c': 3 } }] };
-	 *
-	 * _.set(object, 'a[0].b.c', 4);
-	 * console.log(object.a[0].b.c);
-	 * // => 4
-	 *
-	 * _.set(object, 'x[0].y.z', 5);
-	 * console.log(object.x[0].y.z);
-	 * // => 5
-	 */
-	function set(object, path, value) {
-	  if (object == null) {
-	    return object;
-	  }
-	  var pathKey = (path + '');
-	  path = (object[pathKey] != null || isKey(path, object)) ? [pathKey] : toPath(path);
-	
-	  var index = -1,
-	      length = path.length,
-	      endIndex = length - 1,
-	      nested = object;
-	
-	  while (nested != null && ++index < length) {
-	    var key = path[index];
-	    if (isObject(nested)) {
-	      if (index == endIndex) {
-	        nested[key] = value;
-	      } else if (nested[key] == null) {
-	        nested[key] = isIndex(path[index + 1]) ? [] : {};
-	      }
-	    }
-	    nested = nested[key];
-	  }
-	  return object;
-	}
-	
-	module.exports = set;
-
-
-/***/ },
-/* 363 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * lodash 3.2.0 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	var baseGet = __webpack_require__(377),
-	    baseSlice = __webpack_require__(379),
-	    toPath = __webpack_require__(378),
-	    isArguments = __webpack_require__(53),
-	    isArray = __webpack_require__(3);
-	
-	/** Used to match property names within property paths. */
-	var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\n\\]|\\.)*?\1)\]/,
-	    reIsPlainProp = /^\w*$/;
-	
-	/** Used for native method references. */
-	var objectProto = Object.prototype;
-	
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
-	
-	/**
-	 * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
-	 * of an array-like value.
-	 */
-	var MAX_SAFE_INTEGER = 9007199254740991;
-	
-	/**
-	 * Checks if `value` is a valid array-like index.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
-	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
-	 */
-	function isIndex(value, length) {
-	  value = typeof value == 'number' ? value : parseFloat(value);
-	  length = length == null ? MAX_SAFE_INTEGER : length;
-	  return value > -1 && value % 1 == 0 && value < length;
-	}
-	
-	/**
-	 * Checks if `value` is a property name and not a property path.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @param {Object} [object] The object to query keys on.
-	 * @returns {boolean} Returns `true` if `value` is a property name, else `false`.
-	 */
-	function isKey(value, object) {
-	  var type = typeof value;
-	  if ((type == 'string' && reIsPlainProp.test(value)) || type == 'number') {
-	    return true;
-	  }
-	  if (isArray(value)) {
-	    return false;
-	  }
-	  var result = !reIsDeepProp.test(value);
-	  return result || (object != null && value in toObject(object));
-	}
-	
-	/**
-	 * Checks if `value` is a valid array-like length.
-	 *
-	 * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
-	 */
-	function isLength(value) {
-	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-	}
-	
-	/**
-	 * Converts `value` to an object if it's not one.
-	 *
-	 * @private
-	 * @param {*} value The value to process.
-	 * @returns {Object} Returns the object.
-	 */
-	function toObject(value) {
-	  return isObject(value) ? value : Object(value);
-	}
-	
-	/**
-	 * Gets the last element of `array`.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Array
-	 * @param {Array} array The array to query.
-	 * @returns {*} Returns the last element of `array`.
-	 * @example
-	 *
-	 * _.last([1, 2, 3]);
-	 * // => 3
-	 */
-	function last(array) {
-	  var length = array ? array.length : 0;
-	  return length ? array[length - 1] : undefined;
-	}
-	
-	/**
-	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
-	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
-	 * @example
-	 *
-	 * _.isObject({});
-	 * // => true
-	 *
-	 * _.isObject([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObject(1);
-	 * // => false
-	 */
-	function isObject(value) {
-	  // Avoid a V8 JIT bug in Chrome 19-20.
-	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
-	  var type = typeof value;
-	  return !!value && (type == 'object' || type == 'function');
-	}
-	
-	/**
-	 * Checks if `path` is a direct property.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Object
-	 * @param {Object} object The object to query.
-	 * @param {Array|string} path The path to check.
-	 * @returns {boolean} Returns `true` if `path` is a direct property, else `false`.
-	 * @example
-	 *
-	 * var object = { 'a': { 'b': { 'c': 3 } } };
-	 *
-	 * _.has(object, 'a');
-	 * // => true
-	 *
-	 * _.has(object, 'a.b.c');
-	 * // => true
-	 *
-	 * _.has(object, ['a', 'b', 'c']);
-	 * // => true
-	 */
-	function has(object, path) {
-	  if (object == null) {
-	    return false;
-	  }
-	  var result = hasOwnProperty.call(object, path);
-	  if (!result && !isKey(path)) {
-	    path = toPath(path);
-	    object = path.length == 1 ? object : baseGet(object, baseSlice(path, 0, -1));
-	    if (object == null) {
-	      return false;
-	    }
-	    path = last(path);
-	    result = hasOwnProperty.call(object, path);
-	  }
-	  return result || (isLength(object.length) && isIndex(path, object.length) &&
-	    (isArray(object) || isArguments(object)));
-	}
-	
-	module.exports = has;
-
-
-/***/ },
-/* 364 */
+/***/ 370:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -7741,7 +3338,7 @@ webpackJsonp([1],[
 	 * consumption of ReactLink easier; see LinkedValueUtils and LinkedStateMixin.
 	 */
 	
-	var React = __webpack_require__(17);
+	var React = __webpack_require__(13);
 	
 	/**
 	 * @param {*} value current value of the link
@@ -7778,7 +3375,8 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 365 */
+
+/***/ 371:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -7888,7 +3486,8 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 366 */
+
+/***/ 372:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -7905,13 +3504,13 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var React = __webpack_require__(17);
+	var React = __webpack_require__(13);
 	
-	var CSSCore = __webpack_require__(373);
-	var ReactTransitionEvents = __webpack_require__(374);
+	var CSSCore = __webpack_require__(377);
+	var ReactTransitionEvents = __webpack_require__(378);
 	
-	var onlyChild = __webpack_require__(45);
-	var warning = __webpack_require__(108);
+	var onlyChild = __webpack_require__(67);
+	var warning = __webpack_require__(73);
 	
 	// We don't remove the element from the DOM until we receive an animationend or
 	// transitionend event. If the user screws up and forgets to add an animation
@@ -8036,10 +3635,11 @@ webpackJsonp([1],[
 	
 	module.exports = ReactCSSTransitionGroupChild;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(82)))
 
 /***/ },
-/* 367 */
+
+/***/ 373:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -8056,8 +3656,8 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var ReactChildren = __webpack_require__(29);
-	var ReactFragment = __webpack_require__(111);
+	var ReactChildren = __webpack_require__(49);
+	var ReactFragment = __webpack_require__(115);
 	
 	var ReactTransitionChildMapping = {
 	  /**
@@ -8148,7 +3748,8 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 368 */
+
+/***/ 374:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -8164,9 +3765,9 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var assign = __webpack_require__(43);
-	var emptyFunction = __webpack_require__(148);
-	var joinClasses = __webpack_require__(375);
+	var assign = __webpack_require__(65);
+	var emptyFunction = __webpack_require__(171);
+	var joinClasses = __webpack_require__(379);
 	
 	/**
 	 * Creates a transfer strategy that will merge prop values using the supplied
@@ -8262,274 +3863,8 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 369 */
-/***/ function(module, exports, __webpack_require__) {
 
-	// Load modules
-	
-	var Utils = __webpack_require__(376);
-	
-	
-	// Declare internals
-	
-	var internals = {
-	    delimiter: '&',
-	    arrayPrefixGenerators: {
-	        brackets: function (prefix, key) {
-	            return prefix + '[]';
-	        },
-	        indices: function (prefix, key) {
-	            return prefix + '[' + key + ']';
-	        },
-	        repeat: function (prefix, key) {
-	            return prefix;
-	        }
-	    }
-	};
-	
-	
-	internals.stringify = function (obj, prefix, generateArrayPrefix) {
-	
-	    if (Utils.isBuffer(obj)) {
-	        obj = obj.toString();
-	    }
-	    else if (obj instanceof Date) {
-	        obj = obj.toISOString();
-	    }
-	    else if (obj === null) {
-	        obj = '';
-	    }
-	
-	    if (typeof obj === 'string' ||
-	        typeof obj === 'number' ||
-	        typeof obj === 'boolean') {
-	
-	        return [encodeURIComponent(prefix) + '=' + encodeURIComponent(obj)];
-	    }
-	
-	    var values = [];
-	
-	    if (typeof obj === 'undefined') {
-	        return values;
-	    }
-	
-	    var objKeys = Object.keys(obj);
-	    for (var i = 0, il = objKeys.length; i < il; ++i) {
-	        var key = objKeys[i];
-	        if (Array.isArray(obj)) {
-	            values = values.concat(internals.stringify(obj[key], generateArrayPrefix(prefix, key), generateArrayPrefix));
-	        }
-	        else {
-	            values = values.concat(internals.stringify(obj[key], prefix + '[' + key + ']', generateArrayPrefix));
-	        }
-	    }
-	
-	    return values;
-	};
-	
-	
-	module.exports = function (obj, options) {
-	
-	    options = options || {};
-	    var delimiter = typeof options.delimiter === 'undefined' ? internals.delimiter : options.delimiter;
-	
-	    var keys = [];
-	
-	    if (typeof obj !== 'object' ||
-	        obj === null) {
-	
-	        return '';
-	    }
-	
-	    var arrayFormat;
-	    if (options.arrayFormat in internals.arrayPrefixGenerators) {
-	        arrayFormat = options.arrayFormat;
-	    }
-	    else if ('indices' in options) {
-	        arrayFormat = options.indices ? 'indices' : 'repeat';
-	    }
-	    else {
-	        arrayFormat = 'indices';
-	    }
-	
-	    var generateArrayPrefix = internals.arrayPrefixGenerators[arrayFormat];
-	
-	    var objKeys = Object.keys(obj);
-	    for (var i = 0, il = objKeys.length; i < il; ++i) {
-	        var key = objKeys[i];
-	        keys = keys.concat(internals.stringify(obj[key], key, generateArrayPrefix));
-	    }
-	
-	    return keys.join(delimiter);
-	};
-
-
-/***/ },
-/* 370 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// Load modules
-	
-	var Utils = __webpack_require__(376);
-	
-	
-	// Declare internals
-	
-	var internals = {
-	    delimiter: '&',
-	    depth: 5,
-	    arrayLimit: 20,
-	    parameterLimit: 1000
-	};
-	
-	
-	internals.parseValues = function (str, options) {
-	
-	    var obj = {};
-	    var parts = str.split(options.delimiter, options.parameterLimit === Infinity ? undefined : options.parameterLimit);
-	
-	    for (var i = 0, il = parts.length; i < il; ++i) {
-	        var part = parts[i];
-	        var pos = part.indexOf(']=') === -1 ? part.indexOf('=') : part.indexOf(']=') + 1;
-	
-	        if (pos === -1) {
-	            obj[Utils.decode(part)] = '';
-	        }
-	        else {
-	            var key = Utils.decode(part.slice(0, pos));
-	            var val = Utils.decode(part.slice(pos + 1));
-	
-	            if (!Object.prototype.hasOwnProperty.call(obj, key)) {
-	                obj[key] = val;
-	            }
-	            else {
-	                obj[key] = [].concat(obj[key]).concat(val);
-	            }
-	        }
-	    }
-	
-	    return obj;
-	};
-	
-	
-	internals.parseObject = function (chain, val, options) {
-	
-	    if (!chain.length) {
-	        return val;
-	    }
-	
-	    var root = chain.shift();
-	
-	    var obj = {};
-	    if (root === '[]') {
-	        obj = [];
-	        obj = obj.concat(internals.parseObject(chain, val, options));
-	    }
-	    else {
-	        var cleanRoot = root[0] === '[' && root[root.length - 1] === ']' ? root.slice(1, root.length - 1) : root;
-	        var index = parseInt(cleanRoot, 10);
-	        var indexString = '' + index;
-	        if (!isNaN(index) &&
-	            root !== cleanRoot &&
-	            indexString === cleanRoot &&
-	            index >= 0 &&
-	            index <= options.arrayLimit) {
-	
-	            obj = [];
-	            obj[index] = internals.parseObject(chain, val, options);
-	        }
-	        else {
-	            obj[cleanRoot] = internals.parseObject(chain, val, options);
-	        }
-	    }
-	
-	    return obj;
-	};
-	
-	
-	internals.parseKeys = function (key, val, options) {
-	
-	    if (!key) {
-	        return;
-	    }
-	
-	    // The regex chunks
-	
-	    var parent = /^([^\[\]]*)/;
-	    var child = /(\[[^\[\]]*\])/g;
-	
-	    // Get the parent
-	
-	    var segment = parent.exec(key);
-	
-	    // Don't allow them to overwrite object prototype properties
-	
-	    if (Object.prototype.hasOwnProperty(segment[1])) {
-	        return;
-	    }
-	
-	    // Stash the parent if it exists
-	
-	    var keys = [];
-	    if (segment[1]) {
-	        keys.push(segment[1]);
-	    }
-	
-	    // Loop through children appending to the array until we hit depth
-	
-	    var i = 0;
-	    while ((segment = child.exec(key)) !== null && i < options.depth) {
-	
-	        ++i;
-	        if (!Object.prototype.hasOwnProperty(segment[1].replace(/\[|\]/g, ''))) {
-	            keys.push(segment[1]);
-	        }
-	    }
-	
-	    // If there's a remainder, just add whatever is left
-	
-	    if (segment) {
-	        keys.push('[' + key.slice(segment.index) + ']');
-	    }
-	
-	    return internals.parseObject(keys, val, options);
-	};
-	
-	
-	module.exports = function (str, options) {
-	
-	    if (str === '' ||
-	        str === null ||
-	        typeof str === 'undefined') {
-	
-	        return {};
-	    }
-	
-	    options = options || {};
-	    options.delimiter = typeof options.delimiter === 'string' || Utils.isRegExp(options.delimiter) ? options.delimiter : internals.delimiter;
-	    options.depth = typeof options.depth === 'number' ? options.depth : internals.depth;
-	    options.arrayLimit = typeof options.arrayLimit === 'number' ? options.arrayLimit : internals.arrayLimit;
-	    options.parameterLimit = typeof options.parameterLimit === 'number' ? options.parameterLimit : internals.parameterLimit;
-	
-	    var tempObj = typeof str === 'string' ? internals.parseValues(str, options) : str;
-	    var obj = {};
-	
-	    // Iterate over the keys and setup the new object
-	
-	    var keys = Object.keys(tempObj);
-	    for (var i = 0, il = keys.length; i < il; ++i) {
-	        var key = keys[i];
-	        var newObj = internals.parseKeys(key, tempObj[key], options);
-	        obj = Utils.merge(obj, newObj);
-	    }
-	
-	    return Utils.compact(obj);
-	};
-
-
-/***/ },
-/* 371 */,
-/* 372 */
+/***/ 376:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -8645,7 +3980,8 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 373 */
+
+/***/ 377:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -8660,7 +3996,7 @@ webpackJsonp([1],[
 	 * @typechecks
 	 */
 	
-	var invariant = __webpack_require__(105);
+	var invariant = __webpack_require__(70);
 	
 	/**
 	 * The CSSCore module specifies the API (and implements most of the methods)
@@ -8757,10 +4093,11 @@ webpackJsonp([1],[
 	
 	module.exports = CSSCore;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(82)))
 
 /***/ },
-/* 374 */
+
+/***/ 378:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -8776,7 +4113,7 @@ webpackJsonp([1],[
 	
 	'use strict';
 	
-	var ExecutionEnvironment = __webpack_require__(46);
+	var ExecutionEnvironment = __webpack_require__(68);
 	
 	/**
 	 * EVENT_NAME_MAP is used to determine which event fired when a
@@ -8875,7 +4212,8 @@ webpackJsonp([1],[
 
 
 /***/ },
-/* 375 */
+
+/***/ 379:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -8919,327 +4257,7 @@ webpackJsonp([1],[
 	module.exports = joinClasses;
 
 
-/***/ },
-/* 376 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// Load modules
-	
-	
-	// Declare internals
-	
-	var internals = {};
-	
-	
-	exports.arrayToObject = function (source) {
-	
-	    var obj = {};
-	    for (var i = 0, il = source.length; i < il; ++i) {
-	        if (typeof source[i] !== 'undefined') {
-	
-	            obj[i] = source[i];
-	        }
-	    }
-	
-	    return obj;
-	};
-	
-	
-	exports.merge = function (target, source) {
-	
-	    if (!source) {
-	        return target;
-	    }
-	
-	    if (typeof source !== 'object') {
-	        if (Array.isArray(target)) {
-	            target.push(source);
-	        }
-	        else {
-	            target[source] = true;
-	        }
-	
-	        return target;
-	    }
-	
-	    if (typeof target !== 'object') {
-	        target = [target].concat(source);
-	        return target;
-	    }
-	
-	    if (Array.isArray(target) &&
-	        !Array.isArray(source)) {
-	
-	        target = exports.arrayToObject(target);
-	    }
-	
-	    var keys = Object.keys(source);
-	    for (var k = 0, kl = keys.length; k < kl; ++k) {
-	        var key = keys[k];
-	        var value = source[key];
-	
-	        if (!target[key]) {
-	            target[key] = value;
-	        }
-	        else {
-	            target[key] = exports.merge(target[key], value);
-	        }
-	    }
-	
-	    return target;
-	};
-	
-	
-	exports.decode = function (str) {
-	
-	    try {
-	        return decodeURIComponent(str.replace(/\+/g, ' '));
-	    } catch (e) {
-	        return str;
-	    }
-	};
-	
-	
-	exports.compact = function (obj, refs) {
-	
-	    if (typeof obj !== 'object' ||
-	        obj === null) {
-	
-	        return obj;
-	    }
-	
-	    refs = refs || [];
-	    var lookup = refs.indexOf(obj);
-	    if (lookup !== -1) {
-	        return refs[lookup];
-	    }
-	
-	    refs.push(obj);
-	
-	    if (Array.isArray(obj)) {
-	        var compacted = [];
-	
-	        for (var i = 0, il = obj.length; i < il; ++i) {
-	            if (typeof obj[i] !== 'undefined') {
-	                compacted.push(obj[i]);
-	            }
-	        }
-	
-	        return compacted;
-	    }
-	
-	    var keys = Object.keys(obj);
-	    for (i = 0, il = keys.length; i < il; ++i) {
-	        var key = keys[i];
-	        obj[key] = exports.compact(obj[key], refs);
-	    }
-	
-	    return obj;
-	};
-	
-	
-	exports.isRegExp = function (obj) {
-	    return Object.prototype.toString.call(obj) === '[object RegExp]';
-	};
-	
-	
-	exports.isBuffer = function (obj) {
-	
-	    if (obj === null ||
-	        typeof obj === 'undefined') {
-	
-	        return false;
-	    }
-	
-	    return !!(obj.constructor &&
-	        obj.constructor.isBuffer &&
-	        obj.constructor.isBuffer(obj));
-	};
-
-
-/***/ },
-/* 377 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * lodash 3.7.2 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	
-	/**
-	 * The base implementation of `get` without support for string paths
-	 * and default values.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @param {Array} path The path of the property to get.
-	 * @param {string} [pathKey] The key representation of path.
-	 * @returns {*} Returns the resolved value.
-	 */
-	function baseGet(object, path, pathKey) {
-	  if (object == null) {
-	    return;
-	  }
-	  if (pathKey !== undefined && pathKey in toObject(object)) {
-	    path = [pathKey];
-	  }
-	  var index = 0,
-	      length = path.length;
-	
-	  while (object != null && index < length) {
-	    object = object[path[index++]];
-	  }
-	  return (index && index == length) ? object : undefined;
-	}
-	
-	/**
-	 * Converts `value` to an object if it's not one.
-	 *
-	 * @private
-	 * @param {*} value The value to process.
-	 * @returns {Object} Returns the object.
-	 */
-	function toObject(value) {
-	  return isObject(value) ? value : Object(value);
-	}
-	
-	/**
-	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
-	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
-	 * @example
-	 *
-	 * _.isObject({});
-	 * // => true
-	 *
-	 * _.isObject([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObject(1);
-	 * // => false
-	 */
-	function isObject(value) {
-	  // Avoid a V8 JIT bug in Chrome 19-20.
-	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
-	  var type = typeof value;
-	  return !!value && (type == 'object' || type == 'function');
-	}
-	
-	module.exports = baseGet;
-
-
-/***/ },
-/* 378 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * lodash 3.8.0 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	var isArray = __webpack_require__(3);
-	
-	/** Used to match property names within property paths. */
-	var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\n\\]|\\.)*?)\2)\]/g;
-	
-	/** Used to match backslashes in property paths. */
-	var reEscapeChar = /\\(\\)?/g;
-	
-	/**
-	 * Converts `value` to a string if it is not one. An empty string is returned
-	 * for `null` or `undefined` values.
-	 *
-	 * @private
-	 * @param {*} value The value to process.
-	 * @returns {string} Returns the string.
-	 */
-	function baseToString(value) {
-	  if (typeof value == 'string') {
-	    return value;
-	  }
-	  return value == null ? '' : (value + '');
-	}
-	
-	/**
-	 * Converts `value` to property path array if it is not one.
-	 *
-	 * @private
-	 * @param {*} value The value to process.
-	 * @returns {Array} Returns the property path array.
-	 */
-	function toPath(value) {
-	  if (isArray(value)) {
-	    return value;
-	  }
-	  var result = [];
-	  baseToString(value).replace(rePropName, function(match, number, quote, string) {
-	    result.push(quote ? string.replace(reEscapeChar, '$1') : (number || match));
-	  });
-	  return result;
-	}
-	
-	module.exports = toPath;
-
-
-/***/ },
-/* 379 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * lodash 3.0.3 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	
-	/**
-	 * The base implementation of `_.slice` without an iteratee call guard.
-	 *
-	 * @private
-	 * @param {Array} array The array to slice.
-	 * @param {number} [start=0] The start position.
-	 * @param {number} [end=array.length] The end position.
-	 * @returns {Array} Returns the slice of `array`.
-	 */
-	function baseSlice(array, start, end) {
-	  var index = -1,
-	      length = array.length;
-	
-	  start = start == null ? 0 : (+start || 0);
-	  if (start < 0) {
-	    start = -start > length ? 0 : (length + start);
-	  }
-	  end = (end === undefined || end > length) ? length : (+end || 0);
-	  if (end < 0) {
-	    end += length;
-	  }
-	  length = start > end ? 0 : ((end - start) >>> 0);
-	  start >>>= 0;
-	
-	  var result = Array(length);
-	  while (++index < length) {
-	    result[index] = array[index + start];
-	  }
-	  return result;
-	}
-	
-	module.exports = baseSlice;
-
-
 /***/ }
-]);
+
+});
 //# sourceMappingURL=app.js.map

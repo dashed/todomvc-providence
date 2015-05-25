@@ -5,12 +5,12 @@
 
 const { Record } = require('immutable');
 const TodoItem = Record({
-    key: 0,
+    id: 0,
     completed: false,
     task: ''
 });
 
-let key = 0;
+let id = 0;
 
 module.exports = {
 
@@ -20,7 +20,7 @@ module.exports = {
     create(task) {
         return new TodoItem({
             task: task,
-            key: key++
+            id: id++
         });
     }
 };
