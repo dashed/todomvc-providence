@@ -40,7 +40,7 @@ const assign = require('lodash.assign');
 const isEqual = require('lodash.isequal');
 const Probe = require('probe');
 
-const CACHED = {};
+const NOT_SET = {};
 const DO_NOTHING = _ => void 0;
 const DEFAULT_ASSIGN = _ => {};
 
@@ -148,6 +148,8 @@ function orwell(Component, watchCursors = DO_NOTHING, __assignNewProps = DEFAULT
             // has occured at these cursors, this component shall update.
             let cursorsToWatch = watchCursors.call(null, this.props, manual);
 
+            // TODO: support cursorsToWatch that may be a promise.
+
             // watchCursors may return a single cursor
             if(cursorsToWatch instanceof Probe) {
                 cursorsToWatch = [cursorsToWatch];
@@ -190,11 +192,11 @@ function cursorCompare(valueA, valueB) {
         return void 0;
     }
 
-    if(!isEqual(valueA.keyPath(), valueB.keyPath(), cursorCompare)) {
+    if(!isEqual(valueA.path(), valueB.path())) {
         return false;
     }
 
-    return(valueA.firstValue() === valueB.deref());
+    return(valueA.prev().deref() === valueB.deref());
 }
 
 function __shouldComponentUpdateShallow(nextProps, nextState) {
