@@ -1,17 +1,14 @@
 # Providence cursors • [TodoMVC](http://todomvc.com)
 
-> Experimenting with cursor abstraction with API similar to Immutable Cursors; and
-> concretize it to be more useful.
+> Showcasing usage of a higher-order component (`orwell`), that subscribe to `Probe` cursors (an extension of `Providence` cursors) and will update wrapped components whenever those cursors emit changes.
 
-**NOTE:** In active development; when everything is deemed complete, all commits will be squashed.
 
-To do
-=====
+Libraries
+=========
 
-- [x] implement todomvc
+These libraries have been incubated in this repository and have since been ported into their respective repositories:
 
-- [x] squash all commits
-
-- [x] port out cursor library into `minitrue` and `providence`
-
-- [ ] add orwell tests
+- [orwell](https://github.com/Dashed/orwell)
+- [minitrue](https://github.com/Dashed/minitrue)
+- [Probe cursors](https://github.com/Dashed/probe)
+- [Providence cursors](https://github.com/Dashed/providence)
