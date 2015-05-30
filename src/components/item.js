@@ -147,14 +147,14 @@ const Item = React.createClass({
 
 });
 
-function watchCursors({recordCursor }) {
+function watchCursors({ recordCursor }) {
     return [recordCursor];
 }
 
-function getPropsFromCursors({ recordCursor }) {
+function assignNewProps({ recordCursor }) {
     return {
         record: recordCursor.deref()
     };
 }
 
-module.exports = orwell(Item, watchCursors, getPropsFromCursors);
+module.exports = orwell(Item, watchCursors, assignNewProps);
