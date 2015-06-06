@@ -55,7 +55,8 @@ function watchCursors({ tasksleftCursor, todosCursor }) {
 
 function assignNewProps({ tasksleftCursor, todosCursor }) {
     return {
-        checked: tasksleftCursor.deref() <= 0 && todosCursor.deref().size > 0
+        checked: tasksleftCursor.deref() <= 0 && todosCursor.deref().size > 0,
+        todos: todosCursor.deref()
     };
 }
 

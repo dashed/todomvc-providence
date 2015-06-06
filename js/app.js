@@ -11,12 +11,12 @@ webpackJsonp([1],{
 	// todomvc assets
 	'use strict';
 	
-	__webpack_require__(333);
+	__webpack_require__(328);
 	
-	var Router = __webpack_require__(293),
-	    Probe = __webpack_require__(270).Probe,
-	    routes = __webpack_require__(337),
-	    store = __webpack_require__(395);
+	var Router = __webpack_require__(288),
+	    Probe = __webpack_require__(272).Probe,
+	    routes = __webpack_require__(332),
+	    store = __webpack_require__(380);
 	
 	function bootstrapRender(mountNode, rootCursor) {
 	    var Handler = undefined;
@@ -56,16 +56,16 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 333:
+/***/ 328:
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(334);
+	var content = __webpack_require__(329);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(336)(content, {});
+	var update = __webpack_require__(331)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -83,15 +83,15 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 334:
+/***/ 329:
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(335)();
+	exports = module.exports = __webpack_require__(330)();
 	exports.push([module.id, "html,\nbody {\n\tmargin: 0;\n\tpadding: 0;\n}\n\nbutton {\n\tmargin: 0;\n\tpadding: 0;\n\tborder: 0;\n\tbackground: none;\n\tfont-size: 100%;\n\tvertical-align: baseline;\n\tfont-family: inherit;\n\tfont-weight: inherit;\n\tcolor: inherit;\n\t-webkit-appearance: none;\n\tappearance: none;\n\t-webkit-font-smoothing: antialiased;\n\t-moz-font-smoothing: antialiased;\n\tfont-smoothing: antialiased;\n}\n\nbody {\n\tfont: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;\n\tline-height: 1.4em;\n\tbackground: #f5f5f5;\n\tcolor: #4d4d4d;\n\tmin-width: 230px;\n\tmax-width: 550px;\n\tmargin: 0 auto;\n\t-webkit-font-smoothing: antialiased;\n\t-moz-font-smoothing: antialiased;\n\tfont-smoothing: antialiased;\n\tfont-weight: 300;\n}\n\nbutton,\ninput[type=\"checkbox\"] {\n\toutline: none;\n}\n\n.hidden {\n\tdisplay: none;\n}\n\n.todoapp {\n\tbackground: #fff;\n\tmargin: 130px 0 40px 0;\n\tposition: relative;\n\tbox-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2),\n\t            0 25px 50px 0 rgba(0, 0, 0, 0.1);\n}\n\n.todoapp input::-webkit-input-placeholder {\n\tfont-style: italic;\n\tfont-weight: 300;\n\tcolor: #e6e6e6;\n}\n\n.todoapp input::-moz-placeholder {\n\tfont-style: italic;\n\tfont-weight: 300;\n\tcolor: #e6e6e6;\n}\n\n.todoapp input::input-placeholder {\n\tfont-style: italic;\n\tfont-weight: 300;\n\tcolor: #e6e6e6;\n}\n\n.todoapp h1 {\n\tposition: absolute;\n\ttop: -155px;\n\twidth: 100%;\n\tfont-size: 100px;\n\tfont-weight: 100;\n\ttext-align: center;\n\tcolor: rgba(175, 47, 47, 0.15);\n\t-webkit-text-rendering: optimizeLegibility;\n\t-moz-text-rendering: optimizeLegibility;\n\ttext-rendering: optimizeLegibility;\n}\n\n.new-todo,\n.edit {\n\tposition: relative;\n\tmargin: 0;\n\twidth: 100%;\n\tfont-size: 24px;\n\tfont-family: inherit;\n\tfont-weight: inherit;\n\tline-height: 1.4em;\n\tborder: 0;\n\toutline: none;\n\tcolor: inherit;\n\tpadding: 6px;\n\tborder: 1px solid #999;\n\tbox-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);\n\tbox-sizing: border-box;\n\t-webkit-font-smoothing: antialiased;\n\t-moz-font-smoothing: antialiased;\n\tfont-smoothing: antialiased;\n}\n\n.new-todo {\n\tpadding: 16px 16px 16px 60px;\n\tborder: none;\n\tbackground: rgba(0, 0, 0, 0.003);\n\tbox-shadow: inset 0 -2px 1px rgba(0,0,0,0.03);\n}\n\n.main {\n\tposition: relative;\n\tz-index: 2;\n\tborder-top: 1px solid #e6e6e6;\n}\n\nlabel[for='toggle-all'] {\n\tdisplay: none;\n}\n\n.toggle-all {\n\tposition: absolute;\n\ttop: -55px;\n\tleft: -12px;\n\twidth: 60px;\n\theight: 34px;\n\ttext-align: center;\n\tborder: none; /* Mobile Safari */\n}\n\n.toggle-all:before {\n\tcontent: '❯';\n\tfont-size: 22px;\n\tcolor: #e6e6e6;\n\tpadding: 10px 27px 10px 27px;\n}\n\n.toggle-all:checked:before {\n\tcolor: #737373;\n}\n\n.todo-list {\n\tmargin: 0;\n\tpadding: 0;\n\tlist-style: none;\n}\n\n.todo-list li {\n\tposition: relative;\n\tfont-size: 24px;\n\tborder-bottom: 1px solid #ededed;\n}\n\n.todo-list li:last-child {\n\tborder-bottom: none;\n}\n\n.todo-list li.editing {\n\tborder-bottom: none;\n\tpadding: 0;\n}\n\n.todo-list li.editing .edit {\n\tdisplay: block;\n\twidth: 506px;\n\tpadding: 13px 17px 12px 17px;\n\tmargin: 0 0 0 43px;\n}\n\n.todo-list li.editing .view {\n\tdisplay: none;\n}\n\n.todo-list li .toggle {\n\ttext-align: center;\n\twidth: 40px;\n\t/* auto, since non-WebKit browsers doesn't support input styling */\n\theight: auto;\n\tposition: absolute;\n\ttop: 0;\n\tbottom: 0;\n\tmargin: auto 0;\n\tborder: none; /* Mobile Safari */\n\t-webkit-appearance: none;\n\tappearance: none;\n}\n\n.todo-list li .toggle:after {\n\tcontent: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"-10 -18 100 135\"><circle cx=\"50\" cy=\"50\" r=\"50\" fill=\"none\" stroke=\"#ededed\" stroke-width=\"3\"/></svg>');\n}\n\n.todo-list li .toggle:checked:after {\n\tcontent: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"-10 -18 100 135\"><circle cx=\"50\" cy=\"50\" r=\"50\" fill=\"none\" stroke=\"#bddad5\" stroke-width=\"3\"/><path fill=\"#5dc2af\" d=\"M72 25L42 71 27 56l-4 4 20 20 34-52z\"/></svg>');\n}\n\n.todo-list li label {\n\twhite-space: pre;\n\tword-break: break-word;\n\tpadding: 15px 60px 15px 15px;\n\tmargin-left: 45px;\n\tdisplay: block;\n\tline-height: 1.2;\n\ttransition: color 0.4s;\n}\n\n.todo-list li.completed label {\n\tcolor: #d9d9d9;\n\ttext-decoration: line-through;\n}\n\n.todo-list li .destroy {\n\tdisplay: none;\n\tposition: absolute;\n\ttop: 0;\n\tright: 10px;\n\tbottom: 0;\n\twidth: 40px;\n\theight: 40px;\n\tmargin: auto 0;\n\tfont-size: 30px;\n\tcolor: #cc9a9a;\n\tmargin-bottom: 11px;\n\ttransition: color 0.2s ease-out;\n}\n\n.todo-list li .destroy:hover {\n\tcolor: #af5b5e;\n}\n\n.todo-list li .destroy:after {\n\tcontent: '×';\n}\n\n.todo-list li:hover .destroy {\n\tdisplay: block;\n}\n\n.todo-list li .edit {\n\tdisplay: none;\n}\n\n.todo-list li.editing:last-child {\n\tmargin-bottom: -1px;\n}\n\n.footer {\n\tcolor: #777;\n\tpadding: 10px 15px;\n\theight: 20px;\n\ttext-align: center;\n\tborder-top: 1px solid #e6e6e6;\n}\n\n.footer:before {\n\tcontent: '';\n\tposition: absolute;\n\tright: 0;\n\tbottom: 0;\n\tleft: 0;\n\theight: 50px;\n\toverflow: hidden;\n\tbox-shadow: 0 1px 1px rgba(0, 0, 0, 0.2),\n\t            0 8px 0 -3px #f6f6f6,\n\t            0 9px 1px -3px rgba(0, 0, 0, 0.2),\n\t            0 16px 0 -6px #f6f6f6,\n\t            0 17px 2px -6px rgba(0, 0, 0, 0.2);\n}\n\n.todo-count {\n\tfloat: left;\n\ttext-align: left;\n}\n\n.todo-count strong {\n\tfont-weight: 300;\n}\n\n.filters {\n\tmargin: 0;\n\tpadding: 0;\n\tlist-style: none;\n\tposition: absolute;\n\tright: 0;\n\tleft: 0;\n}\n\n.filters li {\n\tdisplay: inline;\n}\n\n.filters li a {\n\tcolor: inherit;\n\tmargin: 3px;\n\tpadding: 3px 7px;\n\ttext-decoration: none;\n\tborder: 1px solid transparent;\n\tborder-radius: 3px;\n}\n\n.filters li a.selected,\n.filters li a:hover {\n\tborder-color: rgba(175, 47, 47, 0.1);\n}\n\n.filters li a.selected {\n\tborder-color: rgba(175, 47, 47, 0.2);\n}\n\n.clear-completed,\nhtml .clear-completed:active {\n\tfloat: right;\n\tposition: relative;\n\tline-height: 20px;\n\ttext-decoration: none;\n\tcursor: pointer;\n\tposition: relative;\n}\n\n.clear-completed:hover {\n\ttext-decoration: underline;\n}\n\n.info {\n\tmargin: 65px auto 0;\n\tcolor: #bfbfbf;\n\tfont-size: 10px;\n\ttext-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);\n\ttext-align: center;\n}\n\n.info p {\n\tline-height: 1;\n}\n\n.info a {\n\tcolor: inherit;\n\ttext-decoration: none;\n\tfont-weight: 400;\n}\n\n.info a:hover {\n\ttext-decoration: underline;\n}\n\n/*\n\tHack to remove background from Mobile Safari.\n\tCan't use it globally since it destroys checkboxes in Firefox\n*/\n@media screen and (-webkit-min-device-pixel-ratio:0) {\n\t.toggle-all,\n\t.todo-list li .toggle {\n\t\tbackground: none;\n\t}\n\n\t.todo-list li .toggle {\n\t\theight: 40px;\n\t}\n\n\t.toggle-all {\n\t\t-webkit-transform: rotate(90deg);\n\t\ttransform: rotate(90deg);\n\t\t-webkit-appearance: none;\n\t\tappearance: none;\n\t}\n}\n\n@media (max-width: 430px) {\n\t.footer {\n\t\theight: 50px;\n\t}\n\n\t.filters {\n\t\tbottom: 10px;\n\t}\n}\n", ""]);
 
 /***/ },
 
-/***/ 335:
+/***/ 330:
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -148,7 +148,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 336:
+/***/ 331:
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -374,7 +374,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 337:
+/***/ 332:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(React) {/**
@@ -385,15 +385,15 @@ webpackJsonp([1],{
 	
 	'use strict';
 	
-	var Router = __webpack_require__(293);var Route = Router.Route;
-	
+	var Router = __webpack_require__(288);
+	var Route = Router.Route;
 	var DefaultRoute = Router.DefaultRoute;
 	
 	/* components */
-	var App = __webpack_require__(338);
-	var All = __webpack_require__(389);
-	var Active = __webpack_require__(393);
-	var Completed = __webpack_require__(394);
+	var App = __webpack_require__(333);
+	var All = __webpack_require__(374);
+	var Active = __webpack_require__(378);
+	var Completed = __webpack_require__(379);
 	
 	module.exports = React.createElement(
 	    Route,
@@ -406,7 +406,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 338:
+/***/ 333:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(React) {/**
@@ -416,17 +416,16 @@ webpackJsonp([1],{
 	
 	'use strict';
 	
-	var _extends = __webpack_require__(339)['default'];
+	var _extends = __webpack_require__(350)['default'];
 	
-	var Router = __webpack_require__(293);
+	var Router = __webpack_require__(288);
 	var RouteHandler = Router.RouteHandler;
 	
-	var orwell = __webpack_require__(342);
-	var Probe = __webpack_require__(270).Probe;
+	var Probe = __webpack_require__(272).Probe;
 	
-	var Main = __webpack_require__(367);
-	var Header = __webpack_require__(368);
-	var Footer = __webpack_require__(388);
+	var Main = __webpack_require__(334);
+	var Header = __webpack_require__(353);
+	var Footer = __webpack_require__(373);
 	
 	var App = React.createClass({
 	    displayName: 'App',
@@ -449,9 +448,9 @@ webpackJsonp([1],{
 	                todosCursor: todosCursor
 	            })),
 	            React.createElement(Footer, {
+	                routestate: this.props.routestate,
 	                tasksleftCursor: tasksleftCursor,
-	                todosCursor: todosCursor,
-	                routestate: this.props.routestate
+	                todosCursor: todosCursor
 	            })
 	        );
 	    }
@@ -462,47 +461,91 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 339:
+/***/ 334:
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(React) {/**
+	 * components/main.js
+	 *
+	 */
 	
-	var _Object$assign = __webpack_require__(340)["default"];
+	'use strict';
 	
-	exports["default"] = _Object$assign || function (target) {
-	  for (var i = 1; i < arguments.length; i++) {
-	    var source = arguments[i];
+	var _require = __webpack_require__(288);
 	
-	    for (var key in source) {
-	      if (Object.prototype.hasOwnProperty.call(source, key)) {
-	        target[key] = source[key];
-	      }
+	var RouteHandler = _require.RouteHandler;
+	
+	var orwell = __webpack_require__(335);
+	var Probe = __webpack_require__(272).Probe;
+	
+	var Main = React.createClass({
+	    displayName: 'Main',
+	
+	    propTypes: {
+	        rootCursor: React.PropTypes.instanceOf(Probe).isRequired,
+	        tasksleftCursor: React.PropTypes.instanceOf(Probe).isRequired,
+	        todosCursor: React.PropTypes.instanceOf(Probe).isRequired,
+	        checked: React.PropTypes.bool.isRequired
+	    },
+	
+	    toggleTodos: function toggleTodos(event) {
+	        event.stopPropagation();
+	
+	        var newCompleteVal = !this.props.checked;
+	        this.props.todosCursor.update(function (todos) {
+	            return todos.map(function (record) {
+	                return record.set('completed', newCompleteVal);
+	            });
+	        });
+	
+	        var tasksleft = newCompleteVal ? 0 : this.props.todosCursor.deref().size;
+	        this.props.tasksleftCursor.update(function (_) {
+	            return tasksleft;
+	        });
+	    },
+	
+	    render: function render() {
+	        var toggle = null;
+	        if (this.props.todosCursor.deref().size > 0) {
+	            toggle = [React.createElement('input', { key: 1, className: 'toggle-all', type: 'checkbox', onChange: this.toggleTodos, checked: this.props.checked }), React.createElement(
+	                'label',
+	                { key: 2, htmlFor: 'toggle-all' },
+	                'Mark all as complete'
+	            )];
+	        }
+	
+	        return React.createElement(
+	            'section',
+	            { className: 'main' },
+	            toggle,
+	            React.createElement(RouteHandler, this.props)
+	        );
 	    }
-	  }
+	});
 	
-	  return target;
-	};
+	function watchCursors(_ref) {
+	    var tasksleftCursor = _ref.tasksleftCursor;
+	    var todosCursor = _ref.todosCursor;
 	
-	exports.__esModule = true;
+	    return [tasksleftCursor, todosCursor];
+	}
+	
+	function assignNewProps(_ref2) {
+	    var tasksleftCursor = _ref2.tasksleftCursor;
+	    var todosCursor = _ref2.todosCursor;
+	
+	    return {
+	        checked: tasksleftCursor.deref() <= 0 && todosCursor.deref().size > 0,
+	        todos: todosCursor.deref()
+	    };
+	}
+	
+	module.exports = orwell(Main, watchCursors, assignNewProps);
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
 
-/***/ 340:
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(341), __esModule: true };
-
-/***/ },
-
-/***/ 341:
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(207);
-	module.exports = __webpack_require__(164).core.Object.assign;
-
-/***/ },
-
-/***/ 342:
+/***/ 335:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -542,12 +585,12 @@ webpackJsonp([1],{
 	'use strict';
 	
 	var React = __webpack_require__(2);
-	var isFunction = __webpack_require__(343);
-	var isArray = __webpack_require__(344);
-	var isPlainObject = __webpack_require__(345);
-	var assign = __webpack_require__(350);
-	var isEqual = __webpack_require__(360);
-	var Probe = __webpack_require__(270).Probe;
+	var isFunction = __webpack_require__(336);
+	var isArray = __webpack_require__(277);
+	var isPlainObject = __webpack_require__(278);
+	var assign = __webpack_require__(337);
+	var isEqual = __webpack_require__(345);
+	var Probe = __webpack_require__(272).Probe;
 	
 	var NOT_SET = {};
 	var DO_NOTHING = function DO_NOTHING(_) {
@@ -570,12 +613,20 @@ webpackJsonp([1],{
 	        __assignNewProps = Component.assignNewProps;
 	    }
 	
+	    if (!isFunction(watchCursors)) {
+	        watchCursors = DO_NOTHING;
+	    }
+	
+	    if (!isFunction(__assignNewProps)) {
+	        __assignNewProps = DEFAULT_ASSIGN;
+	    }
+	
 	    var __shouldComponentUpdate = __shouldComponentUpdateShallow;
 	
 	    var OrwellContainer = React.createClass({
 	
-	        assignNewProps: function assignNewProps() {
-	            var ret = __assignNewProps.call(null, this.props);
+	        assignNewProps: function assignNewProps(props) {
+	            var ret = __assignNewProps.call(null, props);
 	            return isPlainObject(ret) ? ret : {};
 	        },
 	
@@ -583,7 +634,7 @@ webpackJsonp([1],{
 	        // any of those cursors change in some way.
 	        handleCursorChanged: function handleCursorChanged() {
 	            this.setState({
-	                currentProps: assign({}, this.props, this.assignNewProps())
+	                currentProps: assign({}, this.props, this.assignNewProps(this.props))
 	            });
 	        },
 	
@@ -612,7 +663,7 @@ webpackJsonp([1],{
 	                // these functions, when called, handle the clean up step in removing
 	                // listeners from Probe cursors.
 	                unsubs: [],
-	                currentProps: assign({}, this.props, this.assignNewProps())
+	                currentProps: assign({}, this.props, this.assignNewProps(this.props))
 	            };
 	        },
 	
@@ -623,7 +674,7 @@ webpackJsonp([1],{
 	        componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	            if (!shallowEqual(this.props, nextProps, cursorCompare)) {
 	                this.setState({
-	                    currentProps: assign({}, this.props, this.assignNewProps())
+	                    currentProps: assign({}, nextProps, this.assignNewProps(nextProps))
 	                });
 	            }
 	        },
@@ -748,21 +799,11 @@ webpackJsonp([1],{
 	        return void 0;
 	    }
 	
-	    if (!isEqual(valueA.path(), valueB.path())) {
+	    if (!isEqual(valueA.path(), valueB.path(), cursorCompare)) {
 	        return false;
 	    }
 	
-	    var options = valueA.options();
-	    var boxed = options.getIn(['root', 'data']);
-	
-	    var newOptions = options.setIn(['root', 'data'], {
-	        map: boxed.previousMap
-	    });
-	
-	    // quick create
-	    var cursor = new Probe(newOptions, true, true);
-	
-	    return cursor.deref() === valueB.deref();
+	    return valueA.deref() === valueB.deref();
 	}
 	
 	function __shouldComponentUpdateShallow(nextProps, nextState) {
@@ -812,7 +853,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 343:
+/***/ 336:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -991,808 +1032,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 344:
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * lodash 3.0.3 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	
-	/** `Object#toString` result references. */
-	var arrayTag = '[object Array]',
-	    funcTag = '[object Function]';
-	
-	/**
-	 * Used to match `RegExp` [special characters](http://www.regular-expressions.info/characters.html#special).
-	 * In addition to special characters the forward slash is escaped to allow for
-	 * easier `eval` use and `Function` compilation.
-	 */
-	var reRegExpChars = /[.*+?^${}()|[\]\/\\]/g,
-	    reHasRegExpChars = RegExp(reRegExpChars.source);
-	
-	/** Used to detect host constructors (Safari > 5). */
-	var reIsHostCtor = /^\[object .+?Constructor\]$/;
-	
-	/**
-	 * Converts `value` to a string if it's not one. An empty string is returned
-	 * for `null` or `undefined` values.
-	 *
-	 * @private
-	 * @param {*} value The value to process.
-	 * @returns {string} Returns the string.
-	 */
-	function baseToString(value) {
-	  if (typeof value == 'string') {
-	    return value;
-	  }
-	  return value == null ? '' : (value + '');
-	}
-	
-	/**
-	 * Checks if `value` is object-like.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-	 */
-	function isObjectLike(value) {
-	  return !!value && typeof value == 'object';
-	}
-	
-	/** Used for native method references. */
-	var objectProto = Object.prototype;
-	
-	/** Used to resolve the decompiled source of functions. */
-	var fnToString = Function.prototype.toString;
-	
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
-	
-	/**
-	 * Used to resolve the [`toStringTag`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
-	 * of values.
-	 */
-	var objToString = objectProto.toString;
-	
-	/** Used to detect if a method is native. */
-	var reIsNative = RegExp('^' +
-	  escapeRegExp(fnToString.call(hasOwnProperty))
-	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-	);
-	
-	/* Native method references for those with the same name as other `lodash` methods. */
-	var nativeIsArray = getNative(Array, 'isArray');
-	
-	/**
-	 * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
-	 * of an array-like value.
-	 */
-	var MAX_SAFE_INTEGER = 9007199254740991;
-	
-	/**
-	 * Gets the native function at `key` of `object`.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @param {string} key The key of the method to get.
-	 * @returns {*} Returns the function if it's native, else `undefined`.
-	 */
-	function getNative(object, key) {
-	  var value = object == null ? undefined : object[key];
-	  return isNative(value) ? value : undefined;
-	}
-	
-	/**
-	 * Checks if `value` is a valid array-like length.
-	 *
-	 * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
-	 */
-	function isLength(value) {
-	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-	}
-	
-	/**
-	 * Checks if `value` is classified as an `Array` object.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
-	 * @example
-	 *
-	 * _.isArray([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isArray(function() { return arguments; }());
-	 * // => false
-	 */
-	var isArray = nativeIsArray || function(value) {
-	  return isObjectLike(value) && isLength(value.length) && objToString.call(value) == arrayTag;
-	};
-	
-	/**
-	 * Checks if `value` is a native function.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
-	 * @example
-	 *
-	 * _.isNative(Array.prototype.push);
-	 * // => true
-	 *
-	 * _.isNative(_);
-	 * // => false
-	 */
-	function isNative(value) {
-	  if (value == null) {
-	    return false;
-	  }
-	  if (objToString.call(value) == funcTag) {
-	    return reIsNative.test(fnToString.call(value));
-	  }
-	  return isObjectLike(value) && reIsHostCtor.test(value);
-	}
-	
-	/**
-	 * Escapes the `RegExp` special characters "\", "/", "^", "$", ".", "|", "?",
-	 * "*", "+", "(", ")", "[", "]", "{" and "}" in `string`.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category String
-	 * @param {string} [string=''] The string to escape.
-	 * @returns {string} Returns the escaped string.
-	 * @example
-	 *
-	 * _.escapeRegExp('[lodash](https://lodash.com/)');
-	 * // => '\[lodash\]\(https:\/\/lodash\.com\/\)'
-	 */
-	function escapeRegExp(string) {
-	  string = baseToString(string);
-	  return (string && reHasRegExpChars.test(string))
-	    ? string.replace(reRegExpChars, '\\$&')
-	    : string;
-	}
-	
-	module.exports = isArray;
-
-
-/***/ },
-
-/***/ 345:
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * lodash 3.1.0 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	var baseFor = __webpack_require__(346),
-	    getNative = __webpack_require__(347),
-	    keysIn = __webpack_require__(348);
-	
-	/** `Object#toString` result references. */
-	var objectTag = '[object Object]';
-	
-	/**
-	 * Checks if `value` is object-like.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-	 */
-	function isObjectLike(value) {
-	  return !!value && typeof value == 'object';
-	}
-	
-	/** Used for native method references. */
-	var objectProto = Object.prototype;
-	
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
-	
-	/**
-	 * Used to resolve the [`toStringTag`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
-	 * of values.
-	 */
-	var objToString = objectProto.toString;
-	
-	/** Native method references. */
-	var getPrototypeOf = getNative(Object, 'getPrototypeOf');
-	
-	/**
-	 * The base implementation of `_.forIn` without support for callback
-	 * shorthands and `this` binding.
-	 *
-	 * @private
-	 * @param {Object} object The object to iterate over.
-	 * @param {Function} iteratee The function invoked per iteration.
-	 * @returns {Object} Returns `object`.
-	 */
-	function baseForIn(object, iteratee) {
-	  return baseFor(object, iteratee, keysIn);
-	}
-	
-	/**
-	 * A fallback implementation of `_.isPlainObject` which checks if `value`
-	 * is an object created by the `Object` constructor or has a `[[Prototype]]`
-	 * of `null`.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
-	 */
-	function shimIsPlainObject(value) {
-	  var Ctor;
-	
-	  // Exit early for non `Object` objects.
-	  if (!(isObjectLike(value) && objToString.call(value) == objectTag) ||
-	      (!hasOwnProperty.call(value, 'constructor') &&
-	        (Ctor = value.constructor, typeof Ctor == 'function' && !(Ctor instanceof Ctor)))) {
-	    return false;
-	  }
-	  // IE < 9 iterates inherited properties before own properties. If the first
-	  // iterated property is an object's own property then there are no inherited
-	  // enumerable properties.
-	  var result;
-	  // In most environments an object's own properties are iterated before
-	  // its inherited properties. If the last iterated property is an object's
-	  // own property then there are no inherited enumerable properties.
-	  baseForIn(value, function(subValue, key) {
-	    result = key;
-	  });
-	  return result === undefined || hasOwnProperty.call(value, result);
-	}
-	
-	/**
-	 * Checks if `value` is a plain object, that is, an object created by the
-	 * `Object` constructor or one with a `[[Prototype]]` of `null`.
-	 *
-	 * **Note:** This method assumes objects created by the `Object` constructor
-	 * have no inherited enumerable properties.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
-	 * @example
-	 *
-	 * function Foo() {
-	 *   this.a = 1;
-	 * }
-	 *
-	 * _.isPlainObject(new Foo);
-	 * // => false
-	 *
-	 * _.isPlainObject([1, 2, 3]);
-	 * // => false
-	 *
-	 * _.isPlainObject({ 'x': 0, 'y': 0 });
-	 * // => true
-	 *
-	 * _.isPlainObject(Object.create(null));
-	 * // => true
-	 */
-	var isPlainObject = !getPrototypeOf ? shimIsPlainObject : function(value) {
-	  if (!(value && objToString.call(value) == objectTag)) {
-	    return false;
-	  }
-	  var valueOf = getNative(value, 'valueOf'),
-	      objProto = valueOf && (objProto = getPrototypeOf(valueOf)) && getPrototypeOf(objProto);
-	
-	  return objProto
-	    ? (value == objProto || getPrototypeOf(value) == objProto)
-	    : shimIsPlainObject(value);
-	};
-	
-	module.exports = isPlainObject;
-
-
-/***/ },
-
-/***/ 346:
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * lodash 3.0.2 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	
-	/**
-	 * The base implementation of `baseForIn` and `baseForOwn` which iterates
-	 * over `object` properties returned by `keysFunc` invoking `iteratee` for
-	 * each property. Iteratee functions may exit iteration early by explicitly
-	 * returning `false`.
-	 *
-	 * @private
-	 * @param {Object} object The object to iterate over.
-	 * @param {Function} iteratee The function invoked per iteration.
-	 * @param {Function} keysFunc The function to get the keys of `object`.
-	 * @returns {Object} Returns `object`.
-	 */
-	var baseFor = createBaseFor();
-	
-	/**
-	 * Creates a base function for `_.forIn` or `_.forInRight`.
-	 *
-	 * @private
-	 * @param {boolean} [fromRight] Specify iterating from right to left.
-	 * @returns {Function} Returns the new base function.
-	 */
-	function createBaseFor(fromRight) {
-	  return function(object, iteratee, keysFunc) {
-	    var iterable = toObject(object),
-	        props = keysFunc(object),
-	        length = props.length,
-	        index = fromRight ? length : -1;
-	
-	    while ((fromRight ? index-- : ++index < length)) {
-	      var key = props[index];
-	      if (iteratee(iterable[key], key, iterable) === false) {
-	        break;
-	      }
-	    }
-	    return object;
-	  };
-	}
-	
-	/**
-	 * Converts `value` to an object if it's not one.
-	 *
-	 * @private
-	 * @param {*} value The value to process.
-	 * @returns {Object} Returns the object.
-	 */
-	function toObject(value) {
-	  return isObject(value) ? value : Object(value);
-	}
-	
-	/**
-	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
-	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
-	 * @example
-	 *
-	 * _.isObject({});
-	 * // => true
-	 *
-	 * _.isObject([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObject(1);
-	 * // => false
-	 */
-	function isObject(value) {
-	  // Avoid a V8 JIT bug in Chrome 19-20.
-	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
-	  var type = typeof value;
-	  return !!value && (type == 'object' || type == 'function');
-	}
-	
-	module.exports = baseFor;
-
-
-/***/ },
-
-/***/ 347:
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * lodash 3.9.0 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	
-	/** `Object#toString` result references. */
-	var funcTag = '[object Function]';
-	
-	/**
-	 * Used to match `RegExp` [special characters](http://www.regular-expressions.info/characters.html#special).
-	 * In addition to special characters the forward slash is escaped to allow for
-	 * easier `eval` use and `Function` compilation.
-	 */
-	var reRegExpChars = /[.*+?^${}()|[\]\/\\]/g,
-	    reHasRegExpChars = RegExp(reRegExpChars.source);
-	
-	/** Used to detect host constructors (Safari > 5). */
-	var reIsHostCtor = /^\[object .+?Constructor\]$/;
-	
-	/**
-	 * Converts `value` to a string if it's not one. An empty string is returned
-	 * for `null` or `undefined` values.
-	 *
-	 * @private
-	 * @param {*} value The value to process.
-	 * @returns {string} Returns the string.
-	 */
-	function baseToString(value) {
-	  if (typeof value == 'string') {
-	    return value;
-	  }
-	  return value == null ? '' : (value + '');
-	}
-	
-	/**
-	 * Checks if `value` is object-like.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-	 */
-	function isObjectLike(value) {
-	  return !!value && typeof value == 'object';
-	}
-	
-	/** Used for native method references. */
-	var objectProto = Object.prototype;
-	
-	/** Used to resolve the decompiled source of functions. */
-	var fnToString = Function.prototype.toString;
-	
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
-	
-	/**
-	 * Used to resolve the [`toStringTag`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
-	 * of values.
-	 */
-	var objToString = objectProto.toString;
-	
-	/** Used to detect if a method is native. */
-	var reIsNative = RegExp('^' +
-	  escapeRegExp(fnToString.call(hasOwnProperty))
-	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-	);
-	
-	/**
-	 * Gets the native function at `key` of `object`.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @param {string} key The key of the method to get.
-	 * @returns {*} Returns the function if it's native, else `undefined`.
-	 */
-	function getNative(object, key) {
-	  var value = object == null ? undefined : object[key];
-	  return isNative(value) ? value : undefined;
-	}
-	
-	/**
-	 * Checks if `value` is a native function.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
-	 * @example
-	 *
-	 * _.isNative(Array.prototype.push);
-	 * // => true
-	 *
-	 * _.isNative(_);
-	 * // => false
-	 */
-	function isNative(value) {
-	  if (value == null) {
-	    return false;
-	  }
-	  if (objToString.call(value) == funcTag) {
-	    return reIsNative.test(fnToString.call(value));
-	  }
-	  return isObjectLike(value) && reIsHostCtor.test(value);
-	}
-	
-	/**
-	 * Escapes the `RegExp` special characters "\", "/", "^", "$", ".", "|", "?",
-	 * "*", "+", "(", ")", "[", "]", "{" and "}" in `string`.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category String
-	 * @param {string} [string=''] The string to escape.
-	 * @returns {string} Returns the escaped string.
-	 * @example
-	 *
-	 * _.escapeRegExp('[lodash](https://lodash.com/)');
-	 * // => '\[lodash\]\(https:\/\/lodash\.com\/\)'
-	 */
-	function escapeRegExp(string) {
-	  string = baseToString(string);
-	  return (string && reHasRegExpChars.test(string))
-	    ? string.replace(reRegExpChars, '\\$&')
-	    : string;
-	}
-	
-	module.exports = getNative;
-
-
-/***/ },
-
-/***/ 348:
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * lodash 3.0.8 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	var isArguments = __webpack_require__(349),
-	    isArray = __webpack_require__(344);
-	
-	/** Used to detect unsigned integer values. */
-	var reIsUint = /^\d+$/;
-	
-	/** Used for native method references. */
-	var objectProto = Object.prototype;
-	
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
-	
-	/**
-	 * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
-	 * of an array-like value.
-	 */
-	var MAX_SAFE_INTEGER = 9007199254740991;
-	
-	/**
-	 * Checks if `value` is a valid array-like index.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
-	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
-	 */
-	function isIndex(value, length) {
-	  value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
-	  length = length == null ? MAX_SAFE_INTEGER : length;
-	  return value > -1 && value % 1 == 0 && value < length;
-	}
-	
-	/**
-	 * Checks if `value` is a valid array-like length.
-	 *
-	 * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
-	 */
-	function isLength(value) {
-	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-	}
-	
-	/**
-	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
-	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
-	 * @example
-	 *
-	 * _.isObject({});
-	 * // => true
-	 *
-	 * _.isObject([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObject(1);
-	 * // => false
-	 */
-	function isObject(value) {
-	  // Avoid a V8 JIT bug in Chrome 19-20.
-	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
-	  var type = typeof value;
-	  return !!value && (type == 'object' || type == 'function');
-	}
-	
-	/**
-	 * Creates an array of the own and inherited enumerable property names of `object`.
-	 *
-	 * **Note:** Non-object values are coerced to objects.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Object
-	 * @param {Object} object The object to query.
-	 * @returns {Array} Returns the array of property names.
-	 * @example
-	 *
-	 * function Foo() {
-	 *   this.a = 1;
-	 *   this.b = 2;
-	 * }
-	 *
-	 * Foo.prototype.c = 3;
-	 *
-	 * _.keysIn(new Foo);
-	 * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
-	 */
-	function keysIn(object) {
-	  if (object == null) {
-	    return [];
-	  }
-	  if (!isObject(object)) {
-	    object = Object(object);
-	  }
-	  var length = object.length;
-	  length = (length && isLength(length) &&
-	    (isArray(object) || isArguments(object)) && length) || 0;
-	
-	  var Ctor = object.constructor,
-	      index = -1,
-	      isProto = typeof Ctor == 'function' && Ctor.prototype === object,
-	      result = Array(length),
-	      skipIndexes = length > 0;
-	
-	  while (++index < length) {
-	    result[index] = (index + '');
-	  }
-	  for (var key in object) {
-	    if (!(skipIndexes && isIndex(key, length)) &&
-	        !(key == 'constructor' && (isProto || !hasOwnProperty.call(object, key)))) {
-	      result.push(key);
-	    }
-	  }
-	  return result;
-	}
-	
-	module.exports = keysIn;
-
-
-/***/ },
-
-/***/ 349:
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * lodash 3.0.3 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	
-	/** `Object#toString` result references. */
-	var argsTag = '[object Arguments]';
-	
-	/**
-	 * Checks if `value` is object-like.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-	 */
-	function isObjectLike(value) {
-	  return !!value && typeof value == 'object';
-	}
-	
-	/** Used for native method references. */
-	var objectProto = Object.prototype;
-	
-	/**
-	 * Used to resolve the [`toStringTag`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
-	 * of values.
-	 */
-	var objToString = objectProto.toString;
-	
-	/**
-	 * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
-	 * of an array-like value.
-	 */
-	var MAX_SAFE_INTEGER = 9007199254740991;
-	
-	/**
-	 * The base implementation of `_.property` without support for deep paths.
-	 *
-	 * @private
-	 * @param {string} key The key of the property to get.
-	 * @returns {Function} Returns the new function.
-	 */
-	function baseProperty(key) {
-	  return function(object) {
-	    return object == null ? undefined : object[key];
-	  };
-	}
-	
-	/**
-	 * Gets the "length" property value of `object`.
-	 *
-	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
-	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @returns {*} Returns the "length" value.
-	 */
-	var getLength = baseProperty('length');
-	
-	/**
-	 * Checks if `value` is array-like.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
-	 */
-	function isArrayLike(value) {
-	  return value != null && isLength(getLength(value));
-	}
-	
-	/**
-	 * Checks if `value` is a valid array-like length.
-	 *
-	 * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
-	 */
-	function isLength(value) {
-	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-	}
-	
-	/**
-	 * Checks if `value` is classified as an `arguments` object.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
-	 * @example
-	 *
-	 * _.isArguments(function() { return arguments; }());
-	 * // => true
-	 *
-	 * _.isArguments([1, 2, 3]);
-	 * // => false
-	 */
-	function isArguments(value) {
-	  return isObjectLike(value) && isArrayLike(value) && objToString.call(value) == argsTag;
-	}
-	
-	module.exports = isArguments;
-
-
-/***/ },
-
-/***/ 350:
+/***/ 337:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1803,9 +1043,9 @@ webpackJsonp([1],{
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseAssign = __webpack_require__(351),
-	    createAssigner = __webpack_require__(356),
-	    keys = __webpack_require__(353);
+	var baseAssign = __webpack_require__(338),
+	    createAssigner = __webpack_require__(341),
+	    keys = __webpack_require__(340);
 	
 	/**
 	 * A specialized version of `_.assign` for customizing assigned values without
@@ -1879,7 +1119,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 351:
+/***/ 338:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1890,8 +1130,8 @@ webpackJsonp([1],{
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseCopy = __webpack_require__(352),
-	    keys = __webpack_require__(353);
+	var baseCopy = __webpack_require__(339),
+	    keys = __webpack_require__(340);
 	
 	/**
 	 * The base implementation of `_.assign` without support for argument juggling,
@@ -1913,7 +1153,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 352:
+/***/ 339:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1952,7 +1192,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 353:
+/***/ 340:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1963,9 +1203,9 @@ webpackJsonp([1],{
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(354),
-	    isArguments = __webpack_require__(355),
-	    isArray = __webpack_require__(344);
+	var getNative = __webpack_require__(280),
+	    isArguments = __webpack_require__(282),
+	    isArray = __webpack_require__(277);
 	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -2195,260 +1435,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 354:
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * lodash 3.9.0 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	
-	/** `Object#toString` result references. */
-	var funcTag = '[object Function]';
-	
-	/**
-	 * Used to match `RegExp` [special characters](http://www.regular-expressions.info/characters.html#special).
-	 * In addition to special characters the forward slash is escaped to allow for
-	 * easier `eval` use and `Function` compilation.
-	 */
-	var reRegExpChars = /[.*+?^${}()|[\]\/\\]/g,
-	    reHasRegExpChars = RegExp(reRegExpChars.source);
-	
-	/** Used to detect host constructors (Safari > 5). */
-	var reIsHostCtor = /^\[object .+?Constructor\]$/;
-	
-	/**
-	 * Converts `value` to a string if it's not one. An empty string is returned
-	 * for `null` or `undefined` values.
-	 *
-	 * @private
-	 * @param {*} value The value to process.
-	 * @returns {string} Returns the string.
-	 */
-	function baseToString(value) {
-	  if (typeof value == 'string') {
-	    return value;
-	  }
-	  return value == null ? '' : (value + '');
-	}
-	
-	/**
-	 * Checks if `value` is object-like.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-	 */
-	function isObjectLike(value) {
-	  return !!value && typeof value == 'object';
-	}
-	
-	/** Used for native method references. */
-	var objectProto = Object.prototype;
-	
-	/** Used to resolve the decompiled source of functions. */
-	var fnToString = Function.prototype.toString;
-	
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
-	
-	/**
-	 * Used to resolve the [`toStringTag`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
-	 * of values.
-	 */
-	var objToString = objectProto.toString;
-	
-	/** Used to detect if a method is native. */
-	var reIsNative = RegExp('^' +
-	  escapeRegExp(fnToString.call(hasOwnProperty))
-	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-	);
-	
-	/**
-	 * Gets the native function at `key` of `object`.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @param {string} key The key of the method to get.
-	 * @returns {*} Returns the function if it's native, else `undefined`.
-	 */
-	function getNative(object, key) {
-	  var value = object == null ? undefined : object[key];
-	  return isNative(value) ? value : undefined;
-	}
-	
-	/**
-	 * Checks if `value` is a native function.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
-	 * @example
-	 *
-	 * _.isNative(Array.prototype.push);
-	 * // => true
-	 *
-	 * _.isNative(_);
-	 * // => false
-	 */
-	function isNative(value) {
-	  if (value == null) {
-	    return false;
-	  }
-	  if (objToString.call(value) == funcTag) {
-	    return reIsNative.test(fnToString.call(value));
-	  }
-	  return isObjectLike(value) && reIsHostCtor.test(value);
-	}
-	
-	/**
-	 * Escapes the `RegExp` special characters "\", "/", "^", "$", ".", "|", "?",
-	 * "*", "+", "(", ")", "[", "]", "{" and "}" in `string`.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category String
-	 * @param {string} [string=''] The string to escape.
-	 * @returns {string} Returns the escaped string.
-	 * @example
-	 *
-	 * _.escapeRegExp('[lodash](https://lodash.com/)');
-	 * // => '\[lodash\]\(https:\/\/lodash\.com\/\)'
-	 */
-	function escapeRegExp(string) {
-	  string = baseToString(string);
-	  return (string && reHasRegExpChars.test(string))
-	    ? string.replace(reRegExpChars, '\\$&')
-	    : string;
-	}
-	
-	module.exports = getNative;
-
-
-/***/ },
-
-/***/ 355:
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * lodash 3.0.3 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	
-	/** `Object#toString` result references. */
-	var argsTag = '[object Arguments]';
-	
-	/**
-	 * Checks if `value` is object-like.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-	 */
-	function isObjectLike(value) {
-	  return !!value && typeof value == 'object';
-	}
-	
-	/** Used for native method references. */
-	var objectProto = Object.prototype;
-	
-	/**
-	 * Used to resolve the [`toStringTag`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
-	 * of values.
-	 */
-	var objToString = objectProto.toString;
-	
-	/**
-	 * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
-	 * of an array-like value.
-	 */
-	var MAX_SAFE_INTEGER = 9007199254740991;
-	
-	/**
-	 * The base implementation of `_.property` without support for deep paths.
-	 *
-	 * @private
-	 * @param {string} key The key of the property to get.
-	 * @returns {Function} Returns the new function.
-	 */
-	function baseProperty(key) {
-	  return function(object) {
-	    return object == null ? undefined : object[key];
-	  };
-	}
-	
-	/**
-	 * Gets the "length" property value of `object`.
-	 *
-	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
-	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @returns {*} Returns the "length" value.
-	 */
-	var getLength = baseProperty('length');
-	
-	/**
-	 * Checks if `value` is array-like.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
-	 */
-	function isArrayLike(value) {
-	  return value != null && isLength(getLength(value));
-	}
-	
-	/**
-	 * Checks if `value` is a valid array-like length.
-	 *
-	 * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
-	 */
-	function isLength(value) {
-	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-	}
-	
-	/**
-	 * Checks if `value` is classified as an `arguments` object.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
-	 * @example
-	 *
-	 * _.isArguments(function() { return arguments; }());
-	 * // => true
-	 *
-	 * _.isArguments([1, 2, 3]);
-	 * // => false
-	 */
-	function isArguments(value) {
-	  return isObjectLike(value) && isArrayLike(value) && objToString.call(value) == argsTag;
-	}
-	
-	module.exports = isArguments;
-
-
-/***/ },
-
-/***/ 356:
+/***/ 341:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2459,9 +1446,9 @@ webpackJsonp([1],{
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var bindCallback = __webpack_require__(357),
-	    isIterateeCall = __webpack_require__(358),
-	    restParam = __webpack_require__(359);
+	var bindCallback = __webpack_require__(342),
+	    isIterateeCall = __webpack_require__(343),
+	    restParam = __webpack_require__(344);
 	
 	/**
 	 * Creates a function that assigns properties of source object(s) to a given
@@ -2507,7 +1494,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 357:
+/***/ 342:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2579,7 +1566,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 358:
+/***/ 343:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2718,7 +1705,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 359:
+/***/ 344:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2792,7 +1779,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 360:
+/***/ 345:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2803,8 +1790,8 @@ webpackJsonp([1],{
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseIsEqual = __webpack_require__(361),
-	    bindCallback = __webpack_require__(366);
+	var baseIsEqual = __webpack_require__(346),
+	    bindCallback = __webpack_require__(349);
 	
 	/**
 	 * Performs a deep comparison between two values to determine if they are
@@ -2861,7 +1848,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 361:
+/***/ 346:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2872,9 +1859,9 @@ webpackJsonp([1],{
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var isArray = __webpack_require__(344),
-	    isTypedArray = __webpack_require__(362),
-	    keys = __webpack_require__(363);
+	var isArray = __webpack_require__(277),
+	    isTypedArray = __webpack_require__(347),
+	    keys = __webpack_require__(348);
 	
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]',
@@ -3210,7 +2197,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 362:
+/***/ 347:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3327,7 +2314,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 363:
+/***/ 348:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3338,9 +2325,9 @@ webpackJsonp([1],{
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(364),
-	    isArguments = __webpack_require__(365),
-	    isArray = __webpack_require__(344);
+	var getNative = __webpack_require__(280),
+	    isArguments = __webpack_require__(282),
+	    isArray = __webpack_require__(277);
 	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -3570,260 +2557,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 364:
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * lodash 3.9.0 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	
-	/** `Object#toString` result references. */
-	var funcTag = '[object Function]';
-	
-	/**
-	 * Used to match `RegExp` [special characters](http://www.regular-expressions.info/characters.html#special).
-	 * In addition to special characters the forward slash is escaped to allow for
-	 * easier `eval` use and `Function` compilation.
-	 */
-	var reRegExpChars = /[.*+?^${}()|[\]\/\\]/g,
-	    reHasRegExpChars = RegExp(reRegExpChars.source);
-	
-	/** Used to detect host constructors (Safari > 5). */
-	var reIsHostCtor = /^\[object .+?Constructor\]$/;
-	
-	/**
-	 * Converts `value` to a string if it's not one. An empty string is returned
-	 * for `null` or `undefined` values.
-	 *
-	 * @private
-	 * @param {*} value The value to process.
-	 * @returns {string} Returns the string.
-	 */
-	function baseToString(value) {
-	  if (typeof value == 'string') {
-	    return value;
-	  }
-	  return value == null ? '' : (value + '');
-	}
-	
-	/**
-	 * Checks if `value` is object-like.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-	 */
-	function isObjectLike(value) {
-	  return !!value && typeof value == 'object';
-	}
-	
-	/** Used for native method references. */
-	var objectProto = Object.prototype;
-	
-	/** Used to resolve the decompiled source of functions. */
-	var fnToString = Function.prototype.toString;
-	
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
-	
-	/**
-	 * Used to resolve the [`toStringTag`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
-	 * of values.
-	 */
-	var objToString = objectProto.toString;
-	
-	/** Used to detect if a method is native. */
-	var reIsNative = RegExp('^' +
-	  escapeRegExp(fnToString.call(hasOwnProperty))
-	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-	);
-	
-	/**
-	 * Gets the native function at `key` of `object`.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @param {string} key The key of the method to get.
-	 * @returns {*} Returns the function if it's native, else `undefined`.
-	 */
-	function getNative(object, key) {
-	  var value = object == null ? undefined : object[key];
-	  return isNative(value) ? value : undefined;
-	}
-	
-	/**
-	 * Checks if `value` is a native function.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
-	 * @example
-	 *
-	 * _.isNative(Array.prototype.push);
-	 * // => true
-	 *
-	 * _.isNative(_);
-	 * // => false
-	 */
-	function isNative(value) {
-	  if (value == null) {
-	    return false;
-	  }
-	  if (objToString.call(value) == funcTag) {
-	    return reIsNative.test(fnToString.call(value));
-	  }
-	  return isObjectLike(value) && reIsHostCtor.test(value);
-	}
-	
-	/**
-	 * Escapes the `RegExp` special characters "\", "/", "^", "$", ".", "|", "?",
-	 * "*", "+", "(", ")", "[", "]", "{" and "}" in `string`.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category String
-	 * @param {string} [string=''] The string to escape.
-	 * @returns {string} Returns the escaped string.
-	 * @example
-	 *
-	 * _.escapeRegExp('[lodash](https://lodash.com/)');
-	 * // => '\[lodash\]\(https:\/\/lodash\.com\/\)'
-	 */
-	function escapeRegExp(string) {
-	  string = baseToString(string);
-	  return (string && reHasRegExpChars.test(string))
-	    ? string.replace(reRegExpChars, '\\$&')
-	    : string;
-	}
-	
-	module.exports = getNative;
-
-
-/***/ },
-
-/***/ 365:
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * lodash 3.0.3 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	
-	/** `Object#toString` result references. */
-	var argsTag = '[object Arguments]';
-	
-	/**
-	 * Checks if `value` is object-like.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-	 */
-	function isObjectLike(value) {
-	  return !!value && typeof value == 'object';
-	}
-	
-	/** Used for native method references. */
-	var objectProto = Object.prototype;
-	
-	/**
-	 * Used to resolve the [`toStringTag`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
-	 * of values.
-	 */
-	var objToString = objectProto.toString;
-	
-	/**
-	 * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
-	 * of an array-like value.
-	 */
-	var MAX_SAFE_INTEGER = 9007199254740991;
-	
-	/**
-	 * The base implementation of `_.property` without support for deep paths.
-	 *
-	 * @private
-	 * @param {string} key The key of the property to get.
-	 * @returns {Function} Returns the new function.
-	 */
-	function baseProperty(key) {
-	  return function(object) {
-	    return object == null ? undefined : object[key];
-	  };
-	}
-	
-	/**
-	 * Gets the "length" property value of `object`.
-	 *
-	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
-	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @returns {*} Returns the "length" value.
-	 */
-	var getLength = baseProperty('length');
-	
-	/**
-	 * Checks if `value` is array-like.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
-	 */
-	function isArrayLike(value) {
-	  return value != null && isLength(getLength(value));
-	}
-	
-	/**
-	 * Checks if `value` is a valid array-like length.
-	 *
-	 * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
-	 */
-	function isLength(value) {
-	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-	}
-	
-	/**
-	 * Checks if `value` is classified as an `arguments` object.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
-	 * @example
-	 *
-	 * _.isArguments(function() { return arguments; }());
-	 * // => true
-	 *
-	 * _.isArguments([1, 2, 3]);
-	 * // => false
-	 */
-	function isArguments(value) {
-	  return isObjectLike(value) && isArrayLike(value) && objToString.call(value) == argsTag;
-	}
-	
-	module.exports = isArguments;
-
-
-/***/ },
-
-/***/ 366:
+/***/ 349:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3895,90 +2629,47 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 367:
+/***/ 350:
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(React) {/**
-	 * components/main.js
-	 *
-	 */
+	"use strict";
 	
-	'use strict';
+	var _Object$assign = __webpack_require__(351)["default"];
 	
-	var _require = __webpack_require__(293);
+	exports["default"] = _Object$assign || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];
 	
-	var RouteHandler = _require.RouteHandler;
-	
-	var orwell = __webpack_require__(342);
-	var Probe = __webpack_require__(270).Probe;
-	
-	var Main = React.createClass({
-	    displayName: 'Main',
-	
-	    propTypes: {
-	        rootCursor: React.PropTypes.instanceOf(Probe).isRequired,
-	        tasksleftCursor: React.PropTypes.instanceOf(Probe).isRequired,
-	        todosCursor: React.PropTypes.instanceOf(Probe).isRequired,
-	        checked: React.PropTypes.bool.isRequired
-	    },
-	
-	    toggleTodos: function toggleTodos(event) {
-	        event.stopPropagation();
-	
-	        var newCompleteVal = !this.props.checked;
-	        this.props.todosCursor.update(function (todos) {
-	            return todos.map(function (record) {
-	                return record.set('completed', newCompleteVal);
-	            });
-	        });
-	
-	        var tasksleft = newCompleteVal ? 0 : this.props.todosCursor.deref().size;
-	        this.props.tasksleftCursor.update(function (_) {
-	            return tasksleft;
-	        });
-	    },
-	
-	    render: function render() {
-	        var toggle = null;
-	        if (this.props.todosCursor.deref().size > 0) {
-	            toggle = [React.createElement('input', { key: 1, className: 'toggle-all', type: 'checkbox', onChange: this.toggleTodos, checked: this.props.checked }), React.createElement(
-	                'label',
-	                { key: 2, htmlFor: 'toggle-all' },
-	                'Mark all as complete'
-	            )];
-	        }
-	
-	        return React.createElement(
-	            'section',
-	            { className: 'main' },
-	            toggle,
-	            React.createElement(RouteHandler, this.props)
-	        );
+	    for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
 	    }
-	});
+	  }
 	
-	function watchCursors(_ref) {
-	    var tasksleftCursor = _ref.tasksleftCursor;
-	    var todosCursor = _ref.todosCursor;
+	  return target;
+	};
 	
-	    return [tasksleftCursor, todosCursor];
-	}
-	
-	function assignNewProps(_ref2) {
-	    var tasksleftCursor = _ref2.tasksleftCursor;
-	    var todosCursor = _ref2.todosCursor;
-	
-	    return {
-	        checked: tasksleftCursor.deref() <= 0 && todosCursor.deref().size > 0
-	    };
-	}
-	
-	module.exports = orwell(Main, watchCursors, assignNewProps);
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+	exports.__esModule = true;
 
 /***/ },
 
-/***/ 368:
+/***/ 351:
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(352), __esModule: true };
+
+/***/ },
+
+/***/ 352:
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(209);
+	module.exports = __webpack_require__(163).core.Object.assign;
+
+/***/ },
+
+/***/ 353:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(React) {/**
@@ -3988,10 +2679,10 @@ webpackJsonp([1],{
 	
 	'use strict';
 	
-	var PureRenderMixin = __webpack_require__(369).addons.PureRenderMixin;
+	var PureRenderMixin = __webpack_require__(354).addons.PureRenderMixin;
 	
-	var Probe = __webpack_require__(270).Probe;
-	var TodoModel = __webpack_require__(387);
+	var Probe = __webpack_require__(272).Probe;
+	var TodoModel = __webpack_require__(372);
 	var ENTER_KEY = 13;
 	
 	module.exports = React.createClass({
@@ -4055,15 +2746,15 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 369:
+/***/ 354:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(370);
+	module.exports = __webpack_require__(355);
 
 
 /***/ },
 
-/***/ 370:
+/***/ 355:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -4086,18 +2777,18 @@ webpackJsonp([1],{
 	
 	'use strict';
 	
-	var LinkedStateMixin = __webpack_require__(371);
+	var LinkedStateMixin = __webpack_require__(356);
 	var React = __webpack_require__(3);
 	var ReactComponentWithPureRenderMixin =
-	  __webpack_require__(374);
-	var ReactCSSTransitionGroup = __webpack_require__(375);
+	  __webpack_require__(359);
+	var ReactCSSTransitionGroup = __webpack_require__(360);
 	var ReactFragment = __webpack_require__(11);
-	var ReactTransitionGroup = __webpack_require__(376);
+	var ReactTransitionGroup = __webpack_require__(361);
 	var ReactUpdates = __webpack_require__(25);
 	
-	var cx = __webpack_require__(384);
-	var cloneWithProps = __webpack_require__(378);
-	var update = __webpack_require__(385);
+	var cx = __webpack_require__(369);
+	var cloneWithProps = __webpack_require__(363);
+	var update = __webpack_require__(370);
 	
 	React.addons = {
 	  CSSTransitionGroup: ReactCSSTransitionGroup,
@@ -4114,7 +2805,7 @@ webpackJsonp([1],{
 	
 	if ("production" !== process.env.NODE_ENV) {
 	  React.addons.Perf = __webpack_require__(151);
-	  React.addons.TestUtils = __webpack_require__(386);
+	  React.addons.TestUtils = __webpack_require__(371);
 	}
 	
 	module.exports = React;
@@ -4123,7 +2814,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 371:
+/***/ 356:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4140,8 +2831,8 @@ webpackJsonp([1],{
 	
 	'use strict';
 	
-	var ReactLink = __webpack_require__(372);
-	var ReactStateSetters = __webpack_require__(373);
+	var ReactLink = __webpack_require__(357);
+	var ReactStateSetters = __webpack_require__(358);
 	
 	/**
 	 * A simple mixin around ReactLink.forState().
@@ -4169,7 +2860,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 372:
+/***/ 357:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4247,7 +2938,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 373:
+/***/ 358:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4358,7 +3049,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 374:
+/***/ 359:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4412,7 +3103,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 375:
+/***/ 360:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4434,10 +3125,10 @@ webpackJsonp([1],{
 	var assign = __webpack_require__(14);
 	
 	var ReactTransitionGroup = React.createFactory(
-	  __webpack_require__(376)
+	  __webpack_require__(361)
 	);
 	var ReactCSSTransitionGroupChild = React.createFactory(
-	  __webpack_require__(381)
+	  __webpack_require__(366)
 	);
 	
 	var ReactCSSTransitionGroup = React.createClass({
@@ -4487,7 +3178,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 376:
+/***/ 361:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4504,10 +3195,10 @@ webpackJsonp([1],{
 	'use strict';
 	
 	var React = __webpack_require__(3);
-	var ReactTransitionChildMapping = __webpack_require__(377);
+	var ReactTransitionChildMapping = __webpack_require__(362);
 	
 	var assign = __webpack_require__(14);
-	var cloneWithProps = __webpack_require__(378);
+	var cloneWithProps = __webpack_require__(363);
 	var emptyFunction = __webpack_require__(17);
 	
 	var ReactTransitionGroup = React.createClass({
@@ -4722,7 +3413,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 377:
+/***/ 362:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4832,7 +3523,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 378:
+/***/ 363:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -4850,7 +3541,7 @@ webpackJsonp([1],{
 	'use strict';
 	
 	var ReactElement = __webpack_require__(12);
-	var ReactPropTransferer = __webpack_require__(379);
+	var ReactPropTransferer = __webpack_require__(364);
 	
 	var keyOf = __webpack_require__(40);
 	var warning = __webpack_require__(16);
@@ -4895,7 +3586,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 379:
+/***/ 364:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4913,7 +3604,7 @@ webpackJsonp([1],{
 	
 	var assign = __webpack_require__(14);
 	var emptyFunction = __webpack_require__(17);
-	var joinClasses = __webpack_require__(380);
+	var joinClasses = __webpack_require__(365);
 	
 	/**
 	 * Creates a transfer strategy that will merge prop values using the supplied
@@ -5010,7 +3701,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 380:
+/***/ 365:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5056,7 +3747,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 381:
+/***/ 366:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -5075,8 +3766,8 @@ webpackJsonp([1],{
 	
 	var React = __webpack_require__(3);
 	
-	var CSSCore = __webpack_require__(382);
-	var ReactTransitionEvents = __webpack_require__(383);
+	var CSSCore = __webpack_require__(367);
+	var ReactTransitionEvents = __webpack_require__(368);
 	
 	var onlyChild = __webpack_require__(157);
 	var warning = __webpack_require__(16);
@@ -5208,7 +3899,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 382:
+/***/ 367:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -5324,7 +4015,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 383:
+/***/ 368:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5440,7 +4131,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 384:
+/***/ 369:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -5500,7 +4191,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 385:
+/***/ 370:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -5675,7 +4366,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 386:
+/***/ 371:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6194,7 +4885,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 387:
+/***/ 372:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6231,7 +4922,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 388:
+/***/ 373:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(React, Immutable) {/**
@@ -6241,10 +4932,11 @@ webpackJsonp([1],{
 	
 	'use strict';
 	
-	var Router = __webpack_require__(293);var Link = Router.Link;
+	var Router = __webpack_require__(288);
+	var Link = Router.Link;
 	
-	var orwell = __webpack_require__(342);
-	var Probe = __webpack_require__(270).Probe;
+	var orwell = __webpack_require__(335);
+	var Probe = __webpack_require__(272).Probe;
 	
 	var _require = __webpack_require__(1);
 	
@@ -6257,7 +4949,8 @@ webpackJsonp([1],{
 	        tasksleft: React.PropTypes.number.isRequired,
 	        todos: React.PropTypes.instanceOf(Immutable.List).isRequired,
 	        todosCursor: React.PropTypes.instanceOf(Probe).isRequired,
-	        tasksleftCursor: React.PropTypes.instanceOf(Probe).isRequired
+	        tasksleftCursor: React.PropTypes.instanceOf(Probe).isRequired,
+	        routestate: React.PropTypes.object.isRequired
 	    },
 	
 	    clearCompleted: function clearCompleted() {
@@ -6269,7 +4962,6 @@ webpackJsonp([1],{
 	    },
 	
 	    render: function render() {
-	        // console.log(this.props.todos instanceof Immutable.List);
 	        var count = this.props.tasksleft;
 	
 	        if (this.props.todos.size <= 0) {
@@ -6360,7 +5052,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 389:
+/***/ 374:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6370,7 +5062,7 @@ webpackJsonp([1],{
 	
 	'use strict';
 	
-	var FilterList = __webpack_require__(390);
+	var FilterList = __webpack_require__(375);
 	
 	module.exports = FilterList(function (_) {
 	    return false;
@@ -6398,7 +5090,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 390:
+/***/ 375:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(React) {/**
@@ -6408,12 +5100,12 @@ webpackJsonp([1],{
 	
 	'use strict';
 	
-	var _extends = __webpack_require__(339)['default'];
+	var _extends = __webpack_require__(350)['default'];
 	
-	var orwell = __webpack_require__(342);
-	var Probe = __webpack_require__(270).Probe;
+	var orwell = __webpack_require__(335);
+	var Probe = __webpack_require__(272).Probe;
 	
-	var List = __webpack_require__(391);
+	var List = __webpack_require__(376);
 	
 	var DEFAULTWATCH = function DEFAULTWATCH(_ref) {
 	    var rootCursor = _ref.rootCursor;
@@ -6429,7 +5121,8 @@ webpackJsonp([1],{
 	
 	        propTypes: {
 	            rootCursor: React.PropTypes.instanceOf(Probe).isRequired,
-	            todosCursor: React.PropTypes.instanceOf(Probe).isRequired },
+	            todosCursor: React.PropTypes.instanceOf(Probe).isRequired
+	        },
 	
 	        render: function render() {
 	            var rootCursor = this.props.rootCursor;
@@ -6440,13 +5133,14 @@ webpackJsonp([1],{
 	            }));
 	        }
 	    });
+	
 	    return orwell(Filtered, watchCursors);
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
 
-/***/ 391:
+/***/ 376:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(React) {/**
@@ -6456,9 +5150,9 @@ webpackJsonp([1],{
 	
 	'use strict';
 	
-	var orwell = __webpack_require__(342);
-	var Probe = __webpack_require__(270).Probe;
-	var Item = __webpack_require__(392);
+	var orwell = __webpack_require__(335);
+	var Probe = __webpack_require__(272).Probe;
+	var Item = __webpack_require__(377);
 	
 	var List = React.createClass({
 	    displayName: 'List',
@@ -6475,8 +5169,7 @@ webpackJsonp([1],{
 	        var editingCursor = _props.editingCursor;
 	        var tasksleftCursor = _props.tasksleftCursor;
 	        var filterTodo = _props.filterTodo;
-	
-	        var todos = todosCursor.deref();
+	        var todos = _props.todos;
 	
 	        if (todos.size <= 0) {
 	            return React.createElement('div', null);
@@ -6508,7 +5201,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 392:
+/***/ 377:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(React, Immutable) {/**
@@ -6518,10 +5211,10 @@ webpackJsonp([1],{
 	
 	'use strict';
 	
-	var classNames = __webpack_require__(332);
+	var classNames = __webpack_require__(327);
 	
-	var orwell = __webpack_require__(342);
-	var Probe = __webpack_require__(270).Probe;
+	var orwell = __webpack_require__(335);
+	var Probe = __webpack_require__(272).Probe;
 	
 	var ESCAPE_KEY = 27;
 	var ENTER_KEY = 13;
@@ -6689,7 +5382,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 393:
+/***/ 378:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6699,7 +5392,7 @@ webpackJsonp([1],{
 	
 	'use strict';
 	
-	var FilterList = __webpack_require__(390);
+	var FilterList = __webpack_require__(375);
 	
 	module.exports = FilterList(function (record) {
 	  return record.get('completed');
@@ -6707,7 +5400,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 394:
+/***/ 379:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6717,7 +5410,7 @@ webpackJsonp([1],{
 	
 	'use strict';
 	
-	var FilterList = __webpack_require__(390);
+	var FilterList = __webpack_require__(375);
 	
 	module.exports = FilterList(function (record) {
 	  return !record.get('completed');
@@ -6725,7 +5418,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 395:
+/***/ 380:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6737,7 +5430,7 @@ webpackJsonp([1],{
 	
 	var NOT_SET = {};
 	
-	var minitrue = __webpack_require__(270);
+	var minitrue = __webpack_require__(272);
 	
 	var store = minitrue({
 	    todos: [],

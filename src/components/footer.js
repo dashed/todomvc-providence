@@ -20,7 +20,8 @@ const Footer = React.createClass({
         tasksleft: React.PropTypes.number.isRequired,
         todos: React.PropTypes.instanceOf(Immutable.List).isRequired,
         todosCursor: React.PropTypes.instanceOf(Probe).isRequired,
-        tasksleftCursor: React.PropTypes.instanceOf(Probe).isRequired
+        tasksleftCursor: React.PropTypes.instanceOf(Probe).isRequired,
+        routestate: React.PropTypes.object.isRequired
     },
 
     clearCompleted() {
@@ -32,7 +33,6 @@ const Footer = React.createClass({
     },
 
     render() {
-        // console.log(this.props.todos instanceof Immutable.List);
         const count = this.props.tasksleft;
 
         if(this.props.todos.size <= 0) {

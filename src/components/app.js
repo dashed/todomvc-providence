@@ -9,7 +9,6 @@ Router = require('react-router'),
     RouteHandler
 } = Router,
 
-orwell = require('orwell'),
 Probe = require('minitrue').Probe,
 
 Main = require('./main'),
@@ -37,9 +36,9 @@ const App = React.createClass({
                     todosCursor={todosCursor}
                 />
                 <Footer
+                    routestate={this.props.routestate}
                     tasksleftCursor={tasksleftCursor}
                     todosCursor={todosCursor}
-                    routestate={this.props.routestate}
                 />
             </section>
         );

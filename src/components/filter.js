@@ -33,5 +33,6 @@ module.exports = function(filterRecord, watchCursors = DEFAULTWATCH) {
             );
         }
     });
+
     return orwell(Filtered, watchCursors);
 }

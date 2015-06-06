@@ -21,10 +21,9 @@ const List = React.createClass({
             todosCursor,
             editingCursor,
             tasksleftCursor,
-            filterTodo
+            filterTodo,
+            todos
         } = this.props;
-
-        const todos = todosCursor.deref();
 
         if(todos.size <= 0) {
             return(
